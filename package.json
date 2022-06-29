@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "node-sass": "^7.0.1",
+    "nuxt": "3.0.0-rc.4",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.1"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.1.9",
+    "@types/three": "^0.141.0",
+    "pinia": "^2.0.14",
+    "three": "^0.141.0",
+    "vue": "^3.2.37"
+  }
+}
