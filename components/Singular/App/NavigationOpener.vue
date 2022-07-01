@@ -23,7 +23,7 @@ const toggleNavigation = (): void => {
 
 <style lang="scss" scoped>
 .navigation-opener {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);

@@ -1,13 +1,8 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
     <div class="page game-history">
-        
+        <main>
+            <SingularGameHistoryPageBackgroundComposition />
+            <!-- <SingularGameHistoryPageInfo />             -->
+        </main>
     </div>
 </template>
-
-<style lang="scss" scoped>
-    
-</style>

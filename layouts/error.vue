@@ -1,9 +1,5 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-    <div>
+    <div class="layout">
         <div class="error-page">
             <div class="info-wrapper">
                 <div class="info">

@@ -1,15 +1,11 @@
 import { defineStore } from 'pinia';
 
 export const useBaseStore = defineStore({
-    id: 'base',
-
+    id: 'baseStore',
+    
     state: () => ({
-        navOpenIndicator: false
+        navOpenIndicator: false,
     }),
-
-//   getters: {
-//     valueWithName: state => `Value is ${state.numberValue}`
-//   },
 
     actions: {
         navOpenIndicatorToFalse() {
@@ -21,3 +17,5 @@ export const useBaseStore = defineStore({
         },
     }
 })
+
+export { useFaqStore } from './faq';

@@ -9,7 +9,8 @@ let addTransitionClass = ref<boolean>(false);
 
 // TIMER DATA
 let dateInterval: ReturnType<typeof setInterval> | null = null;
-const dateToCount: string = 'June 30, 2022 17:00:00';
+let dayToCount = ref<number>(1);
+const dateToCount = ref<string>(`July ${dayToCount.value}, 2022 17:00:00`);
 const days = ref<string | number>('00');
 const hours = ref<string | number>('00');
 const minutes = ref<string | number>('00');
@@ -52,14 +53,18 @@ const onWindowClick = (event: Event): void => {
 
 // TIMER FUNCTIONALITY
 const timerInit = (): void => {
-    const timeToCount: number = new Date(dateToCount).getTime();
+    const timeToCount: number = new Date(dateToCount.value).getTime();
     const now: number = new Date().getTime();
-    const timeleft: number = timeToCount - now;
+    const timeLeft: number = timeToCount - now;
 
-    days.value = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-    hours.value = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    minutes.value = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-    seconds.value = Math.floor((timeleft % (1000 * 60)) / 1000);
+    if (timeLeft <= 0) {
+        dayToCount.value++;
+    }
+
+    days.value = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    hours.value = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    minutes.value = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    seconds.value = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
     if (+days.value < 10) {
         days.value = '0' + days.value;
@@ -189,7 +194,7 @@ onUnmounted(() => {
 
 .game-info {
     @include width-restriction;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
@@ -199,7 +204,7 @@ onUnmounted(() => {
     border-radius: 4rem 4rem 0 0;
     border: 1px solid #eee;
     z-index: 1000;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     padding: .5rem 5.5rem;
 
     @media only screen and (max-width: 1450px) {
@@ -266,7 +271,7 @@ onUnmounted(() => {
             }
 
             @media only screen and (max-width: 400px) {
-                width: 90%;
+                width: 95%;
             }
 
         .subtitle {

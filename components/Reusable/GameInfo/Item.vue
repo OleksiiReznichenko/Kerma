@@ -49,7 +49,8 @@ const props = defineProps<Props>();
         }
         
         .icon {
-            width: 60%;
+            // width: 60%;
+            width: 50%;
         }
 
         .icon-id {

@@ -1,16 +1,15 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-    <div class="page game-history">
+    <div class="page faq">
         <div class="relative-container">
+            <SingularGameHistoryPageBackgroundComposition />
             <SingularFaqPageInfo />
-            <Reusable3DModel />
+            <Reusable3DModel page="faq" />
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-    
+.page {
+    margin-top: 9rem;
+}
 </style>

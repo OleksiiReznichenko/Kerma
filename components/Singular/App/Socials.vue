@@ -22,9 +22,9 @@
 
 <style lang="scss" scoped>
 .socials {
-    position: absolute;
+    position: fixed;
     top: 40vh;
-    left: -10rem;
+    left: -12rem;
     transform: rotate(-90deg);
     display: flex;
     align-items: center;
@@ -37,6 +37,7 @@
     }
 
     @media only screen and (max-width: 850px) {
+        position: absolute;
         left: 50%;
         top: 4rem;
         transform: translateX(-50%);
@@ -79,8 +80,11 @@
                 transform: scale(1.05);
             }
 
-            @media only screen and (max-width: 850px) {
+            @media only screen and (max-width: 1000px) {
                 box-shadow: 1rem 1.5rem 2.25rem rgba(0, 0, 0, 0.1);
+            }
+
+            @media only screen and (max-width: 850px) {
                 border: 1px solid #eee;
             }
 
@@ -98,6 +102,10 @@
     .faq-link {
         transform: rotate(90deg);
         margin-right: 1.5rem;
+
+        @media only screen and (max-width: 1000px) {
+            transform: rotate(0);
+        }
 
         .icon-title {
             font-weight: 900;

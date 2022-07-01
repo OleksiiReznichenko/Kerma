@@ -2,6 +2,13 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { storeToRefs } from 'pinia';
+
+interface Props {
+    page: 'main' | 'faq'
+}
+
+const props = defineProps<Props>();
 
 // THREE JS ESSENTIALS
 let scene: any = null;
@@ -30,8 +37,9 @@ let spotLight: any = null;
 let canvas = ref<HTMLCanvasElement | null>(null);
 let sceneContainer = ref<HTMLElement | null>(null);
 
-// ROUTE
-const route = useRoute();
+// NAV OPEN INDICATOR
+const baseStore = useBaseStore();
+const { navOpenIndicator } = storeToRefs(baseStore);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INIT 3D MODEL AND ANIMATION
@@ -48,7 +56,12 @@ const initAnimation = (): void => {
     near.value = 1;
     far.value = 600;
     camera = new THREE.PerspectiveCamera(fov.value, aspect.value, near.value, far.value);
-    camera.position.set(8, 2, 15);
+
+    if (props.page === 'main') {
+        camera.position.set(8, 2, 15);
+    } else if (props.page === 'faq') {
+        camera.position.set(-8, 2, 15.5);
+    }
     camera.lookAt(scene.position);
 
 
@@ -83,7 +96,12 @@ const initAnimation = (): void => {
     spotLight = new THREE.SpotLight(0xE17ECF, 8.5);
     // spotLight = new THREE.SpotLight(0x9369A0, 4);
     // const spotLight = new THREE.SpotLight(0x9369A0, 4);
-    spotLight.position.set(-18, 10, 25);
+
+    if (props.page === 'main') {
+        spotLight.position.set(-18, 10, 25);
+    } else if (props.page === 'faq') {
+        spotLight.position.set(30, 15, 25);
+    }
 
     // spotLight.castShadow = true;
     // spotLight.shadow.bias = -0.0001;
@@ -92,7 +110,12 @@ const initAnimation = (): void => {
     scene.add(spotLight);
 
     const spotLight2 = new THREE.SpotLight(0x9369A0, 5.5);
-    spotLight2.position.set(28, 10, -25);
+
+    if (props.page === 'main') {
+        spotLight2.position.set(28, 10, -25);
+    } else if (props.page === 'faq') {
+        spotLight2.position.set(-40, 15, -25);
+    }
     scene.add(spotLight2);
 
     // const hemLlight = new THREE.HemisphereLight(0x222222, 0x080820, 4);
@@ -165,16 +188,20 @@ const kermaModelScailing = (): void => {
     if (window.outerWidth < 700 && window.outerHeight > 600 && window.outerWidth > 600) {
         kermaModel.scale.set(1.1, 1.1, 1.1);
     }
+    
+    if (window.outerWidth < 850 && window.outerHeight > 1000) {
+        kermaModel.scale.set(.9, .9, .9);
+    }
 
     if (window.outerWidth < 600) {
-        kermaModel.scale.set(1, 1, 1);
+        kermaModel.scale.set(.9, .9, .9);
     }
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ANIMATE 3D MODEL
 const animate = (): void => {
-    if (!clock || !renderer) return;
+    if (!clock || !renderer || navOpenIndicator.value) return;
     delta = clock.getDelta();
     
     if (mixer) {
@@ -199,6 +226,13 @@ const onWindowResize = (): void => {
     renderer.setSize(window.innerWidth, window.innerHeight)
 };
 
+// RESTORE 3D ANIMATION ON NAVIGATION CLOSE
+watch(navOpenIndicator, (newValue) => {
+    if (!newValue) {
+        requestAnimationFrame(animate);
+    }
+})
+
 onMounted(() => {
     // DOM
     canvas.value = document.querySelector('.model-scene canvas');
@@ -210,12 +244,13 @@ onMounted(() => {
     window.addEventListener('resize', onWindowResize);
 });
 
+// CLEAN CANVAS
 onBeforeUnmount(() => {
     sceneContainer.value.innerHTML = '';
 })
 
+// CLEAN THREE JS DATA
 onUnmounted(() => {
-    // sceneContainer.value.innerHTML = '';
     sceneContainer.value = null;
 
     scene = null;
@@ -233,31 +268,92 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div ref="sceneContainer" class="model-scene"></div>
+    <div ref="sceneContainer" :class="page" class="model-scene"></div>
 </template>
 
 <style lang="scss" scoped>
 .model-scene {
-    position: absolute;
-    top: 0;
-    // right: 20rem;
-    // right: -35rem;
-    right: -22rem;
+    // position: absolute;
+    position: fixed;
     // width: 100% !important;
     // height: 100% !important;
     width: 100% !important;
     height: 100% !important;
+    // z-index: 100;
     // width: 100rem !important;
     // height: 60rem !important;
 
     @media only screen and (max-width: 850px) and (min-height: 600px) {
-      top: 27%;
-      right: 55%;
-      transform: translateX(50%);
+        position: absolute;
+        top: 27%;
+        right: 55%;
+        transform: translateX(50%);
+    }
+}
+
+.main {
+    top: 0;
+    // right: 20rem;
+    // right: -35rem;
+    // right: -22rem;
+    right: -32rem;
+
+    @media only screen and (max-width: 850px) and (min-height: 600px) {
+        top: 27%;
+        right: 55%;
+        transform: translateX(50%);
+    }
+
+    @media only screen and (max-width: 850px) and (min-height: 1000px) {
+        top: 22%;
     }
 
     @media only screen and (max-width: 850px) and (min-height: 600px) and (min-width: 600px) {
-      right: 65%;
+        right: 75%;
+        // right: 55%;
+    }
+
+    @media only screen and (max-width: 750px) and (min-height: 600px) and (min-width: 600px) {
+        right: 65%;
+    }
+
+    @media only screen and (max-width: 850px) and (max-height: 600px) {
+        top: 7%;
+    }
+}
+
+.faq {
+    top: 0;
+    // left: -55rem;
+    left: -39rem;
+
+    // @media only screen and (max-width: 1100px) {
+    //     left: -50rem;
+    // }
+
+    // @media only screen and (max-width: 1000px) {
+    //     left: -41rem;
+    // }
+
+    @media only screen and (max-width: 850px) and (min-height: 600px) {
+        // top: -5%;
+        top: -10%;
+    //   transform: translateX(-50%);
+        left: -80%;
+    }
+
+    @media only screen and (max-width: 850px) and (min-height: 1000px) {
+        top: -22rem;
+    }
+
+    @media only screen and (max-width: 750px) and (min-height: 600px) {
+        // left: 25%;
+        left: -67%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        // left: 40%;
+        left: -60%;
     }
 }
 </style>

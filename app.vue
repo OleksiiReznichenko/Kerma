@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
@@ -10,6 +10,12 @@
 .page {
   min-height: 100vh;
   @include width-restriction;
+  margin-top: 10rem;
+  padding-bottom: 12rem;
+  
+  @media only screen and (max-width: 850px) {
+    margin-top: 14rem;
+  }
 }
 
 .relative-container {
