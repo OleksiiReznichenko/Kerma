@@ -1,4 +1,27 @@
 <script setup lang="ts">
+interface Props {
+    id: string;
+    winnerId: string;
+    winnerNickname: string;
+    winnerAvatar: string;
+    winnerBetId: string;
+    winAmountEth: number;
+    gameDate: string;
+}
+
+const props = defineProps<Props>();
+
+// GET BASE URL
+const baseUrl = useBaseStore().baseUrl;
+
+// IS DEFAULT AVTAR INDICATOR
+const isDefaultAvatar = computed<boolean>(() => {
+    if (props.winnerAvatar === 'default') {
+        return true;
+    } else {
+        return false;
+    }
+});
 
 </script>
 
@@ -7,25 +30,29 @@
         <div class="header">
             <div class="id-container container">
                 <h6 class="subtitle">Game ID:</h6>
-                <span class="id">#321</span>
+                <span class="id">#{{id}}</span>
             </div>
-            <img src="/projects/Kerma/imgs/defaultAvatar.png" alt="Avatar" class="avatar">
+            <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
+            <img v-else :src="winnerAvatar" alt="Avatar" class="avatar">
         </div>
         <div class="info">
             <div class="container">
                 <h6 class="subtitle">Winner:</h6>
-                <strong class="info-line winner">Jozzy</strong>
+                <strong class="info-line winner">{{winnerNickname}}</strong>
             </div>
             <div class="container">
                 <h6 class="subtitle">Winner's bet:</h6>
-                <strong class="info-line winner-bet">#2415</strong>
+                <strong class="info-line winner-bet">#{{winnerBetId}}</strong>
             </div>
-            <div class="container">
+            <div class="container amount-win-container">
                 <h6 class="subtitle">Amount win:</h6>
-                <strong class="info-line amount-win">531 ETH</strong>
+                <strong class="info-line amount-win-line">
+                    <span class="amount-win">{{winAmountEth.toFixed(2)}}</span>
+                    <span>ETH</span>
+                </strong>
             </div>
         </div>
-        <NuxtLink to="/" class="btn">More details</NuxtLink>
+        <NuxtLink :to="'/users/' + winnerId" class="btn">More details</NuxtLink>
     </div>
 </template>
 
@@ -33,10 +60,15 @@
 .game {
     background-image: radial-gradient(124.5% 142.12% at -43.52% -39.92%, #FDF7FF 0%, #e2d5ff 100%);
     border-radius: 30px;
-    padding: .75rem 2.25rem 2.25rem;
+    padding: 1rem 2.25rem 2.25rem;
     text-align: center;
     // width: 24rem;
     font-size: 1.2rem;
+
+    @media only screen and (max-width: 1350px) and (min-width: 1300px),
+    only screen and (max-width: 1100px) and (min-width: 850px) {
+        padding: 1rem 1.75rem 2.25rem;
+    }
 
     @media only screen and (max-width: 850px) {
         padding: 1.5rem 2.75rem 2.75rem;
@@ -46,11 +78,18 @@
         @include flex-center;
         align-items: flex-end;
         color: $color-pink-dark-3;
+        white-space: nowrap;
+        flex-grow: 1;
 
         .subtitle {
             font-weight: 400;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-right: .5rem;
+
+            @media only screen and (max-width: 1350px) and (min-width: 1300px),
+            only screen and (max-width: 1100px) and (min-width: 850px) {
+                font-size: 1.2rem;
+            }
 
             @media only screen and (max-width: 850px) {
                 font-size: 1.4rem;
@@ -59,6 +98,15 @@
 
         .info-line {
             font-size: 1.4rem;
+            display: inline-block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 10rem;
+
+            @media only screen and (max-width: 1350px) and (min-width: 1300px),
+            only screen and (max-width: 1100px) and (min-width: 850px) {
+                max-width: 8rem;
+            }
 
             @media only screen and (max-width: 850px) {
                 font-size: 1.6rem;
@@ -67,10 +115,38 @@
         
         .id {
             font-size: 1.2rem;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 9rem;
+
+            @media only screen and (max-width: 1350px) and (min-width: 1300px) {
+                max-width: 8rem;
+            }
 
             @media only screen and (max-width: 850px) {
                 font-size: 1.4rem;
             }
+        }
+    }
+
+    .amount-win-container {
+
+        .info-line {
+            max-width: 12rem;
+            overflow: visible;
+        }
+
+        .amount-win-line {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .amount-win {
+            display: inline-block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 20rem;
+            margin-right: .4rem;
         }
     }
 
@@ -92,7 +168,7 @@
 
         .id-container {
             font-size: 1.1rem;
-            margin-bottom: .5rem;
+            margin-bottom: 1rem;
         }
     }
 

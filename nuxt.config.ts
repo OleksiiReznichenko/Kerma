@@ -15,7 +15,7 @@ export default defineNuxtConfig({
                 { name: 'format-detection', content: 'telephone=no' }
             ],
             link: [
-                { rel: 'icon', type: 'image/x-icon', href: '/projects/Kerma/favicon.png' },
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
                 // { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
                 { rel: 'preload', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap', as: 'style' },
                 { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap' },
@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     ],
 
     modules: [
-        '@pinia/nuxt'
+        '@pinia/nuxt',
     ],
 
     vite: {

@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
+// MY USER OBJECT
+const baseStore = useBaseStore();
+const { myUser } = storeToRefs(baseStore);
+</script>
+
 <template>
     <div class="navigation-mobile mobile">
         <div class="links">
@@ -7,7 +15,7 @@
             <NuxtLink to="/leaderboard" class="link">
                 <img src="@/assets/svg/star.svg" alt="Icon" class="icon star">
             </NuxtLink>
-            <NuxtLink to="/" class="link">
+            <NuxtLink :to="'/users/' + myUser.id" class="link">
                 <img src="@/assets/svg/user.svg" alt="Icon" class="icon user">
             </NuxtLink>
             <NuxtLink to="/gameHistory" class="link">

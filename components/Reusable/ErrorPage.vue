@@ -1,10 +1,19 @@
+<script setup lang="ts">
+interface Props {
+    title: string;
+    paragraph: string;
+}
+
+const props = defineProps<Props>();
+</script>
+
 <template>
     <div class="layout">
         <div class="error-page">
             <div class="info-wrapper">
                 <div class="info">
-                    <h1 class="title">This page was not found</h1>
-                    <p>We are already solving this problem,<br/> as long as you can go back</p>
+                    <h1 class="title">{{title}}</h1>
+                    <p>{{paragraph}}</p>
                     <NuxtLink to="/game" class="btn btn-primary">Back to game</NuxtLink>
                 </div>
             </div>
@@ -33,7 +42,8 @@
             height: auto;
             width: 100%;
             display: block !important;
-            padding: 6rem 6rem 7rem;
+            // padding: 6rem 6rem 7rem;
+            padding: 11rem 6rem 7rem;
         }
 
         @media only screen and (max-width: 850px) and (max-height: 600px) {
@@ -67,6 +77,7 @@
             p {
                 font-size: 1.8rem;
                 margin-top: 1rem;
+                width: 35rem;
 
                 @media only screen and (max-width: 850px) {
                     font-size: 2rem;

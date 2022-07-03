@@ -1,12 +1,43 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import User from "@/composables/interfaces/user";
 
+// PLAYED GAMES
+const leaderboardStore = useLeaderboardStore();
+const { leaderboard } = storeToRefs(leaderboardStore);
+
+// USERS STORE
+const usersStore = useUsersStore();
+const { users } = storeToRefs(usersStore);
+
+// FIND LEADERBOARD USERS AND SORT IT BY 
+const leaderboardUsers: User[] = leaderboard.value.map(leaderId => {
+    return users.value.find(user => {
+        return user.id === leaderId;
+    })
+}).sort((a, b) => {
+    return b.balanceEth - a.balanceEth;
+});
+
+
+console.log(leaderboardUsers);
 </script>
 
 <template>
     <div class="info">
-        <h1 class="title">Game History</h1>
-        <div class="games">
-            <ReusableGame v-for="i in 12" />
+        <h1 class="title">Leaderboard</h1>
+        <div class="leaderboard">
+            <ReusableLeaderboardPageItem
+                v-for="(user, i) in leaderboardUsers"
+                :key="user.id"
+                :index="i"
+                :id="user.id"
+                :nickname="user.nickname"
+                :avatar="user.avatar"
+                :rank="user.rank"
+                :balance-eth="user.balanceEth"
+                :crypto-address="user.cryptoAddress"
+            />
         </div>
     </div>
 </template>
@@ -39,12 +70,12 @@
         grid-column-gap: 4rem;
 
         @media only screen and (max-width: 850px) {
+            justify-content: center;
             grid-template-columns: repeat(2, 1fr);
         }
 
         @media only screen and (max-width: 500px) {
             grid-template-columns: 32rem;
-            justify-content: center;
         }
     }
 }

@@ -10,9 +10,10 @@ const { questions } = storeToRefs(faqStore);
     <div class="info">
         <h1 class="title">F.A.Q.</h1>
         <div class="questions">
-            <ReusableFaqPageQuestion 
-                v-for="(question, i) in questions" 
-                :key="i"
+            <ReusableFaqPageQuestion
+                v-for="(question, i) in questions"
+                :key="question.id"
+                :id="question.id"
                 :index="i + 1"
                 :title="question.title"
                 :text="question.text"

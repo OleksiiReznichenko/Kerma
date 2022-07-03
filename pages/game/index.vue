@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="page game-history">
+    <div class="page game">
         
     </div>
 </template>

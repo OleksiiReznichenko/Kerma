@@ -1,12 +1,38 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import User from "@/composables/interfaces/user";
 
+// PLAYED GAMES
+const gamesStore = useGamesStore();
+const { games } = storeToRefs(gamesStore);
+
+// USERS STORE
+const usersStore = useUsersStore();
+const { users } = storeToRefs(usersStore);
+
+// FIND LEADERBOARD USERS AND SORT IT BY 
+const winners: User[] = games.value.map(game => {
+    return users.value.find(user => {
+        return user.id === game.winnerId;
+    })
+});
 </script>
 
 <template>
     <div class="info">
         <h1 class="title">Game History</h1>
         <div class="games">
-            <ReusableGame v-for="i in 12" />
+            <ReusableGame
+                v-for="(game, i) in games"
+                :key="game.id"
+                :id="game.id"
+                :winner-id="game.winnerId"
+                :winner-nickname="winners[i].nickname"
+                :winner-avatar="winners[i].avatar"
+                :winner-bet-id="game.winnerBetId"
+                :win-amount-eth="game.winAmountEth"
+                :game-date="game.gameDate"
+            />
         </div>
     </div>
 </template>
@@ -39,12 +65,12 @@
         grid-column-gap: 4rem;
 
         @media only screen and (max-width: 850px) {
+            justify-content: center;
             grid-template-columns: repeat(2, 1fr);
         }
 
         @media only screen and (max-width: 500px) {
             grid-template-columns: 32rem;
-            justify-content: center;
         }
     }
 }

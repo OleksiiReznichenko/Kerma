@@ -32,15 +32,19 @@
 
     @media only screen and (max-width: 1000px) {
         top: 2rem;
-        left: 2rem;
+        left: auto;
+        right: 5%;
         transform: rotate(0);
     }
 
     @media only screen and (max-width: 850px) {
-        position: absolute;
-        left: 50%;
-        top: 4rem;
-        transform: translateX(-50%);
+        position: static;
+        justify-content: center;
+        margin-bottom: 3rem;
+        // right: auto;
+        // left: 50%;
+        // top: 4rem;
+        // transform: translateX(-50%);
     }
 
     .social-link,

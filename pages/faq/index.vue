@@ -1,10 +1,9 @@
 <template>
     <div class="page faq">
-        <div class="relative-container">
-            <SingularGameHistoryPageBackgroundComposition />
+        <main class="relative-container">
             <SingularFaqPageInfo />
             <Reusable3DModel page="faq" />
-        </div>
+        </main>
     </div>
 </template>
 

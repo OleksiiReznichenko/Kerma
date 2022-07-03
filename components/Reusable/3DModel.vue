@@ -10,6 +10,9 @@ interface Props {
 
 const props = defineProps<Props>();
 
+// GET BASE URL
+const baseUrl = useBaseStore().baseUrl;
+
 // THREE JS ESSENTIALS
 let scene: any = null;
 let renderer: any = null;
@@ -31,7 +34,6 @@ let fov = ref<number>(35);
 let aspect = ref<number>(2);
 let near = ref<number>(0.1);
 let far = ref<number>(600);
-let spotLight: any = null;
 
 // DOM
 let canvas = ref<HTMLCanvasElement | null>(null);
@@ -81,7 +83,8 @@ const initAnimation = (): void => {
 
 
     // LIGHTNING SETUP
-    const ambient = new THREE.AmbientLight(0xA589B4);
+    // const ambient = new THREE.AmbientLight(0xA589B4);
+    const ambient = new THREE.AmbientLight(0xEEEEEE);
     scene.add(ambient);
 
     // const directionalLight3 = new THREE.DirectionalLight(0x97C1FF, 1.2);
@@ -93,14 +96,19 @@ const initAnimation = (): void => {
     // pointLight2.position.set(-1, 20, 20);
     // scene.add(pointLight2);
 
-    spotLight = new THREE.SpotLight(0xE17ECF, 8.5);
-    // spotLight = new THREE.SpotLight(0x9369A0, 4);
-    // const spotLight = new THREE.SpotLight(0x9369A0, 4);
+    // spotLight = new THREE.SpotLight(0xE17ECF, 8.5);
+    const spotLight = new THREE.SpotLight(0xE17ECF, 8.5);
+
+    // if (props.page === 'main') {
+    //     spotLight.position.set(-18, 10, 25);
+    // } else if (props.page === 'faq') {
+    //     spotLight.position.set(30, 15, 25);
+    // }
 
     if (props.page === 'main') {
-        spotLight.position.set(-18, 10, 25);
+        spotLight.position.set(-18, 10, 45);
     } else if (props.page === 'faq') {
-        spotLight.position.set(30, 15, 25);
+        spotLight.position.set(30, 15, 45);
     }
 
     // spotLight.castShadow = true;
@@ -109,14 +117,33 @@ const initAnimation = (): void => {
     // spotLight.shadow.mapSize.height = 1024*4;
     scene.add(spotLight);
 
-    const spotLight2 = new THREE.SpotLight(0x9369A0, 5.5);
+    // const spotLight2 = new THREE.SpotLight(0x9369A0, 5.5);
+    const spotLight2 = new THREE.SpotLight(0xE17ECF, 5.5);
+
+    // if (props.page === 'main') {
+    //     spotLight2.position.set(28, 10, -25);
+    // } else if (props.page === 'faq') {
+    //     spotLight2.position.set(-40, 15, -25);
+    // }
 
     if (props.page === 'main') {
-        spotLight2.position.set(28, 10, -25);
+        spotLight2.position.set(28, 12, 5);
     } else if (props.page === 'faq') {
-        spotLight2.position.set(-40, 15, -25);
+        spotLight2.position.set(-40, 17, 5);
     }
+
     scene.add(spotLight2);
+
+    // const spotLight2 = new THREE.SpotLight(0x9369A0, 5.5);
+    const spotLight3 = new THREE.SpotLight(0xCCCCCC, 5.5);
+
+    if (props.page === 'main') {
+        spotLight3.position.set(40, 17, -35);
+    } else if (props.page === 'faq') {
+        spotLight3.position.set(-40, 17, -35);
+    }
+
+    scene.add(spotLight3);
 
     // const hemLlight = new THREE.HemisphereLight(0x222222, 0x080820, 4);
     // hemLlight.position.set(-18, 15, -25);
@@ -133,7 +160,7 @@ const initAnimation = (): void => {
 
     loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
-    loader.load('/projects/Kerma/kermaModel.glb', (gltf) => {
+    loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
         kermaModel = gltf.scene;
         scene.add(kermaModel);
         // kermaModel.traverse(n => {
@@ -279,9 +306,9 @@ onUnmounted(() => {
     // height: 100% !important;
     width: 100% !important;
     height: 100% !important;
-    // z-index: 100;
     // width: 100rem !important;
     // height: 60rem !important;
+    // z-index: 200;
 
     @media only screen and (max-width: 850px) and (min-height: 600px) {
         position: absolute;

@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-// NAV OPEN INDICATOR
+// NAV OPEN INDICATOR AND MY USER OBJECT
 const baseStore = useBaseStore();
-const { navOpenIndicator } = storeToRefs(baseStore);
+const { navOpenIndicator, myUser } = storeToRefs(baseStore);
 
 // ROUTE INFO
 const route = useRoute();
 
 // PAGE NAME
 const pageName = computed<string>(() => {
+    if (myUser.value.id === route.params.id) {
+        return 'Profile';
+    }
+
+    const routeFullPathLowerCase = route.fullPath.toString().toLowerCase();
+    if (routeFullPathLowerCase.includes('users/')) {
+        return 'User';
+    }
+
     const routeNameLowerCase = route.name.toString().toLowerCase();
     if (routeNameLowerCase === 'index') {
         return 'Main';
@@ -75,7 +84,7 @@ onUnmounted(() => {
                     <img src="@/assets/svg/activeNavItem.svg" alt="Active item background" class="active-background">
                     <img src="@/assets/svg/eyeWithTransparency.svg" alt="Game history icon" class="icon">
                 </NuxtLink>
-                <NuxtLink to="/" class="page-link profile-link">
+                <NuxtLink :to="'/users/' + myUser.id" class="page-link profile-link">
                     <img src="@/assets/svg/activeNavItem.svg" alt="Active item background" class="active-background">
                     <img src="@/assets/svg/userWithTransparency.svg" alt="Profile page icon" class="icon">
                 </NuxtLink>
@@ -144,7 +153,7 @@ onUnmounted(() => {
                 margin-bottom: 5rem;
 
                 &:hover {
-                    color: $color-grey;
+                    color: $color-pink-dark-3;
                 }
 
                 &:hover .arrow {

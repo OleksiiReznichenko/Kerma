@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+
+// GET BASE URL
+const baseUrl = useBaseStore().baseUrl;
+
+// PREV GAME
+const baseStore = useBaseStore();
+const { previousGameInfo } = storeToRefs(baseStore);
+
 // DOM
 const gameInfo = ref<HTMLElement | null>(null);
 const opener = ref<HTMLElement | null>(null);
@@ -10,11 +19,45 @@ let addTransitionClass = ref<boolean>(false);
 // TIMER DATA
 let dateInterval: ReturnType<typeof setInterval> | null = null;
 let dayToCount = ref<number>(1);
-const dateToCount = ref<string>(`July ${dayToCount.value}, 2022 17:00:00`);
+let dateToCount = ref<string>(`July ${dayToCount.value}, 2022 17:00:00`);
 const days = ref<string | number>('00');
 const hours = ref<string | number>('00');
 const minutes = ref<string | number>('00');
 const seconds = ref<string | number>('00');
+
+// TIMER FUNCTIONALITY
+const timerInit = (): void => {
+    const timeToCount: number = new Date(dateToCount.value).getTime();
+    const now: number = new Date().getTime();
+    const timeLeft: number = timeToCount - now;
+    
+    if (timeLeft <= 0) {
+        dayToCount.value += 1;
+        dateToCount.value = `July ${dayToCount.value}, 2022 17:00:00`;
+        requestAnimationFrame(timerInit);
+    }
+
+    days.value = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    hours.value = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    minutes.value = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    seconds.value = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    if (+days.value < 10) {
+        days.value = '0' + days.value;
+    }
+
+    if (+hours.value < 10) {
+        hours.value = '0' + hours.value;
+    }
+
+    if (+minutes.value < 10) {
+        minutes.value = '0' + minutes.value;
+    }
+
+    if (+seconds.value < 10) {
+        seconds.value = '0' + seconds.value;
+    }
+};
 
 // TOGGLE GAME INFO DROPDOWN ON MOBILE
 const toggleGameInfo = (): void => {
@@ -51,38 +94,6 @@ const onWindowClick = (event: Event): void => {
     toggleGameInfo();
 };
 
-// TIMER FUNCTIONALITY
-const timerInit = (): void => {
-    const timeToCount: number = new Date(dateToCount.value).getTime();
-    const now: number = new Date().getTime();
-    const timeLeft: number = timeToCount - now;
-
-    if (timeLeft <= 0) {
-        dayToCount.value++;
-    }
-
-    days.value = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    hours.value = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    minutes.value = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    seconds.value = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-    if (+days.value < 10) {
-        days.value = '0' + days.value;
-    }
-
-    if (+hours.value < 10) {
-        hours.value = '0' + hours.value;
-    }
-
-    if (+minutes.value < 10) {
-        minutes.value = '0' + minutes.value;
-    }
-
-    if (+seconds.value < 10) {
-        seconds.value = '0' + seconds.value;
-    }
-};
-
 onMounted(() => {
     // TIMER INTERVAL
     timerInit();
@@ -106,41 +117,56 @@ onUnmounted(() => {
 
 <template>
     <div ref="gameInfo" :class="{'open': isOpen, 'close': !isOpen, 'transition-class': addTransitionClass}" class="logged-in game-info">
+        <SingularAppLogo class="mobile logo" />
         <SingularAppSocials class="mobile socials-game-info" />
         <div class="info-items">
-            <ReusableGameInfoItem 
-                :is-icon="true"
-                icon-path="24h.svg" 
-                icon-alt="Last winner" 
-                subtitle="Last winner"
-                info-text="Lolipopo7"
-            />
-            <ReusableGameInfoItem 
-                :is-icon="true"
-                icon-path="bank.svg" 
-                icon-alt="Amount win" 
-                subtitle="Amount win"
-                info-text="54 ETH"
-            />
+            <div class="info-item">
+                <div class="icon-container">
+                    <img :src="baseUrl + 'svgs/24h.svg'" alt="Last winner icon" class="icon">
+                </div>
+                <div class="info">
+                    <span class="subtitle">Last winner:</span>
+                    <strong class="info-line">{{previousGameInfo.winnerNickname}}</strong>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="icon-container">
+                    <img :src="baseUrl + 'svgs/bank.svg'" alt="Amount win icon" class="icon">
+                </div>
+                <div class="info">
+                    <span class="subtitle">Amount win:</span>
+                    <strong class="info-line amount-win-line">
+                        <span>{{previousGameInfo.winAmountEth.toFixed(2)}}</span>
+                        <span>ETH</span>
+                    </strong>
+                </div>
+            </div>
+
             <div class="timer-container desktop">
                 <strong class="subtitle">Next game in:</strong>
                 <div class="timer">
                     <span class="span-time">{{days}}</span> <span class="span-dots">:</span> <span class="span-time">{{hours}}</span> <span class="span-dots">:</span> <span class="span-time">{{minutes}}</span> <span class="span-dots">:</span> <span class="span-time">{{seconds}}</span>
                 </div>
             </div>
-            <ReusableGameInfoItem 
-                :is-icon="false"
-                text-icon="ID"
-                subtitle="Game ID"
-                info-text="#321"
-            />
-            <ReusableGameInfoItem 
-                :is-icon="true"
-                icon-path="date.svg" 
-                icon-alt="Game date" 
-                subtitle="Game date"
-                info-text="12.12.2022"
-            />
+
+            <div class="info-item">
+                <div class="icon-container">
+                    <strong class="icon-id">ID</strong>
+                </div>
+                <div class="info">
+                    <span class="subtitle">Game ID:</span>
+                    <strong class="info-line">#{{previousGameInfo.id}}</strong>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="icon-container">
+                    <img :src="baseUrl + 'svgs/date.svg'" alt="Game date icon" class="icon">
+                </div>
+                <div class="info">
+                    <span class="subtitle">Game date:</span>
+                    <strong class="info-line">{{previousGameInfo.gameDate}}</strong>
+                </div>
+            </div>
         </div>
         <div class="opener-container mobile">
             <div class="timer-container">
@@ -180,15 +206,11 @@ onUnmounted(() => {
 .close {
     @media only screen and (max-width: 850px) and (min-height: 600px),
     only screen and (max-width: 600px) {
-        transform: translate(-50%, -33rem) !important;
-    }
-
-    @media only screen and (max-width: 680px) and (min-width: 600px) {
-        transform: translate(-50%, -34rem) !important;
+        transform: translate(-50%, -39rem) !important;
     }
     
     @media only screen and (max-width: 850px) and (max-height: 600px) and (min-width: 600px) {
-        transform: translate(-50%, -25rem) !important;
+        transform: translate(-50%, -31rem) !important;
     }
 }
 
@@ -219,7 +241,7 @@ onUnmounted(() => {
         bottom: auto;
         top: 0;
         border-radius: 0 0 4rem 4rem;
-        padding: 4.5rem 5rem 2.5rem;
+        padding: 3.5rem 5rem 2.5rem;
     }
   
     @media only screen and (max-width: 850px) and (min-height: 600px) {
@@ -330,21 +352,6 @@ onUnmounted(() => {
         }
     }
 
-    .btn-connect-wallet {
-        background-color: $color-grey;
-        text-transform: uppercase;
-        padding: 1rem 6.5rem;
-
-        &:hover {
-            background-color: white;
-            color: $color-grey;
-        }
-
-        @media only screen and (max-width: 1100px) {
-            padding: 1rem 5.5rem;
-        }
-    }
-
     .info-items {
         display: flex;
         align-items: center;
@@ -352,7 +359,6 @@ onUnmounted(() => {
 
         @media only screen and (max-width: 850px) {
             margin-bottom: 4rem;
-            margin-top: 8rem;
         }
   
         @media only screen and (max-width: 850px) and (min-height: 600px),
@@ -364,6 +370,88 @@ onUnmounted(() => {
             grid-row-gap: 3rem;
             justify-content: center;
             align-items: stretch;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            padding: 2.25rem 0 1.75rem;
+            
+            @media only screen and (max-width: 850px) {
+                padding: 0;
+            }
+
+            .icon-container {
+                background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), rgba(182, 179, 235, 0.7);
+                border-radius: 100%;
+                width: 4rem;
+                height: 4rem;
+                @include flex-center;
+                margin-right: 1rem;
+
+                @media only screen and (max-width: 850px) {
+                    width: 5rem;
+                    height: 5rem;
+                }
+                
+                .icon {
+                    // width: 60%;
+                    width: 50%;
+                }
+
+                .icon-id {
+                    font-weight: 600;
+
+                    @media only screen and (max-width: 850px) {
+                        font-size: 2rem;
+                    }
+                }
+            }
+
+            .info {
+                display: flex;
+                flex-direction: column;
+
+                .subtitle {
+                    font-size: 1.5rem;
+                    display: inline-block;
+                    margin-bottom: .215rem;
+
+                    @media only screen and (max-width: 850px) {
+                        font-size: 1.8rem;
+                    }
+                }
+
+                .info-line {
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                    display: inline-block;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    max-width: 10rem;
+
+                    @media only screen and (max-width: 850px) {
+                        font-size: 2.2rem;
+                        max-width: 13rem;
+                    }
+                }
+
+                .amount-win-line {
+                    max-width: 12rem;
+                    overflow: visible;
+                    display: flex;
+                    align-items: flex-end;
+
+                    span:first-of-type {
+                        display: inline-block;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        max-width: 14rem;
+                        margin-right: .4rem;
+                    }
+                }
+            }
         }
     }
 }

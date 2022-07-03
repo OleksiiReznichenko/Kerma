@@ -48,6 +48,10 @@
         text-transform: uppercase;
         white-space: nowrap;
 
+        @media only screen and (max-width: 1000px) and (min-width: 850px) {
+            font-size: 8.5rem;
+        }
+
         @media only screen and (max-width: 750px) {
             font-size: 7.5rem;
         }
