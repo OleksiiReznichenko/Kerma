@@ -176,7 +176,7 @@ onUnmounted(() => {
                         <span class="span-time">{{days}}</span> <span class="span-dots">:</span> <span class="span-time">{{hours}}</span> <span class="span-dots">:</span> <span class="span-time">{{minutes}}</span> <span class="span-dots">:</span> <span class="span-time">{{seconds}}</span>
                     </div>
                     <button @click="toggleGameInfo" ref="opener" class="opener">
-                        <img src="@/assets/svg/arrowopener.svg" alt="Arrow" class="arrow">
+                        <img src="@/assets/svg/arrowOpener.svg" alt="Arrow" class="arrow">
                     </button>
                 </div>
             </div>
