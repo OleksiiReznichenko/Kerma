@@ -1,6 +1,6 @@
 <template>
     <div class="layout">
-    <!-- <SingularAppPreloader /> -->
+        <SingularAppPreloader />
         <SingularAppLogo class="desktop" />
         <SingularAppNavigationOpener />
         <SingularAppOverflowingNavigation />
