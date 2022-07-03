@@ -2,8 +2,8 @@ import { defineNuxtConfig } from 'nuxt'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    // target: 'server',
-    ssr: false,
+    // target: 'static',
+    // ssr: false,
     app: {
         head: {
             title: "Kerma's game",
@@ -17,8 +17,8 @@ export default defineNuxtConfig({
                 { name: 'format-detection', content: 'telephone=no' }
             ],
             link: [
-                { rel: 'icon', type: 'image/x-icon', href: '/projects/Kerma/favicon.png' },
-                // { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+                // { rel: 'icon', type: 'image/x-icon', href: '/projects/Kerma/favicon.png' },
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
                 { rel: 'preload', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap', as: 'style' },
                 { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap' },
                 { rel: 'preload', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap', as: 'style' },
@@ -29,13 +29,13 @@ export default defineNuxtConfig({
                     src: "https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js"
                 },
                 {
-                    src: "/projects/Kerma/librariesScript.js"
-                    // src: "/librariesScript.js"
+                    // src: "/projects/Kerma/librariesScript.js"
+                    src: "/librariesScript.js"
                 }
             ]
         },
         
-        baseURL: '/projects/Kerma/'
+        // baseURL: '/projects/Kerma/'
     },
 
     css: [
