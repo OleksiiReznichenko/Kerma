@@ -276,7 +276,8 @@ onUnmounted(() => {
     width: 100% !important;
     height: 100% !important;
 
-    @media only screen and (max-width: 850px) and (min-height: 600px) {
+    @media only screen and (max-width: 850px) and (min-height: 600px),
+    only screen and (max-width: 600px) {
         position: absolute;
         top: 27%;
         right: 55%;
@@ -288,7 +289,8 @@ onUnmounted(() => {
     top: 0;
     right: -32rem;
 
-    @media only screen and (max-width: 850px) and (min-height: 600px) {
+    @media only screen and (max-width: 850px) and (min-height: 600px),
+    only screen and (max-width: 600px) {
         top: 27%;
         right: 55%;
         transform: translateX(50%);
@@ -306,7 +308,7 @@ onUnmounted(() => {
         right: 65%;
     }
 
-    @media only screen and (max-width: 850px) and (max-height: 600px) {
+    @media only screen and (max-width: 850px) and (max-height: 600px) and (min-width: 600px) {
         top: 7%;
     }
 }
@@ -315,7 +317,8 @@ onUnmounted(() => {
     top: 0;
     left: -39rem;
 
-    @media only screen and (max-width: 850px) and (min-height: 600px) {
+    @media only screen and (max-width: 850px) and (min-height: 600px),
+    only screen and (max-width: 600px) {
         top: -10%;
         left: -80%;
     }

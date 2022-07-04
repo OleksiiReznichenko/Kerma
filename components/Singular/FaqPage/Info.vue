@@ -43,7 +43,8 @@ const { questions } = storeToRefs(faqStore);
         width: 100%;
     }
 
-    @media only screen and (max-width: 850px) and (min-height: 600px) {
+    @media only screen and (max-width: 850px) and (min-height: 600px),
+    only screen and (max-width: 600px) {
         padding-top: 60vh;
     }
 

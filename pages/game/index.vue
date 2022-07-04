@@ -4,7 +4,7 @@
 
 <template>
     <div class="page game">
-        
+        <SingularGameGamingCircle />
     </div>
 </template>
 
