@@ -102,8 +102,10 @@ onUnmounted(() => {
 <template>
     <div class="header">
         <img src="@/assets/img/profileCharacter.png" alt="Character" class="character desktop">
-        <img src="@/assets/img/mobileProfileCharacterLeft.png" alt="Character" class="character character-left mobile">
-        <img src="@/assets/img/mobileProfileCharacterRight.png" alt="Character" class="character character-right mobile">
+        <div class="background-images mobile">
+            <img src="@/assets/img/mobileProfileCharacterLeft.png" alt="Character" class="character character-left">
+            <img src="@/assets/img/mobileProfileCharacterRight.png" alt="Character" class="character character-right">
+        </div>
         <div class="info-container">
             <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
             <img v-else :src="avatar" alt="Avatar" class="avatar">
@@ -154,7 +156,7 @@ onUnmounted(() => {
         text-align: left;
         padding: 15rem 3rem 5rem;
         background: linear-gradient(45deg, #E9DFF8, #e8ddff);
-        overflow: hidden;
+        // overflow: hidden;
         margin-bottom: 4rem;
         box-shadow: 1.5rem 1.75rem 2.5rem rgba(0, 0, 0, 0.1);
     }
@@ -169,6 +171,16 @@ onUnmounted(() => {
             left: auto;
             width: auto;
         }
+    }
+
+    .background-images {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4rem;
+        overflow: hidden;
     }
 
     .character-left {
