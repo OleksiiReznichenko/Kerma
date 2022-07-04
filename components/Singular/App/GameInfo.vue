@@ -4,6 +4,9 @@ import { storeToRefs } from "pinia";
 // GET BASE URL
 const baseUrl = useBaseStore().baseUrl;
 
+// ROUTE INFO
+const route = useRoute();
+
 // PREV GAME
 const baseStore = useBaseStore();
 const { previousGameInfo } = storeToRefs(baseStore);
@@ -93,6 +96,11 @@ const onWindowClick = (event: Event): void => {
     if (isClickInsideElement || isClickInsideElement2 || !isOpen.value) return;
     toggleGameInfo();
 };
+
+watch(route, () => {
+    if (!isOpen.value) return;
+    toggleGameInfo();
+})
 
 onMounted(() => {
     // TIMER INTERVAL

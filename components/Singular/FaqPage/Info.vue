@@ -39,21 +39,14 @@ const { questions } = storeToRefs(faqStore);
         text-align: left;
     }
 
-    @media only screen and (max-width: 850px) {
-        width: 100%;
-    }
-
     @media only screen and (max-width: 850px) and (min-height: 600px),
     only screen and (max-width: 600px) {
+        width: 100%;
         padding-top: 60vh;
     }
 
     @media only screen and (max-width: 850px) and (min-height: 1000px) {
         padding-top: 80rem;
-    }
-
-    @media only screen and (max-width: 850px) and (max-height: 600px) and (min-width: 600px) {
-        padding-top: 20%;
     }
 
     .title {
