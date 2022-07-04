@@ -21,7 +21,10 @@ const addToPercent = (): void => {
 };
 
 onMounted(() => {
+    // SELECT HTML ELEMENT
     html.value = document.querySelector('html')!;
+
+    // INIT PRELOADER
     addToPercent();
 })
 </script>
@@ -58,29 +61,20 @@ onMounted(() => {
     z-index: 1000000;
     width: 100%;
     height: 100vh;
+    min-height: var(--app-height);
     text-align: center;
     @include flex-center;
     transition: all .5s;
 
     .preloader {
         .preloader-image {
-            animation: loweringRaising 1s linear 10 alternate;
-            margin-right: -5rem;
+            margin-right: -9.25rem;
         }
 
         .preloader-percent {
             font-family: Panton;
             font-weight: 900;
             font-size: 3.5rem;
-        }
-
-        @keyframes loweringRaising {
-            from {
-                transform: translateY(0) scale(1);
-            }
-            to {
-                transform: translateY(10px) scale(1.03);
-            }
         }
     }
 }

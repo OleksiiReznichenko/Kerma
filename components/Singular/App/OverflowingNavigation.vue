@@ -128,6 +128,7 @@ onUnmounted(() => {
 .navigation-wrapper {
     @include flex-center;
     height: 100vh;
+    min-height: var(--app-height);
     width: 100%;
     backdrop-filter: blur(20px);
     position: fixed;

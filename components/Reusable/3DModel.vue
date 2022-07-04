@@ -43,6 +43,9 @@ let sceneContainer = ref<HTMLElement | null>(null);
 const baseStore = useBaseStore();
 const { navOpenIndicator } = storeToRefs(baseStore);
 
+// PREVIOUS WINDOW HEIGHT FOR RESIZE
+let prevHeight: number = 0;
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INIT 3D MODEL AND ANIMATION
 const initAnimation = (): void => {
@@ -83,27 +86,10 @@ const initAnimation = (): void => {
 
 
     // LIGHTNING SETUP
-    // const ambient = new THREE.AmbientLight(0xA589B4);
     const ambient = new THREE.AmbientLight(0xEEEEEE);
     scene.add(ambient);
 
-    // const directionalLight3 = new THREE.DirectionalLight(0x97C1FF, 1.2);
-    // directionalLight3.position.set(15, 2, 1);
-    // scene.add(directionalLight3);
-
-    // const pointLight2 = new THREE.DirectionalLight(0x222222, 1);
-    // // pointLight2.position.set(1, 10, -10);
-    // pointLight2.position.set(-1, 20, 20);
-    // scene.add(pointLight2);
-
-    // spotLight = new THREE.SpotLight(0xE17ECF, 8.5);
     const spotLight = new THREE.SpotLight(0xE17ECF, 8.5);
-
-    // if (props.page === 'main') {
-    //     spotLight.position.set(-18, 10, 25);
-    // } else if (props.page === 'faq') {
-    //     spotLight.position.set(30, 15, 25);
-    // }
 
     if (props.page === 'main') {
         spotLight.position.set(-18, 10, 45);
@@ -117,14 +103,7 @@ const initAnimation = (): void => {
     // spotLight.shadow.mapSize.height = 1024*4;
     scene.add(spotLight);
 
-    // const spotLight2 = new THREE.SpotLight(0x9369A0, 5.5);
     const spotLight2 = new THREE.SpotLight(0xE17ECF, 5.5);
-
-    // if (props.page === 'main') {
-    //     spotLight2.position.set(28, 10, -25);
-    // } else if (props.page === 'faq') {
-    //     spotLight2.position.set(-40, 15, -25);
-    // }
 
     if (props.page === 'main') {
         spotLight2.position.set(28, 12, 5);
@@ -134,7 +113,6 @@ const initAnimation = (): void => {
 
     scene.add(spotLight2);
 
-    // const spotLight2 = new THREE.SpotLight(0x9369A0, 5.5);
     const spotLight3 = new THREE.SpotLight(0xCCCCCC, 5.5);
 
     if (props.page === 'main') {
@@ -144,14 +122,6 @@ const initAnimation = (): void => {
     }
 
     scene.add(spotLight3);
-
-    // const hemLlight = new THREE.HemisphereLight(0x222222, 0x080820, 4);
-    // hemLlight.position.set(-18, 15, -25);
-    // scene.add(hemLlight);
-
-    // const pointLight3 = new THREE.PointLight(0xA589B4, 1, 500);
-    // pointLight3.position.set(5, -11, 10);
-    // scene.add(pointLight3);
 
     // LOAD SETUP
     dracoLoader = new DRACOLoader();
@@ -251,6 +221,8 @@ const onWindowResize = (): void => {
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight)
+
+    prevHeight = window.outerHeight;
 };
 
 // RESTORE 3D ANIMATION ON NAVIGATION CLOSE
@@ -300,15 +272,9 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .model-scene {
-    // position: absolute;
     position: fixed;
-    // width: 100% !important;
-    // height: 100% !important;
     width: 100% !important;
     height: 100% !important;
-    // width: 100rem !important;
-    // height: 60rem !important;
-    // z-index: 200;
 
     @media only screen and (max-width: 850px) and (min-height: 600px) {
         position: absolute;
@@ -320,9 +286,6 @@ onUnmounted(() => {
 
 .main {
     top: 0;
-    // right: 20rem;
-    // right: -35rem;
-    // right: -22rem;
     right: -32rem;
 
     @media only screen and (max-width: 850px) and (min-height: 600px) {
@@ -337,7 +300,6 @@ onUnmounted(() => {
 
     @media only screen and (max-width: 850px) and (min-height: 600px) and (min-width: 600px) {
         right: 75%;
-        // right: 55%;
     }
 
     @media only screen and (max-width: 750px) and (min-height: 600px) and (min-width: 600px) {
@@ -351,21 +313,10 @@ onUnmounted(() => {
 
 .faq {
     top: 0;
-    // left: -55rem;
     left: -39rem;
 
-    // @media only screen and (max-width: 1100px) {
-    //     left: -50rem;
-    // }
-
-    // @media only screen and (max-width: 1000px) {
-    //     left: -41rem;
-    // }
-
     @media only screen and (max-width: 850px) and (min-height: 600px) {
-        // top: -5%;
         top: -10%;
-    //   transform: translateX(-50%);
         left: -80%;
     }
 
@@ -374,12 +325,10 @@ onUnmounted(() => {
     }
 
     @media only screen and (max-width: 750px) and (min-height: 600px) {
-        // left: 25%;
         left: -67%;
     }
 
     @media only screen and (max-width: 600px) {
-        // left: 40%;
         left: -60%;
     }
 }

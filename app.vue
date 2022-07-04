@@ -1,3 +1,25 @@
+<script setup lang="ts">
+// IF TOUCHPAD DEVICE'S HEIGHT CHANGES - CHANGE BASE 100VH HEIGHT
+const appHeight = (): void => {
+    const doc = document.documentElement;
+    if (window.outerWidth < 1000) {
+        doc.style.setProperty('--app-height', `${window.innerHeight * 1.05}px`);
+    } else {
+        doc.style.setProperty('--app-height', `${window.innerHeight}px`);
+    }
+};
+
+onMounted(() => {
+  // ADD WINDOW EVENT LISTENER
+  window.addEventListener('resize', appHeight);
+})
+
+onUnmounted(() => {
+  // REMOVE WINDOW EVENT LISTENER
+  window.removeEventListener('resize', appHeight);
+})
+</script>
+
 <template>
   <div class="app">
     <NuxtLayout>
@@ -8,7 +30,8 @@
 
 <style lang="scss">
 .page {
-  min-height: 100vh;
+  // min-height: 100vh;
+  min-height: var(--app-height);
   @include width-restriction;
   margin-top: 10rem;
   padding-bottom: 12rem;
@@ -21,7 +44,8 @@
 .relative-container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  // min-height: 100vh;
+  min-height: var(--app-height);
 }
 
 .desktop {

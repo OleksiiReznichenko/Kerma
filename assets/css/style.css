@@ -67,7 +67,7 @@
 }
 
 :root {
-  --app-height: 100%;
+  --app-height: 100vh;
 }
 
 html,
@@ -154,7 +154,7 @@ svg {
 html {
   /* font-size: 62.5%; */
   font-size: 10px;
-  /* overflow-y: hidden; */
+  overflow-y: hidden;
 }
 
 @media only screen and (max-width: 1300px) {

@@ -25,11 +25,12 @@ const props = defineProps<Props>();
 <style lang="scss" scoped>
 .error-page {
     position: relative;
-    min-height: 100vh;
+    min-height: var(--app-height);
 
     .info-wrapper {
         @include flex-center;
         height: 100vh;
+        min-height: var(--app-height);
         width: 65rem;
         border-radius: 0 5rem 5rem 0;
         border-right: 1px solid #eee;
@@ -40,6 +41,7 @@ const props = defineProps<Props>();
         @media only screen and (max-width: 850px) {
             border-radius: 0 0 5rem 5rem;
             height: auto;
+            min-height: auto;
             width: 100%;
             display: block !important;
             // padding: 6rem 6rem 7rem;
