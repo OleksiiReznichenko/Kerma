@@ -9,7 +9,7 @@
 .background-composition {
     width: 100vw;
     height: 100vh;
-    min-height: var(--app-height);
+    min-height: 100vh;
     position: fixed;
     top: 0;
     left: 0;

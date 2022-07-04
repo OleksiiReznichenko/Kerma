@@ -30,8 +30,7 @@ onUnmounted(() => {
 
 <style lang="scss">
 .page {
-  // min-height: 100vh;
-  min-height: var(--app-height);
+  min-height: 100vh;
   @include width-restriction;
   margin-top: 10rem;
   padding-bottom: 12rem;
@@ -44,8 +43,7 @@ onUnmounted(() => {
 .relative-container {
   position: relative;
   width: 100%;
-  // min-height: 100vh;
-  min-height: var(--app-height);
+  min-height: 100vh;
 }
 
 .desktop {

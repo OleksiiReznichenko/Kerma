@@ -29,7 +29,7 @@ const { questions } = storeToRefs(faqStore);
 .info {
     position: relative;
     width: 60rem;
-    min-height: var(--app-height);
+    min-height: 100vh;
     z-index: 200;
     margin-left: auto;
 
