@@ -69,7 +69,7 @@ const autoGrow = (event: Event): void => {
 const sendMessage = (event: Event): void => {
     event.preventDefault();
 
-    if (!newMessage.value) return;
+    if (!newMessage.value || !myUser.value.id) return;
 
     const newMessageObject: ChatMessage = {
         id: (Math.random() * Date.now()).toString(),
@@ -114,7 +114,7 @@ const sendMessage = (event: Event): void => {
             />
         </div>
 
-        <div class="input-container">
+        <div :class="{'inactive': !myUser.id}" class="input-container">
             <!-- <EmojiPicker class="emoji-main-container" @emoji="onEmoji">
                 <div class="emoji-invoker" slot="emoji-invoker" slot-scope="{ events: { click: clickEvent } }" 
                     @click.stop="clickEvent">
@@ -161,7 +161,7 @@ const sendMessage = (event: Event): void => {
     border-radius: 4rem;
     width: 38rem;
     height: 100vh;
-    max-height: 70rem;
+    max-height: 68rem;
     padding: 2.5rem 1rem 3.5rem 2.5rem;
     box-shadow: 0 .25rem 5rem rgba(0, 0, 0, 0.1);
     transition: all .3s;
@@ -277,6 +277,11 @@ const sendMessage = (event: Event): void => {
             background-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(white, .7) 30%, rgba(white, .7) 70%, transparent 70%, transparent 100%);
             margin-bottom: 8rem;
         }
+    }
+
+    .inactive {
+        pointer-events: none;
+        opacity: .5;
     }
 
     .input-container {

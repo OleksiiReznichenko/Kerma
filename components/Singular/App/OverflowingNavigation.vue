@@ -7,6 +7,7 @@ const { navOpenIndicator, myUser } = storeToRefs(baseStore);
 
 // ROUTE INFO
 const route = useRoute();
+const router = useRouter();
 
 // PAGE NAME
 const pageName = computed<string>(() => {
@@ -28,6 +29,12 @@ const pageName = computed<string>(() => {
         return routeNameLowerCase;
     }
 });
+
+const goToConnectWindow = (): void => {
+    baseStore.navOpenIndicatorToFalse();
+    baseStore.connectWindowOpenIndicatorToTrue();
+    router.push('/game/');
+};
 
 // REINIT VARIABLES ON WINDOW RESIZE EVENT ON DESKTOP
 const onWindowResize = (): void => {
@@ -84,10 +91,14 @@ onUnmounted(() => {
                     <img src="@/assets/svg/activeNavItem.svg" alt="Active item background" class="active-background">
                     <img src="@/assets/svg/eyeWithTransparency.svg" alt="Game history icon" class="icon">
                 </NuxtLink>
-                <NuxtLink :to="'/users/' + myUser.id" class="page-link profile-link">
+                <NuxtLink v-if="myUser.id" :to="'/users/' + myUser.id" class="page-link profile-link">
                     <img src="@/assets/svg/activeNavItem.svg" alt="Active item background" class="active-background">
                     <img src="@/assets/svg/userWithTransparency.svg" alt="Profile page icon" class="icon">
                 </NuxtLink>
+                <button v-else @click="goToConnectWindow" class="page-link profile-link">
+                    <img src="@/assets/svg/activeNavItem.svg" alt="Active item background" class="active-background">
+                    <img src="@/assets/svg/userWithTransparency.svg" alt="Profile page icon" class="icon">
+                </button>
                 <NuxtLink to="/leaderboard" class="page-link leaderboard-link">
                     <img src="@/assets/svg/activeNavItem.svg" alt="Active item background" class="active-background">
                     <img src="@/assets/svg/starWithTransparency.svg" alt="Leaderboard page icon" class="icon">
