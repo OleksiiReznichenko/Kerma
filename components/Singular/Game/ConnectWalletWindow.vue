@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import User from '~~/composables/interfaces/user';
 
 // OPEN WINDOW INDICATOR
 const baseStore = useBaseStore();
-const { connectWindowOpenIndicator } = storeToRefs(baseStore);
+const { connectWindowOpenIndicator, myUser } = storeToRefs(baseStore);
 
 // CLOSE WINDOW
 const closeWindow = baseStore.connectWindowOpenIndicatorToFalse;
@@ -19,10 +20,40 @@ const closeWindowOnWrapper = (event: Event): void => {
 };
 
 // CLOSE WINDOW AND  OPEN STEPS WINDOW
-const toggleWindows = () => {
+const toggleWindows = (): void => {
     closeWindow();
     openStepsWindow()
-}
+};
+
+// LOGIN
+const login = (): void => {
+    if (myUser.value.id) return;
+    const myUserObject: User = {
+        id: 'ioi1oi1jdsfass2nk1j',
+        nickname: 'Doly Menners',
+        avatar: 'default',
+        rank: 'Expert',
+        balanceEth: 889.89,
+        cryptoAddress: '2234h2i4j2ij2n2o4hifse232',
+        totalWins: 8,
+        totalMoneyWon: 1200,
+        gamesPlayed: [
+            'jjk1jl4kj1k24j14j1lkj',
+            'jjk1jl4kj1k24j14j1lkj',
+            'jjk1jl4kj1k24j14j1lkj',
+            'jjk1jl4kj1k24j14j1lkj',
+            'jjk1jl4kj1k24j14j1lkj',
+            'jjk1jl4kj1k24j14j1lkj',
+        ],
+        achievements: {
+            medal: true,
+            starMedal: true,
+            cup: true,
+        },
+    };
+    baseStore.addMyUser(myUserObject);
+    closeWindow();
+};
 
 </script>
 
@@ -34,7 +65,7 @@ const toggleWindows = () => {
             </button>
             <h1 class="title">Connect Wallet</h1>
             <div class="methods">
-                <button class="method method-1">
+                <button @click="login" class="method method-1">
                     <div class="container-center">
                         <img src="@/assets/img/metamaskFox.png" alt="Metamask fox" class="fox">
                         <strong class="method-name">Metamask</strong>
@@ -166,7 +197,7 @@ const toggleWindows = () => {
                 transition: all .3s;
 
                 &:hover {
-                    transform: scale(1.02);
+                    background: rgba(236, 227, 255, 0.7);
                 }
 
                 .container-center {

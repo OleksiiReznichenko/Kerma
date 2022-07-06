@@ -17,10 +17,15 @@ const baseStore = useBaseStore();
 const { myUser } = storeToRefs(baseStore);
 
 // MY USER'S BALANCE
-const myUserBalance = ref<number>(myUser.value.balanceEth);
+let myUserBalance = ref<number>(myUser.value.balanceEth);
 
 // MY USER'S ID
-const myUserId = ref<string>(myUser.value.id);
+let myUserId = ref<string>(myUser.value.id);
+
+watch(myUser, () => {
+    myUserBalance.value = myUser.value.balanceEth;
+    myUserId.value = myUser.value.id;
+})
 
 // CURRENT GAME PRIZE FUND
 const prizeFund = ref<number>(currentGame.value.prizeFund);
@@ -59,7 +64,7 @@ provide<Ref<Bet[]>>('bets', bets);
 // PROVIDE CURRENT GAME BETS USERS TO MAININFO.VUE
 provide<Ref<User[]>>('betsUsers', betsUsers);
 
-// PROVIDE CURRENT GAME BETS USERS TO MAININFO.VUE
+// PROVIDE CURRENT GAME BETS USERS TO MAININFO.VUE AND PLACEBET.VUE
 provide<Ref<string>>('myUserId', myUserId);
 
 </script>
@@ -76,6 +81,8 @@ provide<Ref<string>>('myUserId', myUserId);
             />
             <SingularGameMainContent />
         </div>
+        <SingularGameChat />
+        <ReusableChatButton class="mobile" />
     </div>
 </template>
 

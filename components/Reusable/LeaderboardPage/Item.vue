@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
 interface Props {
     index: number;
     id: string;
@@ -12,14 +14,15 @@ interface Props {
 const props = defineProps<Props>();
 
 // GET BASE URL
-const baseUrl = useBaseStore().baseUrl;
+const baseStore = useBaseStore();
+const { baseUrl } = storeToRefs(baseStore);
 
-// IS DEFAULT AVTAR INDICATOR
-const isDefaultAvatar = computed<boolean>(() => {
+// AVATAR PATH
+const avatarPath = computed<string>(() => {
     if (props.avatar === 'default') {
-        return true;
+        return baseUrl.value + 'imgs/defaultAvatar.png';
     } else {
-        return false;
+        return props.avatar;
     }
 });
 </script>
@@ -34,8 +37,7 @@ const isDefaultAvatar = computed<boolean>(() => {
         <NuxtLink :to="'/users/' + id" class="info">
             <div class="first-column column">
                 <div class="avatar-container">
-                    <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
-                    <img v-else :src="avatar" alt="Avatar" class="avatar">
+                    <img :src="avatarPath" alt="Avatar" class="avatar">
                     <img v-if="index === 0" src="@/assets/svg/leaderboardWinnerAvatarMobile.svg" alt="Avatar background" class="avatar-background mobile">
                 </div>
                 <div class="container">

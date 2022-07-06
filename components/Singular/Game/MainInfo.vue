@@ -24,6 +24,7 @@ const myUserId = inject<Ref<string>>('myUserId');
 <template>
     <div class="main-info">
         <SingularGameConnectSteps class="desktop" />
+        <ReusableChatButton class="desktop" />
         <div class="header">
             <div class="line desktop"></div>
             <img src="@/assets/svg/ratesNow.svg" alt="Rates icon" class="rates-icon desktop">
@@ -52,6 +53,7 @@ const myUserId = inject<Ref<string>>('myUserId');
                 :nickname="betsUsers[index].nickname"
                 :avatar="betsUsers[index].avatar"
                 :rank="betsUsers[index].rank"
+                :achievements="betsUsers[index].achievements"
             />
         </div>
     </div>
@@ -65,7 +67,7 @@ const myUserId = inject<Ref<string>>('myUserId');
     padding: 4.75rem 2rem 5rem 3.25rem;
     height: 45rem;
     position: relative;
-    overflow: hidden;
+    // overflow: hidden;
         
     @media only screen and (max-width: 850px) {
         width: 90%;

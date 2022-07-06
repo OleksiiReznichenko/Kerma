@@ -1,6 +1,21 @@
 <script setup lang="ts">
+import { Ref } from 'vue';
+
+const baseStore = useBaseStore();
+
 let inputValue = ref<number>(0.00004);
 
+// MY USER'S ID
+const myUserId = inject<Ref<string>>('myUserId');
+
+// BET
+const bet = (): void => {
+    if (myUserId.value) {
+
+    } else {
+        baseStore.connectWindowOpenIndicatorToTrue();
+    }
+};
 </script>
 
 <template>
@@ -15,7 +30,7 @@ let inputValue = ref<number>(0.00004);
                 <button class="x-button">All in</button>
             </div>
         </div>
-        <button class="bet-button">
+        <button @click="bet" class="bet-button">
             <div class="circles-container">
                 <div class="circle-container circle-container-1">
                     <img src="@/assets/svg/betButtonCircle2.svg" alt="Circle 1" class="circle">

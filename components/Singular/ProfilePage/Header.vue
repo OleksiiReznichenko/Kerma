@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import UserAchievements from '@/composables/interfaces/userAchievements';
-import UserAchievement from '@/composables/interfaces/userAchievement';
 import { storeToRefs } from 'pinia';
 
 interface Props {
     nickname:  string;
     avatar: string;
+    rank: string;
     balanceEth: number;
     achievements: UserAchievements;
     isMyProfile: boolean;
@@ -17,88 +17,15 @@ const props = defineProps<Props>();
 const baseStore = useBaseStore();
 const { baseUrl } = storeToRefs(baseStore);
 
-// ACHIEVEMENTS ARRAY
-const achievements = ref<UserAchievement[]>([]);
-
-// ADD ACHIEVEMENTS TO ACHIEVEMENTS ARRAY
-if (props.achievements.medal) {
-    achievements.value.push({
-        icon: 'circleMedal.svg',
-        title: 'Super star',
-        description: 'Received more than 100 positive reviews'
-    });
-}
-
-if (props.achievements.starMedal) {
-    achievements.value.push({
-        icon: 'starMedal.svg',
-        title: 'VIP',
-        description: 'Good player'
-    });
-}
-
-if (props.achievements.cup) {
-    achievements.value.push({
-        icon: 'cup.svg',
-        title: 'Premium',
-        description: 'Really experienced played'
-    });
-}
-
-
-// IS DEFAULT AVTAR INDICATOR
-const isDefaultAvatar = computed<boolean>(() => {
+// AVATAR PATH
+const avatarPath = computed<string>(() => {
     if (props.avatar === 'default') {
-        return true;
+        return baseUrl.value + 'imgs/defaultAvatar.png';
     } else {
-        return false;
+        return props.avatar;
     }
 });
 
-// CLICKED ACHIEVEMENT BUTTON
-let prevButton = ref<HTMLElement | null>(null);
-
-// TOGGLE ACHIEVEMENT DROPDOWN
-const toggleAchievementDropdown = (event: Event): void => {
-    const target = event.target as HTMLElement;
-    console.log(target);
-
-    if (!target.classList.contains('achievement-button') &&
-    !target.classList.contains('achievement-icon')) return;
-    let achievementButton: HTMLElement;
-
-    if (target.classList.contains('achievement-button')) {
-        achievementButton = target;
-    } else {
-        achievementButton = target.parentElement;
-    }
-
-    achievementButton.classList.toggle('opened');
-
-    if (prevButton.value !== achievementButton) {
-        prevButton.value?.classList.remove('opened');
-        prevButton.value = achievementButton;
-    }
-}
-
-// CLOSE ACHIEVEMENT DROPDOWN ON WINDOW RESIZE
-const onWindowClick = (event: Event): void => {
-    const target = event.target as HTMLElement;
-
-    if (target.classList.contains('achievement-button') ||
-    target.classList.contains('achievement-icon') || !prevButton.value?.classList.contains('opened')) return;
-    prevButton.value?.classList.remove('opened');
-}
-
-onMounted(() => {
-    // ADD WINDOW EVENT LISTENER
-    window.addEventListener('click', onWindowClick);
-});
-
-onUnmounted(() => {
-    // REMOVE WINDOW EVENT LISTENER
-    window.removeEventListener('click', onWindowClick);
-});
 </script>
 
 <template>
@@ -109,20 +36,15 @@ onUnmounted(() => {
             <img src="@/assets/img/mobileProfileCharacterRight.png" alt="Character" class="character character-right">
         </div>
         <div class="info-container">
-            <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
-            <img v-else :src="avatar" alt="Avatar" class="avatar">
+            <img :src="avatarPath" alt="Avatar" class="avatar">
             <div class="info">
                 <h1 class="nickname mobile">{{nickname}}</h1>
-                <div @click="toggleAchievementDropdown" class="achievements">
-                    <ReusableUserPageAchievement 
-                        v-for="(achievement, i) in achievements"
-                        :key="i"
-                        :icon="achievement.icon"
-                        :title="achievement.title"
-                        :description="achievement.description"
-                    />
-                </div>
+                <strong class="rank mobile">{{rank}}</strong>
+
+                <ReusableAchievements :achievements="achievements" />
+                
                 <h1 class="nickname desktop">{{nickname}}</h1>
+                <strong class="rank desktop">{{rank}}</strong>
 
                 <strong class="balance-gradient-container for-desktop" v-if="isMyProfile">
                     <span class="for-desktop">{{balanceEth.toFixed(4)}} ETH / {{(balanceEth * 10).toFixed(2)}} $</span>
@@ -232,6 +154,20 @@ onUnmounted(() => {
                 line-height: 1;
                 color: white;
                 font-size: 4.5rem;
+                margin-bottom: .75rem;
+            }
+        }
+
+        .rank {
+            font-family: Panton;
+            font-weight: 700;
+            display: block;
+            color: $color-pink-dark-3;
+            font-size: 1.8rem;
+
+            @media only screen and (max-width: 850px) {
+                font-size: 2rem;
+                color: white;
                 margin-bottom: 1.75rem;
             }
         }
@@ -263,22 +199,6 @@ onUnmounted(() => {
         .for-mobile {
             @media only screen and (min-width: 500px) {
                 display: none;
-            }
-        }
-
-        .achievements {
-            display: flex;
-            justify-content: center;
-
-            @media only screen and (max-width: 850px) {
-                justify-content: flex-start;
-            }
-
-            .opened {
-                ::v-deep .achievement-dropdown {
-                    opacity: 1 !important;
-                    visibility: visible !important;
-                }
             }
         }
     }

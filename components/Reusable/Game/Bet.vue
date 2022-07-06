@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import UserAchievements from '~~/composables/interfaces/userAchievements';
+
 interface Props {
     index: number;
     id: string;
@@ -7,19 +10,21 @@ interface Props {
     nickname: string;
     avatar: string;
     rank: string;
+    achievements: UserAchievements;
 }
 
 const props = defineProps<Props>();
 
 // GET BASE URL
-const baseUrl = useBaseStore().baseUrl;
+const baseStore = useBaseStore();
+const { baseUrl } = storeToRefs(baseStore);
 
-// IS DEFAULT AVTAR INDICATOR
-const isDefaultAvatar = computed<boolean>(() => {
+// AVATAR PATH
+const avatarPath = computed<string>(() => {
     if (props.avatar === 'default') {
-        return true;
+        return baseUrl.value + 'imgs/defaultAvatar.png';
     } else {
-        return false;
+        return props.avatar;
     }
 });
 </script>
@@ -32,10 +37,16 @@ const isDefaultAvatar = computed<boolean>(() => {
             </div>
         </div>
         <div class="info">
+            <SingularGameMiniProfile 
+                :id="id"
+                :nickname="nickname"
+                :avatar="avatarPath"
+                :rank="rank"
+                :achievements="achievements"
+            />
             <div class="column first-column">
                 <div class="avatar-container">
-                    <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
-                    <img v-else :src="avatar" alt="Avatar" class="avatar">
+                    <img :src="avatarPath" alt="Avatar" class="avatar">
                     <img v-if="index === 0" src="@/assets/svg/leaderboardWinnerAvatarMobile.svg" alt="Avatar background" class="avatar-background mobile">
                 </div>
                 <div class="container">
@@ -78,6 +89,7 @@ const isDefaultAvatar = computed<boolean>(() => {
     width: 100%;
     display: flex;
     align-items: center;
+    position: relative;
         
     @media only screen and (max-width: 850px) {
         &:not(:last-of-type) {
@@ -122,6 +134,21 @@ const isDefaultAvatar = computed<boolean>(() => {
         padding-right: 3rem;
         color: $color-pink-dark-2;
         transition: all .3s;
+
+        &:hover ::v-deep .mini-profile {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        &:focus ::v-deep .mini-profile {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        &:active ::v-deep .mini-profile {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
 
         &:hover {
             background-color: darken($color-pink-light-2, 3%) !important;

@@ -113,13 +113,13 @@ const closeWindowOnWrapper = (event: Event): void => {
     background-color: rgba($color-pink-light-3, .7);
     backdrop-filter: blur(6px);
     text-align: center;
+    border-radius: 4rem;
         
     @media only screen and (max-width: 850px) {
         height: auto;
         width: 53rem;
         backdrop-filter: none;
         background-color: rgba($color-pink-light-3, .9);
-        border-radius: 4rem;
         padding: 4.5rem 3rem;
     }
         

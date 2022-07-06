@@ -19,12 +19,12 @@ const baseUrl = useBaseStore().baseUrl;
 // ANIMATION CLASS INDICATOR
 let addAnimationClass = ref<boolean>(true);
 
-// IS DEFAULT AVTAR INDICATOR
-const isDefaultAvatar = computed<boolean>(() => {
+// AVATAR PATH
+const avatarPath = computed<string>(() => {
     if (props.highestBetUserAvatar === 'default') {
-        return true;
+        return baseUrl + 'imgs/defaultAvatar.png';
     } else {
-        return false;
+        return props.highestBetUserAvatar;
     }
 });
 
@@ -78,8 +78,7 @@ watch(navOpenIndicator, (newValue) => {
                 <div class="bet-container">
                     <strong class="normal">Highest Current Bet:</strong>
                     <div class="flex-container">
-                        <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
-                        <img v-else :src="highestBetUserAvatar" alt="Avatar" class="avatar">
+                         <img :src="avatarPath" alt="Avatar" class="avatar">
                         <strong class="normal">{{highestBetAmount.toFixed(4)}} ETH</strong>
                     </div>
                 </div>

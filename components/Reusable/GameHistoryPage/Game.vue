@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
 interface Props {
     id: string;
     winnerId: string;
@@ -12,17 +14,17 @@ interface Props {
 const props = defineProps<Props>();
 
 // GET BASE URL
-const baseUrl = useBaseStore().baseUrl;
+const baseStore = useBaseStore();
+const { baseUrl } = storeToRefs(baseStore);
 
-// IS DEFAULT AVTAR INDICATOR
-const isDefaultAvatar = computed<boolean>(() => {
+// AVATAR PATH
+const avatarPath = computed<string>(() => {
     if (props.winnerAvatar === 'default') {
-        return true;
+        return baseUrl.value + 'imgs/defaultAvatar.png';
     } else {
-        return false;
+        return props.winnerAvatar;
     }
 });
-
 </script>
 
 <template>
@@ -32,8 +34,7 @@ const isDefaultAvatar = computed<boolean>(() => {
                 <h6 class="subtitle">Game ID:</h6>
                 <span class="id">#{{id}}</span>
             </div>
-            <img v-if="isDefaultAvatar" :src="baseUrl + 'imgs/defaultAvatar.png'" alt="Avatar" class="avatar">
-            <img v-else :src="winnerAvatar" alt="Avatar" class="avatar">
+            <img :src="avatarPath" alt="Avatar" class="avatar">
         </div>
         <div class="info">
             <div class="container">

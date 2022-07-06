@@ -41,6 +41,7 @@ const paragraph: string = "This user doesn't exist";
             <SingularProfilePageHeader
                 :nickname="user.nickname"
                 :avatar="user.avatar"
+                :rank="user.rank"
                 :balance-eth="user.balanceEth"
                 :achievements="user.achievements"
                 :is-my-profile="isMyProfile"

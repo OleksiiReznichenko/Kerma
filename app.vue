@@ -65,7 +65,7 @@ h1 {
 
 .btn-primary {
   background-color: $color-primary;
-  box-shadow: 1rem 1.5rem 2.25rem rgba(0, 0, 0, 0.03);
+  box-shadow: .75rem .75rem 2rem rgba(0, 0, 0, 0.03);
   border-radius: 1.25rem;
   padding: 1rem 5.5rem;
   border: 1px solid #eee;
