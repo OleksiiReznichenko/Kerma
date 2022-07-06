@@ -8,12 +8,22 @@ const { connectWindowOpenIndicator } = storeToRefs(baseStore);
 // CLOSE WINDOW
 const closeWindow = baseStore.connectWindowOpenIndicatorToFalse;
 
+// CLOSE WINDOW
+const openStepsWindow = baseStore.isStepsOpenIndicatorToTrue;
+
 // CLOSE WINDOW ON WRAPPER CLICK
 const closeWindowOnWrapper = (event: Event): void => {
     const target = event.target as HTMLElement;
     if (!target.classList.contains('wrapper')) return;
     closeWindow();
 };
+
+// CLOSE WINDOW AND  OPEN STEPS WINDOW
+const toggleWindows = () => {
+    closeWindow();
+    openStepsWindow()
+}
+
 </script>
 
 <template>
@@ -43,7 +53,7 @@ const closeWindowOnWrapper = (event: Event): void => {
             </div>
             <div class="button-container">
                 <span class="question">Haven't got a crypto wallet yet?</span>
-                <button class="btn-wide learn-button">Learn how to connect</button>
+                <button @click="toggleWindows" class="btn-wide learn-button">Learn how to connect</button>
             </div>
         </div>
     </div>

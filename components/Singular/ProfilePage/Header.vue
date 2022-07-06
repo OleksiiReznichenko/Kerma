@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import UserAchievements from '@/composables/interfaces/userAchievements';
 import UserAchievement from '@/composables/interfaces/userAchievement';
+import { storeToRefs } from 'pinia';
 
 interface Props {
     nickname:  string;
@@ -13,7 +14,8 @@ interface Props {
 const props = defineProps<Props>();
 
 // GET BASE URL
-const baseUrl = useBaseStore().baseUrl;
+const baseStore = useBaseStore();
+const { baseUrl } = storeToRefs(baseStore);
 
 // ACHIEVEMENTS ARRAY
 const achievements = ref<UserAchievement[]>([]);

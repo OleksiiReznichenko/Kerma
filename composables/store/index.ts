@@ -7,6 +7,7 @@ interface State {
     baseUrl: string | boolean;
     navOpenIndicator: boolean;
     connectWindowOpenIndicator: boolean;
+    isStepsOpenIndicator: boolean;
     previousGameInfo: GameInfo;
     myUser: User;
 }
@@ -18,6 +19,7 @@ export const useBaseStore = defineStore({
         baseUrl: import.meta.env.BASE_URL,
         navOpenIndicator: false,
         connectWindowOpenIndicator: false,
+        isStepsOpenIndicator: false,
         previousGameInfo: {
             id: 'kj1k4k325jk235kp141k2lk',
             winnerNickname: 'Doly Menners',
@@ -64,6 +66,14 @@ export const useBaseStore = defineStore({
         
         connectWindowOpenIndicatorToTrue() {
             this.connectWindowOpenIndicator = true;
+        },
+        
+        isStepsOpenIndicatorToFalse() {
+            this.isStepsOpenIndicator = false;
+        },
+        
+        isStepsOpenIndicatorToTrue() {
+            this.isStepsOpenIndicator = true;
         },
     }
 })

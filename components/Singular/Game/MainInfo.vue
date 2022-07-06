@@ -3,6 +3,11 @@ import { Ref } from 'vue';
 import Bet from '@/composables/interfaces/bet';
 import User from '@/composables/interfaces/user';
 
+const baseStore = useBaseStore();
+
+// OPEN STEPS WINDOW
+const openStepsWindow = baseStore.isStepsOpenIndicatorToTrue;
+
 // CURRENT GAME PRIZE FUND
 const prizeFund = inject<number>('prizeFund');
 
@@ -18,6 +23,7 @@ const myUserId = inject<Ref<string>>('myUserId');
 
 <template>
     <div class="main-info">
+        <SingularGameConnectSteps class="desktop" />
         <div class="header">
             <div class="line desktop"></div>
             <img src="@/assets/svg/ratesNow.svg" alt="Rates icon" class="rates-icon desktop">
@@ -30,7 +36,7 @@ const myUserId = inject<Ref<string>>('myUserId');
                 <NuxtLink :to="'/users/' + myUserId" class="navigation-item">
                     <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
                 </NuxtLink>
-                <button class="navigation-item no-margin">
+                <button @click="openStepsWindow" class="navigation-item no-margin">
                     <span>?</span>
                 </button>
             </div>
@@ -59,6 +65,7 @@ const myUserId = inject<Ref<string>>('myUserId');
     padding: 4.75rem 2rem 5rem 3.25rem;
     height: 45rem;
     position: relative;
+    overflow: hidden;
         
     @media only screen and (max-width: 850px) {
         width: 90%;

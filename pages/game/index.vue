@@ -67,6 +67,7 @@ provide<Ref<string>>('myUserId', myUserId);
 <template>
     <div class="page game">
         <SingularGameConnectWalletWindow />
+        <SingularGameConnectSteps class="mobile" />
         <div class="relative-container">
             <SingularGameGamingCircle
                 :prize-fund="currentGame.prizeFund"
