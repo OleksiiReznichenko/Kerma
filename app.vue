@@ -82,4 +82,23 @@ h1 {
   font-weight: 600;
   font-size: 1.5rem;
 }
+
+.balance-gradient-container {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.8rem;
+  background-color: $color-pink-light-5;
+  border-radius: 1.8rem;
+  padding: .65rem 3.5rem;
+  color: $color-pink-dark-3;
+  box-shadow: .85rem 1rem 1.5rem rgba(76, 26, 92, 0.08);
+            
+  span {
+      background-image: radial-gradient(64.31% 64.31% at 88.04% 10.98%, #97C1FF 0%, #F9AEFF 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+  }
+}
 </style>

@@ -59,7 +59,7 @@ const baseUrl = useBaseStore().baseUrl;
         top: 140%;
         left: 0%;
         transform: translateX(-9.5rem);
-        background-color: $color-pink-light;
+        background-color: $color-pink-light-10;
         box-shadow: 0 .25rem 4rem rgba(0, 0, 0, 0.2);
         color: $color-grey-2;
         width: 22rem;

@@ -11,52 +11,6 @@ export const useGamesStore = defineStore({
     state: (): State => ({
         games: [
             {
-                id: 'kj1k4k325jk235kp141k2lk',
-                winnerId: 'kfasjfll212oiopnlal',
-                winnerBetId: 'kfasjfll212oiopnlal',
-                winAmountEth: 500,
-                gameDate: '12.05.2022',
-                bets: [
-                    {
-                        id: 'kfasjfll212oiopnlal',
-                        userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
-                        betAmountEth: 20.3342
-                    },
-                    {
-                        id: 'ewafeeeefgeyeee32r8',
-                        userId: 'safefaessss2131f',
-                        betTime: '12:55',
-                        betAmountEth: 15.5643
-                    },
-                    {
-                        id: 'qwrns9jk3ngb136jdkw',
-                        userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
-                        betAmountEth: 10.4221
-                    },
-                    {
-                        id: 'gjebaiji324kln1oipj',
-                        userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
-                        betAmountEth: 9.9221
-                    },
-                    {
-                        id: 'bconljskenl1jpdsk34',
-                        userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
-                        betAmountEth: 9.2998
-                    },
-                    {
-                        id: 'bconljskenl1jpdsk34',
-                        userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
-                        betAmountEth: 2.1131
-                    },
-                ]
-            },
-            
-            {
                 id: 'iuikfsjds1290fsfas02l1g',
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',

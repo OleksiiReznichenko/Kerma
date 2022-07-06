@@ -66,7 +66,7 @@
             }
 
             &:hover {
-                color: darken(white, 10%);
+                color: $color-pink-dark-3;
             }
         }
 
@@ -136,10 +136,6 @@
         span {
             transform: rotate(180deg);
 
-            &:hover {
-                color: darken(white, 10%);
-            }
-
             &:after {
                 content: '';
                 display: block;
@@ -163,10 +159,6 @@
         }
 
         span {
-
-            &:hover {
-                color: darken(white, 10%);
-            }
 
             &:before {
                 content: '';

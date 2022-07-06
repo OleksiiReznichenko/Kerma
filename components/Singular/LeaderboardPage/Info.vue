@@ -10,17 +10,15 @@ const { leaderboard } = storeToRefs(leaderboardStore);
 const usersStore = useUsersStore();
 const { users } = storeToRefs(usersStore);
 
-// FIND LEADERBOARD USERS AND SORT IT BY 
+// FIND LEADERBOARD USERS AND SORT IT BY WINNINGS
 const leaderboardUsers: User[] = leaderboard.value.map(leaderId => {
     return users.value.find(user => {
         return user.id === leaderId;
     })
 }).sort((a, b) => {
-    return b.balanceEth - a.balanceEth;
+    return b.totalMoneyWon - a.totalMoneyWon;
 });
 
-
-console.log(leaderboardUsers);
 </script>
 
 <template>

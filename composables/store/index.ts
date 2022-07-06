@@ -6,7 +6,7 @@ import User from '../interfaces/user';
 interface State {
     baseUrl: string | boolean;
     navOpenIndicator: boolean;
-    currentGameId: string;
+    connectWindowOpenIndicator: boolean;
     previousGameInfo: GameInfo;
     myUser: User;
 }
@@ -17,7 +17,7 @@ export const useBaseStore = defineStore({
     state: (): State => ({
         baseUrl: import.meta.env.BASE_URL,
         navOpenIndicator: false,
-        currentGameId: 'kj1k4k325jk235kp141k2lk',
+        connectWindowOpenIndicator: false,
         previousGameInfo: {
             id: 'kj1k4k325jk235kp141k2lk',
             winnerNickname: 'Doly Menners',
@@ -57,9 +57,19 @@ export const useBaseStore = defineStore({
         navOpenIndicatorToTrue() {
             this.navOpenIndicator = true;
         },
+        
+        connectWindowOpenIndicatorToFalse() {
+            this.connectWindowOpenIndicator = false;
+        },
+        
+        connectWindowOpenIndicatorToTrue() {
+            this.connectWindowOpenIndicator = true;
+            console.log('CLICK')
+        },
     }
 })
 
+export { useCurrentGameStore } from './currentGame';
 export { useFaqStore } from './faq';
 export { useGamesStore } from './games';
 export { useUsersStore } from './users';

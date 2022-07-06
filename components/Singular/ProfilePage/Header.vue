@@ -122,14 +122,14 @@ onUnmounted(() => {
                 </div>
                 <h1 class="nickname desktop">{{nickname}}</h1>
 
-                <strong class="balance for-desktop" v-if="isMyProfile">
+                <strong class="balance-gradient-container for-desktop" v-if="isMyProfile">
                     <span class="for-desktop">{{balanceEth.toFixed(4)}} ETH / {{(balanceEth * 10).toFixed(2)}} $</span>
                 </strong>
 
-                <strong class="balance for-mobile" v-if="isMyProfile">
+                <strong class="balance-gradient-container for-mobile" v-if="isMyProfile">
                     <span class="for-mobile">{{balanceEth.toFixed(4)}} ETH</span>
                 </strong>
-                <strong class="balance for-mobile" v-if="isMyProfile">
+                <strong class="balance-gradient-container for-mobile" v-if="isMyProfile">
                     <span class="for-mobile">{{(balanceEth * 10).toFixed(2)}} $</span>
                 </strong>
             </div>
@@ -234,16 +234,9 @@ onUnmounted(() => {
             }
         }
 
-        .balance {
-            display: inline-block;
-            font-weight: 600;
-            font-size: 1.8rem;
-            background-color: $color-pink-light-5;
-            border-radius: 1.8rem;
-            padding: .5rem 3.5rem;
-            color: $color-pink-dark-3;
-            box-shadow: .85rem 1rem 1.5rem rgba(76, 26, 92, 0.08);
+        .balance-gradient-container {
             margin-top: 1.5rem;
+            
 
             @media only screen and (max-width: 850px) {
                 margin-top: 2rem;
@@ -256,14 +249,6 @@ onUnmounted(() => {
                 &:last-of-type {
                     margin-top: 1rem;
                 }
-            }
-            
-            span {
-                background-image: radial-gradient(64.31% 64.31% at 88.04% 10.98%, #97C1FF 0%, #F9AEFF 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                white-space: nowrap;
             }
         }
 
