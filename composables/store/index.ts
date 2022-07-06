@@ -64,7 +64,6 @@ export const useBaseStore = defineStore({
         
         connectWindowOpenIndicatorToTrue() {
             this.connectWindowOpenIndicator = true;
-            console.log('CLICK')
         },
     }
 })
