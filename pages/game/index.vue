@@ -22,29 +22,33 @@ let myUserBalance = ref<number>(myUser.value.balanceEth);
 // MY USER'S ID
 let myUserId = ref<string>(myUser.value.id);
 
+// UPDATE USER'S DATA
 watch(myUser, () => {
+    // MY USER'S BALANCE
     myUserBalance.value = myUser.value.balanceEth;
+    
+    // MY USER'S ID
     myUserId.value = myUser.value.id;
 })
 
-// CURRENT GAME PRIZE FUND
-const prizeFund = ref<number>(currentGame.value.prizeFund);
-
 // CURRENT GAME BETS
-const bets = ref<Bet[]>(currentGame.value.bets);
+let bets = ref<Bet[]>(currentGame.value.bets);
+
+// CURRENT GAME PRIZE FUND
+let prizeFund = ref<number>(currentGame.value.prizeFund);
 
 // CURRENT GAME HIGHEST BET
-const highestBet = ref<Bet>(bets.value[0]);
+let highestBet = ref<Bet>(bets.value[0]);
 
 // CURRENT GAME HIGHEST BET USER
-const highestBetUser = computed<User>(() => {
+let highestBetUser = computed<User>(() => {
     return users.value.find(user => {
         return user.id === highestBet.value.userId;
     })
 });
 
 // CURRENT GAME BETS USERS ARRAY
-const betsUsers = computed<User[]>(() => {
+let betsUsers = computed<User[]>(() => {
     return bets.value.map(bet => {
         return users.value.find(user => {
             return user.id === bet.userId;
@@ -52,11 +56,29 @@ const betsUsers = computed<User[]>(() => {
     })
 });
 
-// PROVIDE MY USER'S BALANCE TO DONATE.VUE
+watchEffect(() => {
+    // MY USER'S BALANCE
+    myUserBalance.value = myUser.value.balanceEth;
+
+    // CURRENT GAME BETS
+    bets.value = currentGame.value.bets;
+
+    // CURRENT GAME PRIZE FUND
+    prizeFund.value = currentGame.value.prizeFund;
+
+    // CURRENT GAME HIGHEST BET
+    highestBet.value = bets.value[0];
+});
+
+
+// PROVIDE MY USER'S BALANCE TO DONATE.VUE AND PLACEBET.VUE
 provide<Ref<number>>('myUserBalance', myUserBalance);
 
 // PROVIDE CURRENT GAME PRIZE FUND TO MAININFO.VUE
 provide<Ref<number>>('prizeFund', prizeFund);
+
+// PROVIDE CURRENT GAME HIGHEST BET TO PLACEBET.VUE
+provide<Ref<Bet>>('highestBet', highestBet);
 
 // PROVIDE CURRENT GAME BETS TO MAININFO.VUE
 provide<Ref<Bet[]>>('bets', bets);
@@ -82,7 +104,7 @@ provide<Ref<string>>('myUserId', myUserId);
             <SingularGameMainContent />
         </div>
         <SingularGameChat />
-        <ReusableChatButton class="mobile" />
+        <ReusableGameChatButton class="mobile" />
     </div>
 </template>
 

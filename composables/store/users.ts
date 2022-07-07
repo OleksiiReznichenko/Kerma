@@ -227,5 +227,14 @@ export const useUsersStore = defineStore({
             },
             
         ]
-    })
+    }),
+
+    actions: {
+        updateBalance(userId: string, withdrawnAmount: number) {
+            const user = this.users.find(user => {
+                return user.id === userId;
+            });
+            user.balanceEth -= withdrawnAmount;
+        }
+    }
 })

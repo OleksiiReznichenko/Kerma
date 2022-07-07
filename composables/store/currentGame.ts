@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia';
+import Bet from '../interfaces/bet';
 import CurrentGame from '../interfaces/currentGame';
 
 interface State {
@@ -52,5 +53,12 @@ export const useCurrentGameStore = defineStore({
                 },
             ]
         },
-    })
+    }),
+
+    actions: {
+        addNewBet(newBet: Bet) {
+            this.currentGame.bets.unshift(newBet);
+            this.currentGame.prizeFund += newBet.betAmountEth;
+        }
+    }
 })

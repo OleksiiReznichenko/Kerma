@@ -18,6 +18,7 @@ const { messages } = storeToRefs(chatStore);
 const usersStore = useUsersStore();
 const { users } = storeToRefs(usersStore);
 
+// FIND USERS WHO WROTE MESSAGES
 const messagesUsers = computed(() => {
     return messages.value.map(message => {
         return users.value.find(user => {
@@ -28,12 +29,27 @@ const messagesUsers = computed(() => {
 
 const messagesDom = ref<HTMLElement | null>(null);
 
+// SCROLL TO THE BOTTOM OF MESSAGES
+const scrollToBottom = (): void => {
+    if (messagesDom.value) {
+        messagesDom.value.scrollTop = messagesDom.value.scrollHeight;
+    }
+};
+
 watch(messagesDom, () => {
-    messagesDom.value.scrollTop = messagesDom.value.scrollHeight;
+    scrollToBottom();
 });
 
+watch(isChatOpenIndicator, () => {
+    setTimeout(() => {
+        scrollToBottom();
+    }, 150);
+})
+
+// MESSAGE RELATED
 const maxMessageLength = ref<number>(400);
 let newMessage = ref<string>('');
+let newMessageNoWhiteSpace = ref<string>('');
 
 // GROW TEXTAREA ON TEXT WRAP
 const autoGrow = (event: Event): void => {
@@ -48,28 +64,31 @@ const autoGrow = (event: Event): void => {
 // };
 
 // REMOVE EXCESSIVE WHITE SPACES IN VALUE
-// const validateMessageValue = (): void => {
-//     this.newMessageValidated = '';
-//     if (this.newMessage.includes(' ') >= 0) {
-//     const messageInputArr = this.$refs.messageInput.value.split(' ');
+const removeWhiteSpaces = (): void => {
+    newMessageNoWhiteSpace.value = '';
+    if (newMessage.value.includes(' ')) {
+    const messageInputArr = newMessage.value.split(' ');
 
-//     const messageInputArr2 = messageInputArr.filter(el => {
-//         if (el.replace(/\s/g, '')) {
-//         return el.replace(/\s/g, '');
-//         }
-//     })
+    const messageInputArr2 = messageInputArr.filter(el => {
+        if (el.replace(/\s/g, '')) {
+        return el.replace(/\s/g, '');
+        }
+    })
 
-//     const validatedMessage = messageInputArr2.join(' ');
-//     this.newMessageValidated = validatedMessage;
-//     } else {
-//         this.newMessageValidated = this.newMessage;
-//     }
-// },
+    const validatedMessage = messageInputArr2.join(' ');
+    newMessageNoWhiteSpace.value = validatedMessage;
+    } else {
+        newMessageNoWhiteSpace.value = newMessage.value;
+    }
+};
 
+// SEND MESSAGE
 const sendMessage = (event: Event): void => {
     event.preventDefault();
 
-    if (!newMessage.value || !myUser.value.id) return;
+    removeWhiteSpaces();
+
+    if (!newMessageNoWhiteSpace.value || !myUser.value.id) return;
 
     const newMessageObject: ChatMessage = {
         id: (Math.random() * Date.now()).toString(),
@@ -80,7 +99,7 @@ const sendMessage = (event: Event): void => {
     chatStore.addNewMessage(newMessageObject);
     newMessage.value = '';
     setTimeout(() => {
-        messagesDom.value.scrollTop = messagesDom.value.scrollHeight;
+        scrollToBottom();
     }, 15);
 };
 

@@ -24,14 +24,14 @@ const myUserId = inject<Ref<string>>('myUserId');
 <template>
     <div class="main-info">
         <SingularGameConnectSteps class="desktop" />
-        <ReusableChatButton class="desktop" />
+        <ReusableGameChatButton class="desktop" />
         <div class="header">
             <div class="line desktop"></div>
             <img src="@/assets/svg/ratesNow.svg" alt="Rates icon" class="rates-icon desktop">
             <h4 class="title">Rates Now</h4>
             <div class="line mobile"></div>
             <div class="balance-gradient-container game-balance">
-                <span>{{prizeFund.toFixed(4)}} ETH</span>
+                <span>{{prizeFund.toFixed(5)}} ETH</span>
             </div>
             <div class="small-navigation">
                 <NuxtLink :to="'/users/' + myUserId" class="navigation-item">
@@ -80,6 +80,7 @@ const myUserId = inject<Ref<string>>('myUserId');
         overflow-y: scroll;
         max-height: 90%;
         padding-right: 2rem;
+        padding-bottom: 3rem;
         
         @media only screen and (max-width: 850px) {
             max-height: auto;

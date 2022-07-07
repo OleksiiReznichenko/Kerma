@@ -1,18 +1,57 @@
 <script setup lang="ts">
 import { Ref } from 'vue';
+import Bet from '@/composables/interfaces/bet';
 
 const baseStore = useBaseStore();
+const currentGameStore = useCurrentGameStore();
+
+const usersStore = useUsersStore();
 
 let inputValue = ref<number>(0.00004);
 
 // MY USER'S ID
 const myUserId = inject<Ref<string>>('myUserId');
 
+// MY USER'S BALANCE
+const myUserBalance = inject<Ref<number>>('myUserBalance');
+
+// HIGHEST BET
+const highestBet = inject<Ref<Bet>>('highestBet');
+
 // BET
 const bet = (): void => {
     if (myUserId.value) {
+        // CHECK IF BET INPUT IS EMPTY AND IF IT'S VALUE IS LESS THAN MINIMAL AMOUNT
+        if (!inputValue.value || inputValue.value < 0.00001) {
+            alert('Your bet must be a least 0.00001 ETH');
+            return;
+        }
+        
+        // CHECK IF BET AMOUNT IS LESS THAN CURRENT HIGHEST BET
+        if (inputValue.value <= highestBet.value.betAmountEth) {
+            alert('Your bet must be bigger than current highest bet');
+            return;
+        }
+        
+        // CHECK IF BET AMOUNT IS BIGGER THAN MY BALANCE
+        if (inputValue.value > myUserBalance.value) {
+            alert('You don\'t have enough balance');
+            return;
+        }
 
+        const newBetObject: Bet = {
+            id: (Math.random() * Date.now()).toString(),
+            userId: myUserId.value,
+            betTime: '10:22',
+            betAmountEth: inputValue.value
+        };
+
+        currentGameStore.addNewBet(newBetObject);
+        usersStore.updateBalance(myUserId.value, inputValue.value);
+        baseStore.updateBalance(inputValue.value);
+        
     } else {
+        // OPEN WINDOW TO CONNECT WALLET
         baseStore.connectWindowOpenIndicatorToTrue();
     }
 };
@@ -22,7 +61,7 @@ const bet = (): void => {
     <div class="place-bet">
         <div class="inner-container">
             <h4 class="title">Place a bet</h4>
-            <input v-model="inputValue" class="input" type="number" step="0.0001" placeholder="0.0004">
+            <input v-model="inputValue" class="input" type="number" step="0.0001">
             <div class="x-buttons">
                 <button class="x-button">MIN</button>
                 <button class="x-button">X1.5</button>

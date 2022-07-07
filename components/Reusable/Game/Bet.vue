@@ -37,7 +37,7 @@ const avatarPath = computed<string>(() => {
             </div>
         </div>
         <div class="info">
-            <SingularGameMiniProfile 
+            <ReusableGameMiniProfile
                 :id="id"
                 :nickname="nickname"
                 :avatar="avatarPath"

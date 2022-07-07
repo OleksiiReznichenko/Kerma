@@ -13,7 +13,7 @@ const openWindow = baseStore.connectWindowOpenIndicatorToTrue;
         <div class="info">
             <div class="balance-container">
                 <h4 class="title">Balance</h4>
-                <strong class="balance">{{myUserBalance.toFixed(4)}} <span>ETH</span></strong>
+                <strong class="balance">{{myUserBalance.toFixed(5)}} <span>ETH</span></strong>
             </div>
             <button @click="openWindow" class="button">Donate</button>
         </div>

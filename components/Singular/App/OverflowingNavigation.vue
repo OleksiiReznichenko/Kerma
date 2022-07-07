@@ -30,10 +30,11 @@ const pageName = computed<string>(() => {
     }
 });
 
+// IF NOT LOGGED IN - CLOSE NAVIGATION, GO TO GAME PAGE, OPEN CONNECT WINDOW
 const goToConnectWindow = (): void => {
     baseStore.navOpenIndicatorToFalse();
-    baseStore.connectWindowOpenIndicatorToTrue();
     router.push('/game/');
+    baseStore.connectWindowOpenIndicatorToTrue();
 };
 
 // REINIT VARIABLES ON WINDOW RESIZE EVENT ON DESKTOP
@@ -42,15 +43,6 @@ const onWindowResize = (): void => {
         baseStore.navOpenIndicatorToFalse();
     }
 };
-
-// CLOSE NAVIGATION ON WRAPPER CLICK
-// const closeNavigation = (event: Event): void => {
-//     const target = event.target as HTMLElement;
-//     console.log(target);
-//     if (!target.classList.contains('navigation-wrapper') && !target.classList.contains('navigation') &&
-//     !target.classList.contains('titles-container') && !target.classList.contains('image-container')) return;
-//     baseStore.navOpenIndicatorToFalse();
-// };
 
 // CLOSE NAVIGATION ON ROUTE CHANGE
 watch(route, () => {

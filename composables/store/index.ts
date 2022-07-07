@@ -51,6 +51,10 @@ export const useBaseStore = defineStore({
             this.myUser = myUser;
         },
 
+        updateBalance(withdrawnAmount: number) {
+            this.myUser.balanceEth -= withdrawnAmount;
+        },
+
         navOpenIndicatorToFalse() {
             this.navOpenIndicator = false;
         },
