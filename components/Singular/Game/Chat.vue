@@ -58,11 +58,6 @@ const autoGrow = (event: Event): void => {
     target.style.height = (target.scrollHeight) + "px";
 };
 
-// ADD EMOJI TO THE INPUT
-// const onEmoji = (event: Event): void => {
-//     newMessage.value += event;
-// };
-
 // REMOVE EXCESSIVE WHITE SPACES IN VALUE
 const removeWhiteSpaces = (): void => {
     newMessageNoWhiteSpace.value = '';
@@ -103,14 +98,135 @@ const sendMessage = (event: Event): void => {
     }, 15);
 };
 
+
+//////////////////////////////////////////////////////////////////////////
+// CODE FOR DRAGGABLE CHAT
+
+// DOM
+const dragItem = ref<HTMLElement | null>(null);
+const chatInfo = ref<HTMLElement | null>(null);
+let container = ref<HTMLElement | null>(null);
+
+let active = ref<boolean>(false);
+let currentX = ref<number | null>(null);
+let currentY = ref<number | null>(null);
+let initialX = ref<number | null>(null);
+let initialY = ref<number | null>(null);
+let xOffset = ref<number>(0);
+let yOffset = ref<number>(0);
+
+// CHECK IF DEVICE IS TOUCH SCREEN
+const isTouchDevice = (): boolean => {  
+    return ('ontouchstart' in window) ||  
+    (navigator.maxTouchPoints > 0);
+}
+
+// DRAG CHAT START REUSABLE CODE
+const dragStartShared = (): void => {
+    const target = event.target as HTMLElement;
+    if (target === dragItem.value || target.classList.contains('messages') ||
+     target.classList.contains('message') || chatInfo.value.contains(target)) {
+        active.value = true;
+    }
+};
+
+// DRAG CHAT START FOR MOUSE
+const dragStartMouse = (event: MouseEvent): void => {
+    if (window.outerWidth < 500) return;
+
+    initialX.value = event.clientX - xOffset.value;
+    initialY.value = event.clientY - yOffset.value;
+    
+    dragStartShared();
+};
+
+// DRAG CHAT START FOR TOUCH
+const dragStartTouch = (event: TouchEvent): void => {
+    if (!isTouchDevice()) return;
+    
+    initialX.value = event.touches[0].clientX - xOffset.value;
+    initialY.value = event.touches[0].clientY - yOffset.value;
+    
+    dragStartShared();
+};
+
+// DRAG CHAT END
+const dragEnd = (): void => {
+    if (window.outerWidth < 500) return;
+
+    initialX.value = currentX.value;
+    initialY.value = currentY.value;
+
+    active.value = false;
+};
+
+// DRAG CHAT REUSABLE CODE
+const dragShared = (): void => {
+    xOffset.value = currentX.value;
+    yOffset.value = currentY.value;
+
+    setTranslate(currentX.value, currentY.value, dragItem.value);
+};
+
+// DRAG CHAT FOR MOUSE
+const dragMouse = (event: MouseEvent): void => {
+    if (!active.value || window.outerWidth < 500) return;
+    // event.preventDefault();
+    
+    currentX.value = event.clientX - initialX.value;
+    currentY.value = event.clientY - initialY.value;
+
+    dragShared();
+};
+
+// DRAG CHAT FOR TOUCH
+const dragTouch = (event: TouchEvent): void => {
+    if (!active.value || !isTouchDevice()) return;
+    // event.preventDefault();
+    
+    currentX.value = event.touches[0].clientX - initialX.value;
+    currentY.value = event.touches[0].clientY - initialY.value;
+
+    dragShared();
+};
+
+// SET TRANSLATE VALUE FOR CHAT
+const setTranslate = (xPos: number, yPos: number, el: HTMLElement): void => {
+    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+};
+
+onMounted(() => {
+    container.value = document.body;
+
+    // ADD EVENT LISTENERS FOR BODY
+    container.value.addEventListener("touchstart", dragStartTouch);
+    container.value.addEventListener("touchend", dragEnd);
+    container.value.addEventListener("touchmove", dragTouch);
+
+    container.value.addEventListener("mousedown", dragStartMouse);
+    container.value.addEventListener("mouseup", dragEnd);
+    container.value.addEventListener("mousemove", dragMouse);
+});
+
+// REMOVE EVENT LISTENERS ON UNMOUNT
+onUnmounted(() => {
+    container.value.removeEventListener("touchstart", dragStartTouch);
+    container.value.removeEventListener("touchend", dragEnd);
+    container.value.removeEventListener("touchmove", dragTouch);
+
+    container.value.removeEventListener("mousedown", dragStartMouse);
+    container.value.removeEventListener("mouseup", dragEnd);
+    container.value.removeEventListener("mousemove", dragMouse);
+});
+
 </script>
 
 <template>
-    <div :class="{'opened': isChatOpenIndicator}" class="chat">
+    <div ref="dragItem" :class="{'opened': isChatOpenIndicator}" class="chat">
         <button @click="closeChat" class="close-button">
             <img src="@/assets/svg/crossPink.svg" alt="Close icon" class="close-icon">
         </button>
-        <div class="chat-info">
+        <div ref="chatInfo" class="chat-info">
             <h2 class="title">Chat</h2>
             <div class="users-online-container">
                 <div class="dot"></div>
@@ -183,7 +299,9 @@ const sendMessage = (event: Event): void => {
     max-height: 68rem;
     padding: 2.5rem 1rem 3.5rem 2.5rem;
     box-shadow: 0 .25rem 5rem rgba(0, 0, 0, 0.1);
-    transition: all .3s;
+    transition: opacity .3s;
+    cursor: move;
+    user-select: none;
     
     opacity: 0;
     visibility: hidden;
@@ -202,7 +320,11 @@ const sendMessage = (event: Event): void => {
         max-height: none;
         border-radius: 0;
         padding: 2.5rem 2rem 3.5rem 3.5rem;
+        right: 0 !important;
+        bottom: 0 !important;
+        transform: none !important;
     }
+    
 
     .close-button {
         @include flex-center;

@@ -5,6 +5,9 @@ import User from '@/composables/interfaces/user';
 
 const baseStore = useBaseStore();
 
+// OPEN CONNECT WALLET WINDOW
+const openConnectWindow = baseStore.connectWindowOpenIndicatorToTrue;
+
 // OPEN STEPS WINDOW
 const openStepsWindow = baseStore.isStepsOpenIndicatorToTrue;
 
@@ -34,22 +37,26 @@ const myUserId = inject<Ref<string>>('myUserId');
                 <span>{{prizeFund.toFixed(5)}} ETH</span>
             </div>
             <div class="small-navigation">
-                <NuxtLink :to="'/users/' + myUserId" class="navigation-item">
+                <NuxtLink v-if="myUserId" :to="'/users/' + myUserId" class="navigation-item">
                     <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
                 </NuxtLink>
+                <button v-else @click="openConnectWindow" class="navigation-item">
+                    <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
+                </button>
                 <button @click="openStepsWindow" class="navigation-item no-margin">
                     <span>?</span>
                 </button>
             </div>
         </div>
-        <div class="bets">
+        <div ref="betsContainer" class="bets">
             <ReusableGameBet 
                 v-for="(bet, index) in bets"
                 :key="bet.id"
                 :index="index"
                 :id="bet.id"
                 :bet-amount="bet.betAmountEth"
-                :bet-time="bet.betTime"
+                :start-time="bet.startTime"
+                :end-time="bet.endTime"
                 :nickname="betsUsers[index].nickname"
                 :avatar="betsUsers[index].avatar"
                 :rank="betsUsers[index].rank"

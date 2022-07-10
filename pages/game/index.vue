@@ -102,6 +102,7 @@ provide<Ref<string>>('myUserId', myUserId);
                 :highest-bet-user-avatar="highestBetUser.avatar"
             />
             <SingularGameMainContent />
+            <Reusable3DModel page="game" />
         </div>
         <SingularGameChat />
         <ReusableGameChatButton class="mobile" />
@@ -115,6 +116,7 @@ provide<Ref<string>>('myUserId', myUserId);
 }
 
 .relative-container {
+    z-index: 500 !important;
     
     @media only screen and (max-width: 1200px) and (min-height: 750px) and (min-width: 850px) {
         display: flex;

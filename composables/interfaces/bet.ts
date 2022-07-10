@@ -1,6 +1,7 @@
 export default interface Bet {
     id: string;
     userId: string;
-    betTime: string;
+    startTime: number;
+    endTime: number | null;
     betAmountEth: number;
 }

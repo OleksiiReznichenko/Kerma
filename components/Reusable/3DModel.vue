@@ -5,7 +5,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { storeToRefs } from 'pinia';
 
 interface Props {
-    page: 'main' | 'faq'
+    page: 'main' | 'faq' | 'game';
 }
 
 const props = defineProps<Props>();
@@ -39,6 +39,9 @@ let far = ref<number>(600);
 let canvas = ref<HTMLCanvasElement | null>(null);
 let sceneContainer = ref<HTMLElement | null>(null);
 
+// HTML DOM ELEMENT
+let html = ref<HTMLElement | null>(null);
+
 // NAV OPEN INDICATOR
 const baseStore = useBaseStore();
 const { navOpenIndicator } = storeToRefs(baseStore);
@@ -65,6 +68,8 @@ const initAnimation = (): void => {
     if (props.page === 'main') {
         camera.position.set(8, 2, 15);
     } else if (props.page === 'faq') {
+        camera.position.set(-8, 2, 15.5);
+    } else if (props.page === 'game') {
         camera.position.set(-8, 2, 15.5);
     }
     camera.lookAt(scene.position);
@@ -95,6 +100,8 @@ const initAnimation = (): void => {
         spotLight.position.set(-18, 10, 45);
     } else if (props.page === 'faq') {
         spotLight.position.set(30, 15, 45);
+    } else if (props.page === 'game') {
+        spotLight.position.set(30, 15, 45);
     }
 
     // spotLight.castShadow = true;
@@ -109,6 +116,8 @@ const initAnimation = (): void => {
         spotLight2.position.set(28, 12, 5);
     } else if (props.page === 'faq') {
         spotLight2.position.set(-40, 17, 5);
+    } else if (props.page === 'game') {
+        spotLight2.position.set(-40, 17, 5);
     }
 
     scene.add(spotLight2);
@@ -118,6 +127,8 @@ const initAnimation = (): void => {
     if (props.page === 'main') {
         spotLight3.position.set(40, 17, -35);
     } else if (props.page === 'faq') {
+        spotLight3.position.set(-40, 17, -35);
+    } else if (props.page === 'game') {
         spotLight3.position.set(-40, 17, -35);
     }
 
@@ -165,33 +176,69 @@ const initAnimation = (): void => {
 const kermaModelScailing = (): void => {
     if (!kermaModel) return;
     kermaModel.scale.set(1.4, 1.4, 1.4);
+    
+    if (props.page === 'game') {
+        kermaModel.scale.set(1, 1, 1);
+    }
 
     if (window.outerWidth < 1500 && window.outerHeight > 700 && window.outerWidth > 1300) {
         kermaModel.scale.set(1.3, 1.3, 1.3);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.9, .9, .9);
+        }
     }
 
     if (window.outerWidth < 1300 && window.outerHeight > 700 && window.outerWidth > 1000) {
         kermaModel.scale.set(1.2, 1.2, 1.2);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.8, .8, .8);
+        }
     }
 
     if (window.outerWidth < 1000 && window.outerHeight > 600 && window.outerWidth > 600) {
         kermaModel.scale.set(1, 1, 1);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.8, .8, .8);
+        }
     }
 
     if (window.outerWidth < 1000 && window.outerHeight < 600 && window.outerWidth > 600) {
         kermaModel.scale.set(1.35, 1.35, 1.35);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.95, .95, .95);
+        }
+    }
+
+    if (window.outerWidth < 850 && window.outerHeight > 600 && window.outerWidth > 600 && props.page === 'game') {
+        kermaModel.scale.set(.7, .7, .7);
     }
     
     if (window.outerWidth < 700 && window.outerHeight > 600 && window.outerWidth > 600) {
         kermaModel.scale.set(1.1, 1.1, 1.1);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.7, .7, .7);
+        }
     }
     
     if (window.outerWidth < 850 && window.outerHeight > 1000) {
         kermaModel.scale.set(.9, .9, .9);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.7, .7, .7);
+        }
     }
 
-    if (window.outerWidth < 600) {
+    if (window.outerWidth <= 600) {
         kermaModel.scale.set(.9, .9, .9);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.7, .7, .7);
+        }
     }
 };
 
@@ -211,6 +258,160 @@ const animate = (): void => {
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MOVE CAMERA ON MOUSEMOVE
+const onMouseMove = (event: MouseEvent): void => {
+    if (props.page === 'main') {
+        let maxPositionX = 8.5;
+        let minPositionX = 5.5;
+
+        // let maxPositionY = 2.5;
+        // let minPositionY = 2.4;
+        
+        let maxRotationX = -0.08;
+        let minRotationX = -0.2;
+
+        // let maxRotationY = 0.475;
+        // let minRotationY = 0.4;
+
+        if (camera.position.x < minPositionX) {
+            camera.position.x = minPositionX;
+        } else if (camera.position.x > maxPositionX) {
+            camera.position.x = maxPositionX;
+        }
+
+        if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
+            camera.position.x -= -event.movementX / 1150;
+        }
+
+        // if (camera.position.y < minPositionY) {
+        //     camera.position.y = minPositionY;
+        // } else if (camera.position.y > maxPositionY) {
+        //     camera.position.y = maxPositionY;
+        // }
+
+        // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
+        //     camera.position.y -= -event.movementY / 3050;
+        // }
+
+        if (camera.rotation.x < minRotationX) {
+            camera.rotation.x = minRotationX;
+        } else if (camera.rotation.x > maxRotationX) {
+            camera.rotation.x = maxRotationX;
+        }
+
+        if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
+            camera.rotation.x -= event.movementY / 9500;
+        }
+
+        // if (camera.rotation.y < minRotationY) {
+        //     camera.rotation.y = minRotationY;
+        // } else if (camera.rotation.y > maxRotationY) {
+        //     camera.rotation.y = maxRotationY;
+        // }
+        
+        // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
+        //     camera.rotation.y -= event.movementX / 59000;
+        // }
+    } else if (props.page === 'faq') {
+        let maxPositionX = -6.5;
+        let minPositionX = -9.5;
+
+        // let maxPositionY = 2.5;
+        // let minPositionY = 2.4;
+        
+        let maxRotationX = -0.08;
+        let minRotationX = -0.2;
+
+        // let maxRotationY = -0.4;
+        // let minRotationY = -0.475;
+
+        if (camera.position.x < minPositionX) {
+            camera.position.x = minPositionX;
+        } else if (camera.position.x > maxPositionX) {
+            camera.position.x = maxPositionX;
+        }
+
+        if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
+            camera.position.x -= -event.movementX / 2050;
+        }
+
+        // if (camera.position.y < minPositionY) {
+        //     camera.position.y = minPositionY;
+        // } else if (camera.position.y > maxPositionY) {
+        //     camera.position.y = maxPositionY;
+        // }
+
+        // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
+        //     camera.position.y -= event.movementY / 3050;
+        // }
+
+
+        if (camera.rotation.x < minRotationX) {
+            camera.rotation.x = minRotationX;
+        } else if (camera.rotation.x > maxRotationX) {
+            camera.rotation.x = maxRotationX;
+        }
+
+        if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
+            camera.rotation.x -= event.movementY / 9500;
+        }
+
+        // if (camera.rotation.y < minRotationY) {
+        //     camera.rotation.y = minRotationY;
+        // } else if (camera.rotation.y > maxRotationY) {
+        //     camera.rotation.y = maxRotationY;
+        // }
+        
+        // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
+        //     camera.rotation.y += event.movementX / 59000;
+        // }
+    } else if (props.page === 'game') {
+        let maxPositionX = -7.75;
+        let minPositionX = -9;
+
+        // let maxPositionY = 2.5;
+        // let minPositionY = 2.4;
+
+        let maxRotationX = -0.1;
+        let minRotationX = -0.15;
+
+        // let maxRotationY = -0.4;
+        // let minRotationY = -0.475;
+
+        if (camera.position.x < minPositionX) {
+            camera.position.x = minPositionX;
+        } else if (camera.position.x > maxPositionX) {
+            camera.position.x = maxPositionX;
+        }
+
+        if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
+            camera.position.x -= -event.movementX / 3050;
+        }
+
+        // if (camera.position.y < minPositionY) {
+        //     camera.position.y = minPositionY;
+        // } else if (camera.position.y > maxPositionY) {
+        //     camera.position.y = maxPositionY;
+        // }
+
+        // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
+        //     camera.position.y -= event.movementY / 3050;
+        // }
+
+
+        if (camera.rotation.x < minRotationX) {
+            camera.rotation.x = minRotationX;
+        } else if (camera.rotation.x > maxRotationX) {
+            camera.rotation.x = maxRotationX;
+        }
+
+        if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
+            camera.rotation.x -= event.movementY / 13000;
+        }
+    }
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RESIZE 3D MODEL
 const onWindowResize = (): void => {
     if (!camera) return;
@@ -220,7 +421,7 @@ const onWindowResize = (): void => {
 
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     prevHeight = window.outerHeight;
 };
@@ -230,23 +431,26 @@ watch(navOpenIndicator, (newValue) => {
     if (!newValue) {
         requestAnimationFrame(animate);
     }
-})
+});
 
 onMounted(() => {
     // DOM
     canvas.value = document.querySelector('.model-scene canvas');
-    
+
     // INIT 3D MODEL AND ANIMATION
     initAnimation();
 
     // RESIZE
     window.addEventListener('resize', onWindowResize);
+
+    html.value = document.querySelector('html');
+    html.value.addEventListener('mousemove', onMouseMove);
 });
 
 // CLEAN CANVAS
 onBeforeUnmount(() => {
     sceneContainer.value.innerHTML = '';
-})
+});
 
 // CLEAN THREE JS DATA
 onUnmounted(() => {
@@ -262,6 +466,7 @@ onUnmounted(() => {
     clock = null;
 
     window.removeEventListener('resize', onWindowResize);
+    html.value.removeEventListener('mousemove', onMouseMove);
 });
 
 </script>
@@ -333,6 +538,49 @@ onUnmounted(() => {
 
     @media only screen and (max-width: 600px) {
         left: -60%;
+    }
+}
+
+.game {
+    top: 18%;
+    left: -40%;
+    z-index: 500;
+
+    @media only screen and (max-width: 850px) {
+        position: absolute;
+    }
+
+    @media only screen and (max-width: 850px) and (min-height: 600px) {
+        top: -3%;
+        left: -110%;
+    }
+
+    @media only screen and (max-width: 850px) and (max-height: 750px) {
+        top: -1%;
+    }
+
+    @media only screen and (max-width: 850px) and (max-height: 600px) {
+        top: 5%;
+        left: -80%;
+        right: auto;
+        transform: translateX(50%); 
+    }
+
+    @media only screen and (max-width: 850px) and (min-height: 1000px) {
+        top: -22rem;
+    }
+
+    @media only screen and (max-width: 600px) and (min-height: 600px) {
+        top: -3%;
+        left: -90%;
+    }
+
+    @media only screen and (max-width: 600px) and (max-height: 750px) {
+        top: -1%;
+    }
+
+    @media only screen and (max-width: 600px) and (max-height: 600px) {
+        top: 2%;
     }
 }
 </style>

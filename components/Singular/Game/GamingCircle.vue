@@ -143,7 +143,7 @@ watch(navOpenIndicator, (newValue) => {
     width: 47rem;
     height: 47rem;
     position: fixed;
-    top: 47%;
+    top: 42%;
     transform: translateY(-50%) translateX(-10%);
     
     @media only screen and (max-width: 1200px) and (min-height: 750px) {

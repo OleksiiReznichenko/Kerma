@@ -20,37 +20,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -66,37 +72,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -112,37 +124,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -158,37 +176,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -204,37 +228,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -250,37 +280,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -296,37 +332,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]
@@ -342,37 +384,43 @@ export const useGamesStore = defineStore({
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'ioi1oi1jdsfass2nk1j',
-                        betTime: '09:32',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 20.3342
                     },
                     {
                         id: 'ewafeeeefgeyeee32r8',
                         userId: 'safefaessss2131f',
-                        betTime: '12:55',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 15.5643
                     },
                     {
                         id: 'qwrns9jk3ngb136jdkw',
                         userId: 'gmnnpefa213nkl1k',
-                        betTime: '05:00',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 10.4221
                     },
                     {
                         id: 'gjebaiji324kln1oipj',
                         userId: 'gjane124onkkkl13',
-                        betTime: '80:44',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.9221
                     },
                     {
                         id: 'bconljskenl1jpdsk34',
                         userId: 'qonkfnesj;nle12n',
-                        betTime: '1:10',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 9.2998
                     },
                     {
                         id: 'kfasjfll212oiopnlal',
                         userId: 'mkqondsjow09j1k4',
-                        betTime: '10:22',
+                        startTime: 1657439263796,
+                        endTime:   1657498810882,
                         betAmountEth: 2.1131
                     },
                 ]

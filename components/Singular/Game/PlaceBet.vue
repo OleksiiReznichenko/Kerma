@@ -7,7 +7,7 @@ const currentGameStore = useCurrentGameStore();
 
 const usersStore = useUsersStore();
 
-let inputValue = ref<number>(0.00004);
+let inputValue = ref<number>(0.00001);
 
 // MY USER'S ID
 const myUserId = inject<Ref<string>>('myUserId');
@@ -17,6 +17,21 @@ const myUserBalance = inject<Ref<number>>('myUserBalance');
 
 // HIGHEST BET
 const highestBet = inject<Ref<Bet>>('highestBet');
+
+// UPDATE INPUT VALUE ON X BUTTON CLICK
+const xButton = (x: number | 'min' | 'all in') => {
+    if (typeof x === 'number') {
+        inputValue.value *= x;
+    } else if (x === 'min' && highestBet.value.betAmountEth) {
+        inputValue.value = highestBet.value.betAmountEth + 0.00001;
+    } else if (x === 'min' && !highestBet.value.betAmountEth) {
+        inputValue.value = highestBet.value.betAmountEth;
+    } else if (x === 'all in' && myUserId.value) {
+        inputValue.value = myUserBalance.value;
+    } else if (x === 'all in' && !myUserId.value) {
+        baseStore.connectWindowOpenIndicatorToTrue();
+    }
+};
 
 // BET
 const bet = (): void => {
@@ -38,18 +53,21 @@ const bet = (): void => {
             alert('You don\'t have enough balance');
             return;
         }
+        
+        currentGameStore.addEndTimeToBet(highestBet.value.id, new Date().getTime());
 
         const newBetObject: Bet = {
             id: (Math.random() * Date.now()).toString(),
             userId: myUserId.value,
-            betTime: '10:22',
+            startTime: new Date().getTime(),
+            endTime: null,
             betAmountEth: inputValue.value
         };
 
         currentGameStore.addNewBet(newBetObject);
         usersStore.updateBalance(myUserId.value, inputValue.value);
         baseStore.updateBalance(inputValue.value);
-        
+        inputValue.value = 0.00001;
     } else {
         // OPEN WINDOW TO CONNECT WALLET
         baseStore.connectWindowOpenIndicatorToTrue();
@@ -61,12 +79,12 @@ const bet = (): void => {
     <div class="place-bet">
         <div class="inner-container">
             <h4 class="title">Place a bet</h4>
-            <input v-model="inputValue" class="input" type="number" step="0.0001">
+            <input v-model="inputValue" class="input" type="number" step="0.00001">
             <div class="x-buttons">
-                <button class="x-button">MIN</button>
-                <button class="x-button">X1.5</button>
-                <button class="x-button">X2</button>
-                <button class="x-button">All in</button>
+                <button @click="xButton('min')" class="x-button">MIN</button>
+                <button @click="xButton(1.5)" class="x-button">X1.5</button>
+                <button @click="xButton(2)" class="x-button">X2</button>
+                <button @click="xButton('all in')" class="x-button">All in</button>
             </div>
         </div>
         <button @click="bet" class="bet-button">

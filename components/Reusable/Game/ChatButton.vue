@@ -1,12 +1,27 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
 const baseStore = useBaseStore();
+const { isChatOpenIndicator } = storeToRefs(baseStore);
 
 // OPEN CHAT
 const openChat = baseStore.isChatOpenIndicatorToTrue;
+
+// CLOSE CHAT
+const closeChat = baseStore.isChatOpenIndicatorToFalse;
+
+// TOGGLE CHAT
+const toggleChat = (): void => {
+    if (isChatOpenIndicator.value) {
+        closeChat();
+    } else {
+        openChat();
+    }
+};
 </script>
 
 <template>
-    <button @click="openChat" class="chat-button">
+    <button @click="toggleChat" class="chat-button">
         <img src="@/assets/img/cloudForChat.png" alt="Cloud" class="cloud">
         <img src="@/assets/svg/chat.svg" alt="Chat icon" class="icon">
     </button>
@@ -19,6 +34,10 @@ const openChat = baseStore.isChatOpenIndicatorToTrue;
     right: -8.5rem;
     z-index: 1500;
     width: 12rem;
+
+    &:hover {
+        transform: scale(1.1);
+    }
     
     @media only screen and (max-width: 1000px) {
         top: -5.5rem;
@@ -34,6 +53,7 @@ const openChat = baseStore.isChatOpenIndicatorToTrue;
 
     .cloud {
         width: 100%;
+        transition: all .3s;
     }
 
     .icon {

@@ -56,6 +56,7 @@ const avatarPath = computed<string>(() => {
     align-items: flex-end;
     width: 90%;
     margin-bottom: 2rem;
+    user-select: text !important;
 
     @media only screen and (max-width: 400px) {
         width: 92%;
@@ -85,6 +86,7 @@ const avatarPath = computed<string>(() => {
         width: 100%;
         overflow: hidden;
         box-shadow: .75rem .75rem 1.35rem rgba(76, 26, 92, 0.08);
+        cursor: default !important;
 
         .name-date-container {
             display: flex;
@@ -95,7 +97,12 @@ const avatarPath = computed<string>(() => {
             .name {
                 color: $color-pink-dark-3;
                 font-weight: 500 !important;
+                cursor: pointer !important;
             }
+        }
+
+        .message-text {
+            cursor: text !important;
         }
     }
 }

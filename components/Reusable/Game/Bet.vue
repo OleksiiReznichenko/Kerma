@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import UserAchievements from '~~/composables/interfaces/userAchievements';
+import UserAchievements from '@/composables/interfaces/userAchievements';
 
 interface Props {
     index: number;
     id: string;
     betAmount: number;
-    betTime: string;
+    startTime: number;
+    endTime: number;
     nickname: string;
     avatar: string;
     rank: string;
@@ -25,6 +26,93 @@ const avatarPath = computed<string>(() => {
         return baseUrl.value + 'imgs/defaultAvatar.png';
     } else {
         return props.avatar;
+    }
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GAME DURATION RELATED CODE
+let stopwatchInterval: ReturnType<typeof setInterval> | null = null;
+let hours = ref<string | number>('00');
+let minutes = ref<string | number>('00');
+let seconds = ref<string | number>('00');
+
+const fullGameDuration = computed(() => {
+    if (props.index === 0) return;
+    const gameDuration = props.endTime - props.startTime;
+    calcInitialTime(gameDuration);
+
+    return `${hours.value}:${minutes.value}:${seconds.value}`;
+});
+
+const calcInitialTime = (gameDuration: number): void => {
+    seconds.value = Math.floor((gameDuration / 1000) % 60);
+    minutes.value = Math.floor((gameDuration / (1000 * 60)) % 60);
+    hours.value = Math.floor((gameDuration / (1000 * 60 * 60)) % 60);
+
+    formatSeconds();
+    formatMinutes();
+    formatHours();
+};
+
+// FORMAT SECONDS IF SECOND IS LESS THAN 10
+const formatSeconds = (): void => {
+     if (+seconds.value < 10) {
+        seconds.value = '0' + seconds.value;
+    }
+};
+
+// FORMAT MINUTES IF MINUTE IS LESS THAN 10
+const formatMinutes = (): void => {
+     if (+minutes.value < 10) {
+        minutes.value = '0' + minutes.value;
+    }
+};
+
+// FORMAT HOURS IF HOUR IS LESS THAN 10
+const formatHours = (): void => {
+     if (+hours.value < 10) {
+        hours.value = '0' + hours.value;
+    }
+};
+
+// HIGHEST BET STOPWATCH
+const stopwatchInit = (): void => {
+    seconds.value = +seconds.value + 1;
+
+    if (+seconds.value >= 60) {
+        seconds.value = '00';
+        minutes.value = +minutes.value + 1;
+
+        formatMinutes();
+    }
+
+    if (+minutes.value >= 60) {
+        minutes.value = '00';
+        hours.value = +hours.value + 1;
+
+        formatHours();
+    }
+
+    if (+seconds.value > 0) {
+        formatSeconds();
+    }
+};
+
+onMounted(() => {
+    if (props.index === 0) {
+        const gameDuration = new Date().getTime() - props.startTime;
+        calcInitialTime(gameDuration);
+
+        // STOPWATCH INTERVAL
+        stopwatchInit();
+        stopwatchInterval = setInterval(stopwatchInit, 1000);
+    }
+});
+
+onUnmounted(() => {
+    if (props.index === 0) {
+        // CLEAR STOPWATCH INTERVAL
+        clearInterval(stopwatchInterval);
     }
 });
 </script>
@@ -55,7 +143,12 @@ const avatarPath = computed<string>(() => {
                 </div>
             </div>
             <div class="column second-column">
-                <strong class="info-line">{{betTime}}</strong>
+                <strong v-if="index === 0" class="info-line bet-info-line">
+                    <span>{{hours}}</span> : 
+                    <span>{{minutes}}</span> : 
+                    <span>{{seconds}}</span>
+                </strong>
+                <strong v-else class="info-line">{{fullGameDuration}}</strong>
                 <span class="subtitle">Bet duration</span>
             </div>
             <div class="column third-column">
@@ -182,6 +275,21 @@ const avatarPath = computed<string>(() => {
                     font-weight: 600;
                     margin-bottom: .45rem;
                     font-size: 2.6rem;
+                }
+            }
+
+            .bet-info-line {
+                text-align: center;
+
+                span {
+                    display: inline-block;
+                    width: 2rem;
+                    white-space: nowrap;
+                }
+
+                .dots {
+                    width: 1rem;
+                    // margin: 0 .75rem 0 1.25rem;
                 }
             }
 
