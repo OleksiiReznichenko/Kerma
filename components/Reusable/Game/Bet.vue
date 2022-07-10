@@ -7,7 +7,7 @@ interface Props {
     id: string;
     betAmount: number;
     startTime: number;
-    endTime: number;
+    endTime: number | null;
     nickname: string;
     avatar: string;
     rank: string;
