@@ -3,8 +3,8 @@ import { storeToRefs } from 'pinia';
 
 interface Props {
     prizeFund: number;
-    highestBetAmount: number;
-    highestBetUserAvatar: string;
+    highestBetAmount: number | undefined;
+    highestBetUserAvatar: string | undefined;
 }
 
 const props = defineProps<Props>();
@@ -21,12 +21,21 @@ let addAnimationClass = ref<boolean>(true);
 
 // AVATAR PATH
 const avatarPath = computed<string>(() => {
+    if (!props.highestBetUserAvatar) return baseUrl + 'imgs/defaultAvatar.png';
     if (props.highestBetUserAvatar === 'default') {
         return baseUrl + 'imgs/defaultAvatar.png';
     } else {
         return props.highestBetUserAvatar;
     }
 });
+
+const highestBetAmount = computed(() => {
+    if (props.highestBetAmount) {
+        return props.highestBetAmount;
+    } else {
+        return 0;
+    }
+})
 
 // STOP GAMING CIRCLE ANIMATION ON NAVIGATION OPEN
 watch(navOpenIndicator, (newValue) => {
@@ -78,7 +87,7 @@ watch(navOpenIndicator, (newValue) => {
                 <div class="bet-container">
                     <strong class="normal">Highest Current Bet:</strong>
                     <div class="flex-container">
-                         <img :src="avatarPath" alt="Avatar" class="avatar">
+                        <img :src="avatarPath" alt="Avatar" class="avatar">
                         <strong class="normal">{{highestBetAmount.toFixed(4)}} ETH</strong>
                     </div>
                 </div>

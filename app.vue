@@ -25,6 +25,25 @@ onUnmounted(() => {
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+
+    <div class="iziToast-wrapper iziToast-wrapper-bottomRight">
+      <div class="iziToast-capsule" style="height: 0px; transition-delay: 0.2s;">
+        <div data-izitoast-ref="1657528331481" class="iziToast error iziToast-theme-dark iziToast-color-red iziToast-animateInside iziToast-opened iziToast-closing fadeOut" id="WW91ciUyMGJldCUyMG11c3QlMjBiZSUyMGJpZ2dlciUyMHRoYW4lMjBjdXJyZW50JTIwaGlnaGVzdCUyMGJldHJlZA" style="pointer-events: none;">
+          <div class="iziToast-body" style="padding-left: 33px;">
+            <i class="iziToast-icon ico-error revealIn"></i>
+            <div class="iziToast-texts">
+              <p class="iziToast-message slideIn">Your bet must be bigger than current highest bet</p>
+            </div>
+            <div></div>
+          </div>
+          <button type="button" class="iziToast-close"></button>
+          <div class="iziToast-progressbar">
+            <div style="transition: width 4834ms linear 0s; width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -56,6 +75,139 @@ onUnmounted(() => {
   @media only screen and (min-width: 850px) {
     display: none !important;
   }
+}
+
+.iziToast-wrapper {
+  border-radius: 4rem;
+  overflow: hidden;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.iziToast-capsule {
+  border-radius: 4rem;
+  overflow: hidden;
+}
+
+.iziToast-icon {
+  display: inline-block !important;
+  margin: 0 !important;
+  margin-right: 13rem !important;
+  top: 50% !important;
+  left: -3rem !important;
+  transform: translateY(-50%) !important;
+
+  @media only screen and (max-width: 1000px) {
+    top: 52% !important;
+  }
+}
+
+.iziToast-close {
+  // border-radius: 100% !important;
+  // border: 3px solid white !important;
+  // width: 2rem !important;
+  // height: 2rem !important;
+  padding: 3rem 3rem 2rem !important;
+  top: 0;
+  right: 0;
+  // position: static !important;
+  // top: 50% !important;
+  // right: 1.5rem !important;
+  // transform: translateY(-50%) !important;
+  background-image: url(@/assets/svg/crossWithCircle.svg) !important;
+  background-size: 20px !important;
+  opacity: 1 !important;
+}
+
+.iziToast-texts {
+  margin: 0 !important;
+  margin-right: 6rem !important;
+  padding: 2rem 1.5rem 2rem 2.5rem !important;
+  border-top-left-radius: 100rem !important;
+  border-bottom-left-radius: 100rem !important;
+
+  @media only screen and (max-width: 1200px) {
+    padding: 2.25rem 1.5rem 2.25rem 2.5rem !important;
+  }
+
+  @media only screen and (max-width: 1100px) {
+    padding: 2.35rem 1.75rem 2.35rem 2.5rem !important;
+  }
+
+  @media only screen and (max-width: 900px) {
+    padding: 2.5rem 1.5rem 2rem 2.5rem !important;
+  }
+
+  @media only screen and (max-width: 850px) {
+    padding: 2.35rem 1.25rem 2rem 2.5rem !important;
+  }
+
+  .iziToast-message {
+    margin: 0 !important;
+  }
+}
+
+.iziToast {
+    box-sizing: border-box;
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    border-radius: 4rem;
+    box-shadow: none !important;
+    margin: .5rem 0 !important;
+    max-width: 95% !important;
+    width: auto !important;
+    padding: 0 !important;
+    padding-left: 3rem !important;
+
+    &.success {
+        background: rgba(#2EB358, 0.5) !important;
+
+        .iziToast-texts {
+          background: rgba(#2EB358, 0.5) !important;
+        }
+
+        .iziToast-close {
+          background-color: rgba(#2EB358, 0.5) !important;
+        }
+    }
+
+    &.warning {
+        background: rgba(#eb854b, 0.5) !important;
+
+        .iziToast-texts {
+          background: #eb854b !important;
+        }
+
+        .iziToast-close {
+          background-color: #eb854b !important;
+        }
+    }
+
+    &.error {
+        background: rgba(#c64e54, 0.5) !important;
+
+        .iziToast-texts {
+          background: #e7696d !important;
+        }
+
+        .iziToast-close {
+          background-color: #e7696d !important;
+        }
+    }
+
+    & > .iziToast-body .iziToast-message {
+        font-family: Montserrat !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 1.6rem;
+        // line-height: 2.25rem;
+        color: #FFFFFF !important;
+    
+        @media only screen and (max-width: 850px) {
+          font-size: 2rem;
+        }
+    }
 }
 
 h1 {

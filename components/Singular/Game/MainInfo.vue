@@ -15,10 +15,10 @@ const openStepsWindow = baseStore.isStepsOpenIndicatorToTrue;
 const prizeFund = inject<number>('prizeFund');
 
 // CURRENT GAME BETS
-const bets = inject<Ref<Bet[]>>('bets');
+const bets = inject<Ref<Bet[] | undefined[]>>('bets');
 
 // CURRENT GAME BETS
-const betsUsers = inject<Ref<User[]>>('betsUsers');
+const betsUsers = inject<Ref<User[] | undefined[]>>('betsUsers');
 
 // MY USER'S ID
 const myUserId = inject<Ref<string>>('myUserId');
@@ -48,7 +48,7 @@ const myUserId = inject<Ref<string>>('myUserId');
                 </button>
             </div>
         </div>
-        <div ref="betsContainer" class="bets">
+        <div v-if="bets.length > 0" ref="betsContainer" class="bets">
             <ReusableGameBet 
                 v-for="(bet, index) in bets"
                 :key="bet.id"
@@ -85,12 +85,12 @@ const myUserId = inject<Ref<string>>('myUserId');
 
     .bets {
         overflow-y: scroll;
-        max-height: 90%;
+        height: 90%;
         padding-right: 2rem;
         padding-bottom: 3rem;
         
         @media only screen and (max-width: 850px) {
-            max-height: auto;
+            height: auto;
             overflow: visible;
             padding-right: 0;
         }

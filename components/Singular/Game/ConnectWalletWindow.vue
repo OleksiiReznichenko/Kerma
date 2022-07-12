@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import User from '~~/composables/interfaces/user';
+import User from '@/composables/interfaces/user';
 
 // OPEN WINDOW INDICATOR
 const baseStore = useBaseStore();

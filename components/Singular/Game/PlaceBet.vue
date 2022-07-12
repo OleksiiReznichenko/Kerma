@@ -2,6 +2,8 @@
 import { Ref } from 'vue';
 import Bet from '@/composables/interfaces/bet';
 
+const { $notifyError, $notifySuccess } = useNuxtApp();
+
 const baseStore = useBaseStore();
 const currentGameStore = useCurrentGameStore();
 
@@ -16,16 +18,16 @@ const myUserId = inject<Ref<string>>('myUserId');
 const myUserBalance = inject<Ref<number>>('myUserBalance');
 
 // HIGHEST BET
-const highestBet = inject<Ref<Bet>>('highestBet');
+const highestBet = inject<Ref<Bet | undefined>>('highestBet');
 
 // UPDATE INPUT VALUE ON X BUTTON CLICK
 const xButton = (x: number | 'min' | 'all in') => {
     if (typeof x === 'number') {
         inputValue.value *= x;
-    } else if (x === 'min' && highestBet.value.betAmountEth) {
+    } else if (x === 'min' && highestBet.value) {
         inputValue.value = highestBet.value.betAmountEth + 0.00001;
-    } else if (x === 'min' && !highestBet.value.betAmountEth) {
-        inputValue.value = highestBet.value.betAmountEth;
+    } else if (x === 'min' && !highestBet.value) {
+        inputValue.value = 0.00001;
     } else if (x === 'all in' && myUserId.value) {
         inputValue.value = myUserBalance.value;
     } else if (x === 'all in' && !myUserId.value) {
@@ -38,23 +40,25 @@ const bet = (): void => {
     if (myUserId.value) {
         // CHECK IF BET INPUT IS EMPTY AND IF IT'S VALUE IS LESS THAN MINIMAL AMOUNT
         if (!inputValue.value || inputValue.value < 0.00001) {
-            alert('Your bet must be a least 0.00001 ETH');
+            $notifyError('Your bet must be a least 0.00001 ETH');
             return;
         }
         
         // CHECK IF BET AMOUNT IS LESS THAN CURRENT HIGHEST BET
-        if (inputValue.value <= highestBet.value.betAmountEth) {
-            alert('Your bet must be bigger than current highest bet');
+        if (highestBet.value && inputValue.value <= highestBet.value?.betAmountEth) {
+            $notifyError('Your bet must be bigger than current highest bet');
             return;
         }
         
         // CHECK IF BET AMOUNT IS BIGGER THAN MY BALANCE
         if (inputValue.value > myUserBalance.value) {
-            alert('You don\'t have enough balance');
+            $notifyError('You don\'t have enough balance');
             return;
         }
         
-        currentGameStore.addEndTimeToBet(highestBet.value.id, new Date().getTime());
+        if (highestBet.value) {
+            currentGameStore.addEndTimeToBet(highestBet.value.id, new Date().getTime());
+        }
 
         const newBetObject: Bet = {
             id: (Math.random() * Date.now()).toString(),
@@ -65,8 +69,9 @@ const bet = (): void => {
         };
 
         currentGameStore.addNewBet(newBetObject);
-        usersStore.updateBalance(myUserId.value, inputValue.value);
-        baseStore.updateBalance(inputValue.value);
+        usersStore.updateBalance(myUserId.value, 'subtract', inputValue.value);
+        baseStore.updateBalance('subtract', inputValue.value);
+        $notifySuccess(`Your ${inputValue.value.toFixed(5)} ETH bet approved`);
         inputValue.value = 0.00001;
     } else {
         // OPEN WINDOW TO CONNECT WALLET

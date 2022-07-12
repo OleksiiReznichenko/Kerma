@@ -2,6 +2,14 @@ import { defineStore } from 'pinia';
 import GameInfo from '../interfaces/gameInfo';
 import User from '../interfaces/user';
 
+interface NextGameDate {
+    year: number;
+    month: number;
+    day: number;
+    hour: number;
+    minute: number;
+    second: number;
+}
 
 interface State {
     baseUrl: string | boolean;
@@ -9,6 +17,7 @@ interface State {
     connectWindowOpenIndicator: boolean;
     isStepsOpenIndicator: boolean;
     isChatOpenIndicator: boolean;
+    nextGameDate: NextGameDate;
     previousGameInfo: GameInfo;
     myUser: User;
 }
@@ -22,6 +31,14 @@ export const useBaseStore = defineStore({
         connectWindowOpenIndicator: false,
         isStepsOpenIndicator: false,
         isChatOpenIndicator: false,
+        nextGameDate: {
+            year: 2022,
+            month: 7,
+            day: 11,
+            hour: 21,
+            minute: 15,
+            second: 0,
+        },
         previousGameInfo: {
             id: 'kj1k4k325jk235kp141k2lk',
             winnerNickname: 'Doly Menners',
@@ -51,8 +68,12 @@ export const useBaseStore = defineStore({
             this.myUser = myUser;
         },
 
-        updateBalance(withdrawnAmount: number) {
-            this.myUser.balanceEth -= withdrawnAmount;
+        updateBalance(action: 'add' | 'subtract', amount: number) {
+            if (action === 'add') {
+                this.myUser.balanceEth += amount;
+            } else if (action === 'subtract') {
+                this.myUser.balanceEth -= amount;
+            }
         },
 
         navOpenIndicatorToFalse() {

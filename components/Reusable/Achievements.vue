@@ -42,7 +42,6 @@ let prevButton = ref<HTMLElement | null>(null);
 // TOGGLE ACHIEVEMENT DROPDOWN
 const toggleAchievementDropdown = (event: Event): void => {
     const target = event.target as HTMLElement;
-    console.log(target);
 
     if (!target.classList.contains('achievement-button') &&
     !target.classList.contains('achievement-icon')) return;
@@ -104,7 +103,7 @@ onUnmounted(() => {
     }
 
     .opened {
-        ::v-deep .achievement-dropdown {
+        :deep(.achievement-dropdown) {
             opacity: 1 !important;
             visibility: visible !important;
         }

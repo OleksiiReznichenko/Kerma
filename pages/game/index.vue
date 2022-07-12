@@ -4,6 +4,8 @@ import { Ref } from 'vue';
 import Bet from '@/composables/interfaces/bet';
 import User from '@/composables/interfaces/user';
 
+const { $notifySuccess } = useNuxtApp();
+
 // CURRENT GAME OBJECT
 const currentGameStore = useCurrentGameStore();
 const { currentGame } = storeToRefs(currentGameStore);
@@ -14,41 +16,57 @@ const { users } = storeToRefs(usersStore);
 
 // USERS ARRAY
 const baseStore = useBaseStore();
-const { myUser } = storeToRefs(baseStore);
+const { myUser, nextGameDate } = storeToRefs(baseStore);
 
 // MY USER'S BALANCE
-let myUserBalance = ref<number>(myUser.value.balanceEth);
+let myUserBalance = computed<number>(() => {
+    return myUser.value.balanceEth;
+});
 
 // MY USER'S ID
-let myUserId = ref<string>(myUser.value.id);
-
-// UPDATE USER'S DATA
-watch(myUser, () => {
-    // MY USER'S BALANCE
-    myUserBalance.value = myUser.value.balanceEth;
-    
-    // MY USER'S ID
-    myUserId.value = myUser.value.id;
-})
+let myUserId = computed<string>(() => {
+    return myUser.value.id;
+});
 
 // CURRENT GAME BETS
-let bets = ref<Bet[]>(currentGame.value.bets);
+let bets = computed<Bet[] | undefined[]>(() => {
+    return currentGame.value.bets;
+});
 
 // CURRENT GAME PRIZE FUND
-let prizeFund = ref<number>(currentGame.value.prizeFund);
+let prizeFund = computed<number>(() => {
+    return currentGame.value.prizeFund;
+});
 
 // CURRENT GAME HIGHEST BET
-let highestBet = ref<Bet>(bets.value[0]);
+let highestBet = computed<Bet | undefined>(() => {
+    if (!bets.value[0]) return;
+    return bets.value[0];
+});
 
 // CURRENT GAME HIGHEST BET USER
-let highestBetUser = computed<User>(() => {
+let highestBetAmount = computed<number | undefined>(() => {
+    if (!highestBet.value) return;
+    return highestBet.value.betAmountEth;
+});
+
+// CURRENT GAME HIGHEST BET USER
+let highestBetUser = computed<User | undefined>(() => {
+    if (!highestBet.value) return;
     return users.value.find(user => {
         return user.id === highestBet.value.userId;
     })
 });
 
+// CURRENT GAME HIGHEST BET USER
+let highestBetUserAvatar = computed<string | undefined>(() => {
+    if (!highestBet.value) return;
+    return highestBetUser.value.avatar;
+});
+
 // CURRENT GAME BETS USERS ARRAY
-let betsUsers = computed<User[]>(() => {
+let betsUsers = computed<User[] | undefined[]>(() => {
+    if (!highestBet.value) return;
     return bets.value.map(bet => {
         return users.value.find(user => {
             return user.id === bet.userId;
@@ -56,19 +74,17 @@ let betsUsers = computed<User[]>(() => {
     })
 });
 
-watchEffect(() => {
-    // MY USER'S BALANCE
-    myUserBalance.value = myUser.value.balanceEth;
-
-    // CURRENT GAME BETS
-    bets.value = currentGame.value.bets;
-
-    // CURRENT GAME PRIZE FUND
-    prizeFund.value = currentGame.value.prizeFund;
-
-    // CURRENT GAME HIGHEST BET
-    highestBet.value = bets.value[0];
-});
+watch(nextGameDate.value, () => {
+    if (bets.value.length > 0) {
+        $notifySuccess(`${highestBetUser.value.nickname} won ${prizeFund.value.toFixed(5)} ETH`);
+        usersStore.updateBalance(highestBet.value.userId, 'add', currentGame.value.prizeFund);
+        if (myUserId.value === highestBet.value.userId) {
+            baseStore.updateBalance('add', currentGame.value.prizeFund);
+        }
+        currentGame.value.bets = [];
+        currentGame.value.prizeFund = 0.00000;
+    }
+})
 
 
 // PROVIDE MY USER'S BALANCE TO DONATE.VUE AND PLACEBET.VUE
@@ -78,13 +94,13 @@ provide<Ref<number>>('myUserBalance', myUserBalance);
 provide<Ref<number>>('prizeFund', prizeFund);
 
 // PROVIDE CURRENT GAME HIGHEST BET TO PLACEBET.VUE
-provide<Ref<Bet>>('highestBet', highestBet);
+provide<Ref<Bet | undefined>>('highestBet', highestBet);
 
 // PROVIDE CURRENT GAME BETS TO MAININFO.VUE
-provide<Ref<Bet[]>>('bets', bets);
+provide<Ref<Bet[] | undefined[]>>('bets', bets);
 
 // PROVIDE CURRENT GAME BETS USERS TO MAININFO.VUE
-provide<Ref<User[]>>('betsUsers', betsUsers);
+provide<Ref<User[] | undefined[]>>('betsUsers', betsUsers);
 
 // PROVIDE CURRENT GAME BETS USERS TO MAININFO.VUE AND PLACEBET.VUE
 provide<Ref<string>>('myUserId', myUserId);
@@ -98,8 +114,8 @@ provide<Ref<string>>('myUserId', myUserId);
         <div class="relative-container">
             <SingularGameGamingCircle
                 :prize-fund="currentGame.prizeFund"
-                :highest-bet-amount="highestBet.betAmountEth"
-                :highest-bet-user-avatar="highestBetUser.avatar"
+                :highest-bet-amount="highestBetAmount"
+                :highest-bet-user-avatar="highestBetUserAvatar"
             />
             <SingularGameMainContent />
             <Reusable3DModel page="game" />

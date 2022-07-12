@@ -300,7 +300,7 @@ const onMouseMove = (event: MouseEvent): void => {
         }
 
         if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-            camera.rotation.x -= event.movementY / 18000;
+            camera.rotation.x -= event.movementY / 20000;
         }
 
         // if (camera.rotation.y < minRotationY) {
@@ -353,7 +353,7 @@ const onMouseMove = (event: MouseEvent): void => {
         }
 
         if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-            camera.rotation.x -= event.movementY / 18000;
+            camera.rotation.x -= event.movementY / 20000;
         }
 
         // if (camera.rotation.y < minRotationY) {

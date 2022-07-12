@@ -27,7 +27,8 @@ const props = defineProps<Props>();
 <style lang="scss" scoped>
 .mini-profile {
     position: absolute;
-    top: 90%;
+    // top: 90%;
+    top: 0%;
     left: 10%;
     z-index: 1000;
     border-radius: 4rem;

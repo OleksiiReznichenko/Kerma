@@ -228,17 +228,17 @@ onUnmounted(() => {
         color: $color-pink-dark-2;
         transition: all .3s;
 
-        &:hover ::v-deep .mini-profile {
+        &:hover :deep(.mini-profile) {
             opacity: 1 !important;
             visibility: visible !important;
         }
 
-        &:focus ::v-deep .mini-profile {
+        &:focus :deep(.mini-profile) {
             opacity: 1 !important;
             visibility: visible !important;
         }
 
-        &:active ::v-deep .mini-profile {
+        &:active :deep(.mini-profile) {
             opacity: 1 !important;
             visibility: visible !important;
         }

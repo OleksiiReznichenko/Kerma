@@ -9,7 +9,7 @@ const route = useRoute();
 
 // PREV GAME
 const baseStore = useBaseStore();
-const { previousGameInfo } = storeToRefs(baseStore);
+const { previousGameInfo, nextGameDate } = storeToRefs(baseStore);
 
 // DOM
 const gameInfo = ref<HTMLElement | null>(null);
@@ -21,22 +21,91 @@ let addTransitionClass = ref<boolean>(false);
 
 // TIMER DATA
 let dateInterval: ReturnType<typeof setInterval> | null = null;
-let dayToCount = ref<number>(1);
-let dateToCount = ref<string>(`July ${dayToCount.value}, 2022 17:00:00`);
 const days = ref<string | number>('00');
 const hours = ref<string | number>('00');
 const minutes = ref<string | number>('00');
 const seconds = ref<string | number>('00');
+
+let lastDayOfMonth = ref<number>(31);
+
+// MONTH OF NEXT GAME
+const month = computed<string>(() => {
+    if (nextGameDate.value.month === 1) {
+        lastDayOfMonth.value = 31;
+        return 'January';
+    } else if (nextGameDate.value.month === 2) {
+        lastDayOfMonth.value = 28;
+        return 'February';
+    } else if (nextGameDate.value.month === 3) {
+        lastDayOfMonth.value = 31;
+        return 'March';
+    } else if (nextGameDate.value.month === 4) {
+        lastDayOfMonth.value = 30;
+        return 'April';
+    } else if (nextGameDate.value.month === 5) {
+        lastDayOfMonth.value = 31;
+        return 'May';
+    } else if (nextGameDate.value.month === 6) {
+        lastDayOfMonth.value = 30;
+        return 'June';
+    } else if (nextGameDate.value.month === 7) {
+        lastDayOfMonth.value = 31;
+        return 'July';
+    } else if (nextGameDate.value.month === 8) {
+        lastDayOfMonth.value = 31;
+        return 'August';
+    } else if (nextGameDate.value.month === 9) {
+        lastDayOfMonth.value = 30;
+        return 'Septempber';
+    } else if (nextGameDate.value.month === 10) {
+        lastDayOfMonth.value = 31;
+        return 'October';
+    } else if (nextGameDate.value.month === 11) {
+        lastDayOfMonth.value = 30;
+        return 'November';
+    } else if (nextGameDate.value.month === 12) {
+        lastDayOfMonth.value = 31;
+        return 'December';
+    }
+});
+
+// DATE OF NEXT GAME
+const dateToCount = computed<string>(() => {
+    return `${month.value} ${nextGameDate.value.day}, ${nextGameDate.value.year} ${nextGameDate.value.hour}:${nextGameDate.value.minute}:${nextGameDate.value.second}`;
+});
 
 // TIMER FUNCTIONALITY
 const timerInit = (): void => {
     const timeToCount: number = new Date(dateToCount.value).getTime();
     const now: number = new Date().getTime();
     const timeLeft: number = timeToCount - now;
-    
+
     if (timeLeft <= 0) {
-        dayToCount.value += 1;
-        dateToCount.value = `July ${dayToCount.value}, 2022 17:00:00`;
+        if (nextGameDate.value.minute + 3 >= 60) {
+            nextGameDate.value.minute = nextGameDate.value.minute + 3 - 60;
+
+            if (nextGameDate.value.hour + 1 >= 24) {
+                nextGameDate.value.hour = 0;
+
+                if (nextGameDate.value.day + 1 > 31) {
+                    nextGameDate.value.day = 1;
+
+                    if (nextGameDate.value.month + 1 > 12) {
+                        nextGameDate.value.month = 1;
+                        nextGameDate.value.year += 1;
+                    } else {
+                        nextGameDate.value.month += 1;
+                    }
+                } else {
+                    nextGameDate.value.day += 1;
+                }
+            } else {
+                nextGameDate.value.hour += 1;
+            }
+
+        } else {
+            nextGameDate.value.minute += 3;
+        }
         requestAnimationFrame(timerInit);
     }
 
