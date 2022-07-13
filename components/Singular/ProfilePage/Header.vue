@@ -67,7 +67,7 @@ const avatarPath = computed<string>(() => {
     border-radius: 4rem;
     width: 100%;
     position: relative;
-    z-index: 100;
+    z-index: 10000;
     @include flex-center;
     align-items: flex-start;
     text-align: center;
