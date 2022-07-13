@@ -211,7 +211,7 @@ onUnmounted(() => {
     position: fixed;
     right: 0;
     bottom: 0;
-    z-index: 3000;
+    z-index: 30000;
     background: linear-gradient(0deg, rgba(244, 175, 255, 0.2), rgba(244, 175, 255, 0.2)), linear-gradient(0deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), #D1C1F2;
     border-radius: 4rem;
     width: 38rem;
