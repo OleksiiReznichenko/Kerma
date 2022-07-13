@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { Ref } from 'vue';
 import ChatMessage from '@/composables/interfaces/message';
-// import EmojiPicker from 'vue-emoji-picker';
+import User from '@/composables/interfaces/user';
 
 // IS CHAT OPEN INDICATOR
 const baseStore = useBaseStore();
-const { isChatOpenIndicator, myUser } = storeToRefs(baseStore);
+const { isChatOpenIndicator } = storeToRefs(baseStore);
 
-// CLOSE CHAT
+// CLOSE CHAT FUNCTION
 const closeChat = baseStore.isChatOpenIndicatorToFalse;
 
 // USERS ARRAY
@@ -20,6 +21,7 @@ const { users } = storeToRefs(usersStore);
 
 // FIND USERS WHO WROTE MESSAGES
 const messagesUsers = computed(() => {
+    if (messages.value.length < 1) return;
     return messages.value.map(message => {
         return users.value.find(user => {
             return user.id === message.userId;
@@ -27,7 +29,13 @@ const messagesUsers = computed(() => {
     })
 });
 
-const messagesDom = ref<HTMLElement | null>(null);
+let messagesDom = ref<HTMLElement | null>(null);
+
+// PROVIDE CURRENT CHAT MESSAGES TO MESSAGES.VUE
+provide<Ref<ChatMessage[] | undefined[]>>('messages', messages);
+
+// PROVIDE CURRENT CHAT MESSAGES USERS TO MESSAGES.VUE
+provide<Ref<User[] | undefined[]>>('messagesUsers', messagesUsers);
 
 // SCROLL TO THE BOTTOM OF MESSAGES
 const scrollToBottom = (): void => {
@@ -44,62 +52,13 @@ watch(isChatOpenIndicator, () => {
     setTimeout(() => {
         scrollToBottom();
     }, 150);
-})
+});
 
-// MESSAGE RELATED
-const maxMessageLength = ref<number>(400);
-let newMessage = ref<string>('');
-let newMessageNoWhiteSpace = ref<string>('');
-
-// GROW TEXTAREA ON TEXT WRAP
-const autoGrow = (event: Event): void => {
-    const target = event.target as HTMLElement;
-    target.style.height = "5px";
-    target.style.height = (target.scrollHeight) + "px";
-};
-
-// REMOVE EXCESSIVE WHITE SPACES IN VALUE
-const removeWhiteSpaces = (): void => {
-    newMessageNoWhiteSpace.value = '';
-    if (newMessage.value.includes(' ')) {
-    const messageInputArr = newMessage.value.split(' ');
-
-    const messageInputArr2 = messageInputArr.filter(el => {
-        if (el.replace(/\s/g, '')) {
-        return el.replace(/\s/g, '');
-        }
-    })
-
-    const validatedMessage = messageInputArr2.join(' ');
-    newMessageNoWhiteSpace.value = validatedMessage;
-    } else {
-        newMessageNoWhiteSpace.value = newMessage.value;
-    }
-};
-
-// SEND MESSAGE
-const sendMessage = (event: Event): void => {
-    event.preventDefault();
-
-    removeWhiteSpaces();
-
-    if (!newMessageNoWhiteSpace.value || !myUser.value.id) return;
-
-    const newMessageObject: ChatMessage = {
-        id: (Math.random() * Date.now()).toString(),
-        userId: myUser.value.id,
-        text: newMessage.value
-    };
-
-    chatStore.addNewMessage(newMessageObject);
-    newMessage.value = '';
-    setTimeout(() => {
-        scrollToBottom();
-    }, 15);
-};
+// PROVIDE SCROLL TO BOTTOM FUNCTION TO INPUTFIELD.VUE
+provide<Function>('scrollToBottom', scrollToBottom);
 
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CODE FOR DRAGGABLE CHAT
 
 // DOM
@@ -182,7 +141,6 @@ const dragMouse = (event: MouseEvent): void => {
 // DRAG CHAT FOR TOUCH
 const dragTouch = (event: TouchEvent): void => {
     if (!active.value || !isTouchDevice()) return;
-    // event.preventDefault();
     
     currentX.value = event.touches[0].clientX - initialX.value;
     currentY.value = event.touches[0].clientY - initialY.value;
@@ -196,6 +154,7 @@ const setTranslate = (xPos: number, yPos: number, el: HTMLElement): void => {
 };
 
 onMounted(() => {
+    messagesDom.value = document.querySelector('.messages');
     container.value = document.body;
 
     // ADD EVENT LISTENERS FOR BODY
@@ -237,47 +196,8 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <div ref="messagesDom" class="messages">
-            <ReusableChatMessage 
-                v-for="(message, i) in messages"
-                :key="message.id"
-                :isMe='message.userId === myUser.id'
-                :text='message.text'
-                :user-id='message.userId'
-                :nickname="messagesUsers[i].nickname"
-                :avatar="messagesUsers[i].avatar"
-            />
-        </div>
-
-        <div :class="{'inactive': !myUser.id}" class="input-container">
-            <!-- <EmojiPicker class="emoji-main-container" @emoji="onEmoji">
-                <div class="emoji-invoker" slot="emoji-invoker" slot-scope="{ events: { click: clickEvent } }" 
-                    @click.stop="clickEvent">
-                    <button class="emoji-btn" type="button">
-                        <img src="@/assets/svg/emojiButton.svg" alt="Emoji button" class="emoji-icon">
-                    </button>
-                </div>
-                <div class="emoji-picker-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert }">
-                    <div class="emoji-picker">
-                        <div v-for="(emojiGroup, category) in emojis" :key="category">
-                            <h5>{{ category }}</h5>
-                            <div>
-                                <span class="emoji"
-                                    v-for="(emoji, emojiName) in emojiGroup"
-                                    :key="emojiName"
-                                    @click="insert(emoji)"
-                                    :title="emojiName"
-                                >{{ emoji }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </EmojiPicker> -->
-            <textarea @keypress.enter="sendMessage" @input="autoGrow" v-model="newMessage" :maxlength="maxMessageLength" name="message" id="messageInput" cols="30" rows="1" wrap="soft" placeholder="Message"></textarea>
-            <button @click="sendMessage" class="send-button">
-                <img src="@/assets/svg/arrow.svg" alt="Arrow" class="arrow">
-            </button>
-        </div>
+        <SingularGameChatMessages />
+        <SingularGameChatInputField />
     </div>
 </template>
 
@@ -391,165 +311,6 @@ onUnmounted(() => {
 
                 .subtitle {
                     font-size: 1.2rem;
-                }
-            }
-        }
-    }
-
-    .messages {
-        display: flex;
-        flex-direction: column;
-        max-height: 80%;
-        overflow-y: scroll;
-        padding-bottom: 4rem;
-        padding-right: 1.5rem;
-
-        &::-webkit-scrollbar {
-            height: 5px;
-            width: 5px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            border-radius: 17px;
-            background-color: white;
-        }
-
-        &::-webkit-scrollbar-track {
-            background-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(white, .7) 30%, rgba(white, .7) 70%, transparent 70%, transparent 100%);
-            margin-bottom: 8rem;
-        }
-    }
-
-    .inactive {
-        pointer-events: none;
-        opacity: .5;
-    }
-
-    .input-container {
-        position: absolute;
-        bottom: 3.5rem;
-        left: 2.5rem;
-        right: 2.5rem;
-        background-image: linear-gradient(to right, #EEDFF9, #EBDAF7);
-        border-radius: 1.25rem;
-        margin-top: 3rem;
-        box-shadow: 0 .25rem 2rem rgba(0, 0, 0, 0.1);
-
-        #messageInput {
-            color: $color-pink-dark-3;
-            font-size: 1.6rem;
-            width: 82%;
-            margin-top: 2px;
-            padding: 2rem;
-            padding-left: 5rem;
-        }
-
-        .send-button {
-            @include flex-center;
-            position: absolute;
-            top: 50%;
-            right: 2rem;
-            transform: translateY(-50%);
-            width: 3.5rem;
-            height: 3.5rem;
-            background-color: $color-blue-2;
-            padding: .35rem 1rem;
-            border-radius: 1.25rem;
-            transition: all .3s;
-
-            &:hover {
-                background-color: darken($color-blue-2, 5%);
-            }
-
-            .arrow {
-                width: 1.5rem;
-            }
-        }
-
-        .emoji-main-container {
-            position: absolute;
-            left: 2rem;
-            top: 53%;
-            transform: translateY(-50%);
-            
-            .emoji-picker-wrapper {
-                position: absolute;
-                left: 0;
-                bottom: 6rem;
-                border-radius: 10px;
-
-                @media only screen and (max-width: 450px) {
-                    left: -1.25rem;
-                    bottom: 6.25rem;
-                }
-
-                &::before {
-                    border-bottom: 10px solid $color-grey-2;
-                    border-left: 9px solid rgba(0, 0, 0, 0);
-                    border-right: 9px solid rgba(0, 0, 0, 0);
-                    transform: rotate(180deg);
-                    content: "";
-                    display: inline-block;
-                    left: 10px;
-                    position: absolute;
-                    bottom: -10.3px;
-                }
-            }
-
-            .emoji-picker {
-                width: 295px;
-                height: 170px;
-                overflow: auto;
-                padding: 10px;
-                padding-top: 0;
-                background: $color-grey-2;
-                overflow-x: hidden;
-                border-radius: 10px;
-
-                .emoji {
-                    display: inline-block;
-                    background: transparent;
-                    border: none;
-                    outline: none;
-                    border-radius: 50%;
-                    width: 30px;
-                    height: 30px;
-                    padding: 0;
-                    cursor: pointer;
-                    text-align: center;
-                    padding-top: 7px;
-
-                    @media only screen and (max-width: 850px) {
-                        transform: scale(1.4);
-                    }
-
-                    &:hover {
-                        background: rgba(255, 255, 255, 0.1);
-                    }
-                }
-
-                h5 {
-                    font-family: Montserrat;
-                    margin-bottom: 5px;
-                    font-size: 15px;
-                    margin-top: 10px;
-                }
-
-                &::-webkit-scrollbar {
-                    z-index: 2;
-                    width: 5px;
-                }
-
-                &::-webkit-scrollbar-track {
-                    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-                    margin: 5px 0;
-                    border-radius: 5px;
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    border-radius: 5px;
-                    background-color: #5d5d5d;
-                    outline: none;
                 }
             }
         }
