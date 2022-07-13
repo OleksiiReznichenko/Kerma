@@ -4,6 +4,15 @@ import { storeToRefs } from 'pinia';
 // MY USER OBJECT
 const baseStore = useBaseStore();
 const { myUser } = storeToRefs(baseStore);
+
+const router = useRouter();
+
+// IF NOT LOGGED IN - CLOSE NAVIGATION, GO TO GAME PAGE, OPEN CONNECT WINDOW
+const goToConnectWindow = (): void => {
+    baseStore.navOpenIndicatorToFalse();
+    router.push('/game/');
+    baseStore.connectWindowOpenIndicatorToTrue();
+};
 </script>
 
 <template>
@@ -15,9 +24,12 @@ const { myUser } = storeToRefs(baseStore);
             <NuxtLink to="/leaderboard" class="link">
                 <img src="@/assets/svg/star.svg" alt="Icon" class="icon star">
             </NuxtLink>
-            <NuxtLink :to="'/users/' + myUser.id" class="link">
+            <NuxtLink v-if="myUser.id" :to="'/users/' + myUser.id" class="link">
                 <img src="@/assets/svg/user.svg" alt="Icon" class="icon user">
             </NuxtLink>
+            <button v-else @click="goToConnectWindow" class="link">
+                <img src="@/assets/svg/user.svg" alt="Icon" class="icon user">
+            </button>
             <NuxtLink to="/gameHistory" class="link">
                 <img src="@/assets/svg/eye.svg" alt="Icon" class="icon eye">
             </NuxtLink>

@@ -302,7 +302,7 @@ onUnmounted(() => {
     box-shadow: 1.75rem 2.25rem 5rem rgba(0, 0, 0, 0.1);
     border-radius: 4rem 4rem 0 0;
     border: 1px solid #eee;
-    z-index: 1000;
+    z-index: 20000;
     backdrop-filter: blur(5px);
     padding: .5rem 5.5rem;
 
