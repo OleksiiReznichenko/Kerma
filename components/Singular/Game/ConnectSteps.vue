@@ -91,7 +91,7 @@ const closeWindowOnWrapper = (event: Event): void => {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 50000;
     width: 100%;
     height: 100%;
     transition: all .3s;

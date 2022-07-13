@@ -3,6 +3,8 @@ import { storeToRefs } from 'pinia';
 import { Ref } from 'vue';
 import Bet from '@/composables/interfaces/bet';
 import User from '@/composables/interfaces/user';
+import Game from '~~/composables/interfaces/game';
+import GameInfo from '~~/composables/interfaces/gameInfo';
 
 const { $notifySuccess } = useNuxtApp();
 
@@ -13,6 +15,8 @@ const { currentGame } = storeToRefs(currentGameStore);
 // USERS ARRAY
 const usersStore = useUsersStore();
 const { users } = storeToRefs(usersStore);
+
+const gamesStore = useGamesStore();
 
 // USERS ARRAY
 const baseStore = useBaseStore();
@@ -74,6 +78,35 @@ let betsUsers = computed<User[] | undefined[]>(() => {
     })
 });
 
+// GET DATE FOR THE END OF EVERY GAME
+const getDate = (): string => {
+    const date = new Date();
+    const year = date.getFullYear();
+    let month: number | string = date.getMonth() + 1;
+    let day: number | string = date.getDate();
+    let hours: number | string = date.getHours();
+    let minutes: number | string = date.getMinutes();
+
+    if (+month < 10) {
+        month = '0' + month;
+    }
+
+    if (+day < 10) {
+        day = '0' + day;
+    }
+
+    if (+hours < 10) {
+        hours = '0' + hours;
+    }
+
+    if (+minutes < 10) {
+        minutes = '0' + minutes;
+    }
+
+    return `${day}.${month}.${year} || ${hours}:${minutes}`;
+};
+
+// END PREVIOUS GAME AND BEGIN NEW GAME ON NEXT GAME DATE CHANGE
 watch(nextGameDate.value, () => {
     if (bets.value.length > 0) {
         $notifySuccess(`${highestBetUser.value.nickname} won ${prizeFund.value.toFixed(5)} ETH`);
@@ -81,8 +114,26 @@ watch(nextGameDate.value, () => {
         if (myUserId.value === highestBet.value.userId) {
             baseStore.updateBalance('add', currentGame.value.prizeFund);
         }
-        currentGame.value.bets = [];
+        const gameObject: Game = {
+            id: currentGame.value.id,
+            winnerId: highestBet.value.userId,
+            winnerBetId: highestBet.value.id,
+            winAmountEth: currentGame.value.prizeFund,
+            gameDate: getDate(),
+            bets: currentGame.value.bets,
+        };
+        const gameInfoObject: GameInfo = {
+            id: currentGame.value.id,
+            winnerNickname: highestBetUser.value.nickname,
+            winAmountEth: currentGame.value.prizeFund,
+            gameDate: getDate(),
+        };
+        gamesStore.addGameToHistory(gameObject);
+        baseStore.updatePrevGameInfo(gameInfoObject);
+        currentGame.value.id = (Math.random() * Date.now()).toString();
         currentGame.value.prizeFund = 0.00000;
+        currentGame.value.gameDate = '';
+        currentGame.value.bets = [];
     }
 })
 

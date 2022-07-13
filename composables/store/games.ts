@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import Game from '../interfaces/game';
 
 interface State {
-    games: Game[] | undefined[];
+    games: Game[];
 }
 
 export const useGamesStore = defineStore({
@@ -425,7 +425,12 @@ export const useGamesStore = defineStore({
                     },
                 ]
             },
-            
         ]
-    })
+    }),
+
+    actions: {
+        addGameToHistory(game: Game) {
+            this.games.unshift(game);
+        }
+    }
 })

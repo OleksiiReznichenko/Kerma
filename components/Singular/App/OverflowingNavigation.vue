@@ -138,7 +138,7 @@ onUnmounted(() => {
     top: 0;
     left: 0;
     z-index: 100000;
-    transition: all .2s;
+    transition: all .5s;
     visibility: hidden;
     opacity: 0;
 
@@ -251,9 +251,9 @@ onUnmounted(() => {
                 }
                 
                 .icon {
-                    top: 46%;
-                    left: 39%;
-                    width: 3rem;
+                    top: 48%;
+                    left: 47%;
+                    width: 2rem;
                 }
 
                 .active-background {
@@ -329,8 +329,8 @@ onUnmounted(() => {
                 
                 .icon {
                     top: 32%;
-                    right: 30%;
-                    width: 3.75rem;
+                    right: 33%;
+                    width: 3.25rem;
                 }
             }
         }

@@ -3,7 +3,6 @@ import { storeToRefs } from 'pinia';
 
 interface Props {
     id: string;
-    winnerId: string;
     winnerNickname: string;
     winnerAvatar: string;
     winnerBetId: string;
@@ -53,7 +52,7 @@ const avatarPath = computed<string>(() => {
                 </strong>
             </div>
         </div>
-        <NuxtLink :to="'/users/' + winnerId" class="btn">More details</NuxtLink>
+        <button :data-game-id="id" class="button-open-window btn">More details</button>
     </div>
 </template>
 

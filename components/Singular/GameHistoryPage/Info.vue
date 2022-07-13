@@ -16,17 +16,28 @@ const winners: User[] = games.value.map(game => {
         return user.id === game.winnerId;
     })
 });
+
+const baseStore = useBaseStore();
+const openWindow = baseStore.gameDetailsWindowOpenIndicatorToTrue;
+const updateActiveGameId = baseStore.updateActiveGameDetailsWindowId;
+
+const openWindowOnClick = (event: Event): void => {
+    const target = event.target as HTMLElement;
+    if (!target.classList.contains('button-open-window')) return;
+    openWindow();
+    updateActiveGameId(target.dataset.gameId);
+};
+
 </script>
 
 <template>
     <div class="info">
         <h1 class="title">Game History</h1>
-        <div class="games">
+        <div @click="openWindowOnClick" class="games">
             <ReusableGame
                 v-for="(game, i) in games"
                 :key="game.id"
                 :id="game.id"
-                :winner-id="game.winnerId"
                 :winner-nickname="winners[i].nickname"
                 :winner-avatar="winners[i].avatar"
                 :winner-bet-id="game.winnerBetId"

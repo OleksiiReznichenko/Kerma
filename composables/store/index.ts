@@ -17,6 +17,8 @@ interface State {
     connectWindowOpenIndicator: boolean;
     isStepsOpenIndicator: boolean;
     isChatOpenIndicator: boolean;
+    gameDetailsWindowOpenIndicator: boolean;
+    activeGameDetailsWindowId: string;
     nextGameDate: NextGameDate;
     previousGameInfo: GameInfo;
     myUser: User;
@@ -31,12 +33,14 @@ export const useBaseStore = defineStore({
         connectWindowOpenIndicator: false,
         isStepsOpenIndicator: false,
         isChatOpenIndicator: false,
+        gameDetailsWindowOpenIndicator: false,
+        activeGameDetailsWindowId: '',
         nextGameDate: {
             year: 2022,
             month: 7,
             day: 13,
-            hour: 14,
-            minute: 15,
+            hour: 21,
+            minute: 30,
             second: 0,
         },
         previousGameInfo: {
@@ -76,6 +80,14 @@ export const useBaseStore = defineStore({
             }
         },
 
+        updateActiveGameDetailsWindowId(gameId: string) {
+            this.activeGameDetailsWindowId = gameId;
+        },
+
+        updatePrevGameInfo(previousGameInfo: GameInfo) {
+            this.previousGameInfo = previousGameInfo;
+        },
+
         navOpenIndicatorToFalse() {
             this.navOpenIndicator = false;
         },
@@ -106,6 +118,14 @@ export const useBaseStore = defineStore({
         
         isChatOpenIndicatorToTrue() {
             this.isChatOpenIndicator = true;
+        },
+        
+        gameDetailsWindowOpenIndicatorToFalse() {
+            this.gameDetailsWindowOpenIndicator = false;
+        },
+        
+        gameDetailsWindowOpenIndicatorToTrue() {
+            this.gameDetailsWindowOpenIndicator = true;
         },
     }
 })
