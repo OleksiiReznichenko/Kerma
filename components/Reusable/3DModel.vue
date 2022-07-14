@@ -380,7 +380,7 @@ const onMouseMove = (event: MouseEvent): void => {
 // RESIZE 3D MODEL
 const onWindowResize = (): void => {
     setTimeout(() => {
-        // if (!camera || prevWidth === window.outerWidth) return;
+        if (!camera || prevWidth === window.outerWidth) return;
         kermaModelScailing();
 
         camera.aspect = window.innerWidth / window.innerHeight;

@@ -34,9 +34,6 @@ const { questions } = storeToRefs(faqStore);
     margin-left: auto;
     
     @media only screen and (max-width: 1300px) and (min-height: 1000px) and (min-width: 850px) {
-        // @include flex-center;
-        // align-items: flex-start;
-        // flex-direction: column;
         margin-top: 12vh;
     }
 
