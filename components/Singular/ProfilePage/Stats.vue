@@ -25,7 +25,7 @@ const stats: UserStat[] = [
     {
         icon: 'coins.png',
         subtitle: 'Winning',
-        stat: props.totalMoneyWon + '$',
+        stat: props.totalMoneyWon.toFixed(0) + '$',
     },
 ];
 
@@ -100,6 +100,7 @@ const title = computed(() => {
             }
         }
     }
+    
     .stats {
         @include flex-center;
         

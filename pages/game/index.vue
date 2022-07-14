@@ -114,10 +114,19 @@ const getDate = (dateType: 'short' | 'full'): string => {
 watch(nextGameDate.value, () => {
     if (bets.value.length > 0) {
         $notifySuccess(`${highestBetUser.value.nickname} won ${prizeFund.value.toFixed(5)} ETH`);
+        
         usersStore.updateBalance(highestBet.value.userId, 'add', currentGame.value.prizeFund);
+        usersStore.updateWins(highestBet.value.userId);
+        usersStore.updateGamesPlayed(highestBet.value.userId, currentGame.value.id);
+        usersStore.updateMoneyWon(highestBet.value.userId, currentGame.value.prizeFund * 10);
+
         if (myUserId.value === highestBet.value.userId) {
             baseStore.updateBalance('add', currentGame.value.prizeFund);
+            baseStore.updateWins();
+            baseStore.updateGamesPlayed(currentGame.value.id);
+            baseStore.updateMoneyWon(currentGame.value.prizeFund * 10);
         }
+
         const gameObject: Game = {
             id: currentGame.value.id,
             winnerId: highestBet.value.userId,
@@ -126,14 +135,16 @@ watch(nextGameDate.value, () => {
             gameDate: getDate('full'),
             bets: currentGame.value.bets,
         };
+        gamesStore.addGameToHistory(gameObject);
+
         const gameInfoObject: GameInfo = {
             id: currentGame.value.id,
             winnerNickname: highestBetUser.value.nickname,
             winAmountEth: currentGame.value.prizeFund,
             gameDate: getDate('short'),
         };
-        gamesStore.addGameToHistory(gameObject);
         baseStore.updatePrevGameInfo(gameInfoObject);
+
         currentGame.value.id = (Math.random() * Date.now()).toString();
         currentGame.value.prizeFund = 0.00000;
         currentGame.value.gameDate = '';

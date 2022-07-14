@@ -53,7 +53,7 @@ export const useBaseStore = defineStore({
             month: 7,
             day: 14,
             hour: 12,
-            minute: 30,
+            minute: 1,
             second: 0,
         },
 
@@ -93,6 +93,18 @@ export const useBaseStore = defineStore({
             } else if (action === 'subtract') {
                 this.myUser.balanceEth -= amount;
             }
+        },
+
+        updateWins() {
+            this.myUser.totalWins += 1;
+        },
+
+        updateGamesPlayed(gameId: string) {
+            this.myUser.gamesPlayed.push(gameId);
+        },
+
+        updateMoneyWon(amount: number) {
+            this.myUser.totalMoneyWon += amount;
         },
 
         updateActiveGameDetailsWindowId(gameId: string) {

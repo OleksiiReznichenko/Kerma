@@ -240,6 +240,30 @@ export const useUsersStore = defineStore({
             } else if (action === 'subtract') {
                 user.balanceEth -= amount;
             }
-        }
+        },
+
+        updateWins(userId: string) {
+            const user = this.users.find(user => {
+                return user.id === userId;
+            });
+
+            user.totalWins += 1;
+        },
+
+        updateGamesPlayed(userId: string, gameId: string) {
+            const user = this.users.find(user => {
+                return user.id === userId;
+            });
+
+            user.gamesPlayed.push(gameId);
+        },
+
+        updateMoneyWon(userId: string, amount: number) {
+            const user = this.users.find(user => {
+                return user.id === userId;
+            });
+
+            user.totalMoneyWon += amount;
+        },
     }
 })

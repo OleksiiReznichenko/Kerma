@@ -15,7 +15,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -67,7 +67,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ewafeeeefgeyeee32r8',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -119,7 +119,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -171,7 +171,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -223,7 +223,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -275,7 +275,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -327,7 +327,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
@@ -379,7 +379,7 @@ export const useGamesStore = defineStore({
                 winnerId: 'ioi1oi1jdsfass2nk1j',
                 winnerBetId: 'kfasjfll212oiopnlal',
                 winAmountEth: 500,
-                gameDate: '12.05.2022',
+                gameDate: '14.07, 12:10',
                 bets: [
                     {
                         id: 'kfasjfll212oiopnlal',
