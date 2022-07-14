@@ -41,10 +41,6 @@
         position: static;
         justify-content: center;
         margin-bottom: 3rem;
-        // right: auto;
-        // left: 50%;
-        // top: 4rem;
-        // transform: translateX(-50%);
     }
 
     .social-link,
@@ -52,7 +48,6 @@
         font-weight: 600;
         display: flex;
         align-items: center;
-        // backface-visibility: hidden;
         transition: none;
         position: relative;
         z-index: 3000;

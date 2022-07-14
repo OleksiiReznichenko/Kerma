@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
+// IS CHAT OPEN INDICATOR AND IS FULLSCREEN CHAT INDICATOR
 const baseStore = useBaseStore();
 const { isChatOpenIndicator, isFullscreenChat } = storeToRefs(baseStore);
 

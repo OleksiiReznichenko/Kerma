@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const baseStore = useBaseStore();
 
 // IF TOUCHPAD DEVICE'S HEIGHT CHANGES - CHANGE BASE 100VH HEIGHT
@@ -223,7 +224,6 @@ onUnmounted(() => {
         font-weight: 600;
         text-transform: uppercase;
         font-size: 1.6rem;
-        // line-height: 2.25rem;
         color: #FFFFFF !important;
     
         @media only screen and (max-width: 850px) {
@@ -268,7 +268,7 @@ h1 {
   box-shadow: .85rem 1rem 1.5rem rgba(76, 26, 92, 0.08);
             
   span {
-      background-image: radial-gradient(64.31% 64.31% at 88.04% 10.98%, #97C1FF 0%, #F9AEFF 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+      background-image: radial-gradient(64.31% 64.31% at 88.04% 10.98%, #97C1FF 0%, #F9AEFF 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;

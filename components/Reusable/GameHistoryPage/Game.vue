@@ -62,7 +62,6 @@ const avatarPath = computed<string>(() => {
     border-radius: 30px;
     padding: 1rem 2.25rem 2.25rem;
     text-align: center;
-    // width: 24rem;
     font-size: 1.2rem;
 
     @media only screen and (max-width: 1350px) and (min-width: 1300px),

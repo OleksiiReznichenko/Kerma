@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UserAchievements from '@/composables/interfaces/userAchievements';
 import { storeToRefs } from 'pinia';
+import UserAchievements from '@/composables/interfaces/userAchievements';
 
 interface Props {
     nickname:  string;
@@ -80,7 +80,6 @@ const avatarPath = computed<string>(() => {
         text-align: left;
         padding: 15rem 3rem 5rem;
         background: linear-gradient(45deg, #E9DFF8, #e8ddff);
-        // overflow: hidden;
         margin-bottom: 4rem;
         box-shadow: 1.5rem 1.75rem 2.5rem rgba(0, 0, 0, 0.1);
     }

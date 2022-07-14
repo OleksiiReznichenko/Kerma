@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
     <div class="logo">
         <NuxtLink to="/" class="home-link">Kerma</NuxtLink>
@@ -23,7 +19,6 @@
         position: static;
         left: auto;
         text-align: center;
-        // transform: translateX(-50%);
     }
 
     .home-link {

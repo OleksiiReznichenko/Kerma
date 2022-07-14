@@ -7,7 +7,6 @@ const { $notifyError, $notifySuccess } = useNuxtApp();
 
 const baseStore = useBaseStore();
 const currentGameStore = useCurrentGameStore();
-
 const usersStore = useUsersStore();
 
 let inputValue = ref<number>(0.00001);

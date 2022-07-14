@@ -7,7 +7,7 @@ const baseUrl = useBaseStore().baseUrl;
 // ROUTE INFO
 const route = useRoute();
 
-// PREV GAME
+// PREV GAME INFO AND NEXT GAME DATE
 const baseStore = useBaseStore();
 const { previousGameInfo, nextGameDate } = storeToRefs(baseStore);
 
@@ -473,7 +473,6 @@ onUnmounted(() => {
                 }
                 
                 .icon {
-                    // width: 60%;
                     width: 50%;
                 }
 

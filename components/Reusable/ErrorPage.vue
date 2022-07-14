@@ -44,7 +44,6 @@ const props = defineProps<Props>();
             min-height: auto;
             width: 100%;
             display: block !important;
-            // padding: 6rem 6rem 7rem;
             padding: 11rem 6rem 7rem;
         }
 

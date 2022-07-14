@@ -86,8 +86,6 @@ const openWindow = baseStore.connectWindowOpenIndicatorToTrue;
             padding: .75rem 3.5rem;
             border-radius: 4rem;
             background-color: $color-pink-light-7;
-            // background-image: linear-gradient(to right, #DBC6EF, #DCC2E1);
-            // background-image: linear-gradient(135deg, #DBC6EF, #DCC2E1);
             background-color: #DCC2E1;
             box-shadow: .75rem .75rem 1.35rem rgba(0, 0, 0, 0.2);
     

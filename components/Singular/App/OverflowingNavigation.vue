@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 const baseStore = useBaseStore();
 const { navOpenIndicator, myUser } = storeToRefs(baseStore);
 
-// ROUTE INFO
+// ROUTE INFO AND ROUTER
 const route = useRoute();
 const router = useRouter();
 

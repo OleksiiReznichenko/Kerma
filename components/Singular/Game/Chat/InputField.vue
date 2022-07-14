@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ChatMessage from '@/composables/interfaces/message';
 import { storeToRefs } from 'pinia';
+import ChatMessage from '@/composables/interfaces/message';
 
 // MY USER ID
 const baseStore = useBaseStore();

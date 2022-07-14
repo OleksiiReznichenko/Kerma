@@ -158,7 +158,6 @@ const avatarPath = computed<string>(() => {
 
             .subtitle {
                 font-size: 1.2rem;
-                // padding-top: .125rem;
         
                 @media only screen and (max-width: 850px) {
                     font-size: 1.6rem;
@@ -241,7 +240,6 @@ const avatarPath = computed<string>(() => {
                         text-overflow: ellipsis;
         
                         @media only screen and (max-width: 850px) {
-                            // width: 15rem;
                             width: 13rem;
                         }
                     }
@@ -253,7 +251,6 @@ const avatarPath = computed<string>(() => {
                         margin-left: -.35rem;
         
                         @media only screen and (max-width: 850px) {
-                            // width: 11.2rem;
                             width: 9.2rem;
                         }
                     }

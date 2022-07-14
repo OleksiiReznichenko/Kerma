@@ -35,6 +35,7 @@ const scrollToBottom = (): void => {
     }
 };
 
+// IF CHAT OPEN INDICATOR CHANGE - SCROLL TO THE BOTTOM OF THE MESSAGES CONTAINER
 watch(isChatOpenIndicator, (newValue) => {
     if (newValue) {
         scrollToBottom();
@@ -120,7 +121,6 @@ const dragShared = (): void => {
 // DRAG CHAT FOR MOUSE
 const dragMouse = (event: MouseEvent): void => {
     if (!active.value || window.outerWidth < 500) return;
-    // event.preventDefault();
     
     currentX.value = event.clientX - initialX.value;
     currentY.value = event.clientY - initialY.value;

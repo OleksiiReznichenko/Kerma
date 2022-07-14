@@ -17,10 +17,12 @@ const winners: User[] = games.value.map(game => {
     })
 });
 
+// OPEN DETAILS WINDOW FUNCTION AND UPDATE ACTIVE GAME ID FOR DETAILS WINDOW FUNCTION
 const baseStore = useBaseStore();
 const openWindow = baseStore.gameDetailsWindowOpenIndicatorToTrue;
 const updateActiveGameId = baseStore.updateActiveGameDetailsWindowId;
 
+// OPEN DETAILS WINDOW ON BUTTON CLICK
 const openWindowOnClick = (event: Event): void => {
     const target = event.target as HTMLElement;
     if (!target.classList.contains('button-open-window')) return;

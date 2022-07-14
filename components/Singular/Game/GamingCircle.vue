@@ -247,7 +247,6 @@ watch(navOpenIndicator, (newValue) => {
                 width: 100%;
                 height: 100%;
                 transform: rotate(4deg);
-                // animation: rotateCounterClockwise 12s linear infinite backwards;
             }
 
             .circle-filling {

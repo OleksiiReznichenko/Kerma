@@ -28,43 +28,41 @@ const myUserId = inject<Ref<string>>('myUserId');
     <div class="main-info">
         <SingularGameConnectSteps class="desktop" />
         <ReusableGameChatButton class="desktop" />
-        <!-- <div class="inner-container"> -->
-            <div class="header">
-                <div class="line desktop"></div>
-                <img src="@/assets/svg/ratesNow.svg" alt="Rates icon" class="rates-icon desktop">
-                <h4 class="title">Rates Now</h4>
-                <div class="line mobile"></div>
-                <div class="balance-gradient-container game-balance">
-                    <span>{{prizeFund.toFixed(5)}} ETH</span>
-                </div>
-                <div class="small-navigation">
-                    <NuxtLink v-if="myUserId" :to="'/users/' + myUserId" class="navigation-item">
-                        <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
-                    </NuxtLink>
-                    <button v-else @click="openConnectWindow" class="navigation-item">
-                        <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
-                    </button>
-                    <button @click="openStepsWindow" class="navigation-item no-margin">
-                        <span>?</span>
-                    </button>
-                </div>
+        <div class="header">
+            <div class="line desktop"></div>
+            <img src="@/assets/svg/ratesNow.svg" alt="Rates icon" class="rates-icon desktop">
+            <h4 class="title">Rates Now</h4>
+            <div class="line mobile"></div>
+            <div class="balance-gradient-container game-balance">
+                <span>{{prizeFund.toFixed(5)}} ETH</span>
             </div>
-            <div v-if="bets.length > 0" ref="betsContainer" class="bets">
-                <ReusableGameBet 
-                    v-for="(bet, index) in bets"
-                    :key="bet.id"
-                    :index="index"
-                    :id="bet.id"
-                    :bet-amount="bet.betAmountEth"
-                    :start-time="bet.startTime"
-                    :end-time="bet.endTime"
-                    :nickname="betsUsers[index].nickname"
-                    :avatar="betsUsers[index].avatar"
-                    :rank="betsUsers[index].rank"
-                    :achievements="betsUsers[index].achievements"
-                />
+            <div class="small-navigation">
+                <NuxtLink v-if="myUserId" :to="'/users/' + myUserId" class="navigation-item">
+                    <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
+                </NuxtLink>
+                <button v-else @click="openConnectWindow" class="navigation-item">
+                    <img src="@/assets/svg/user.svg" alt="User icon" class="icon">
+                </button>
+                <button @click="openStepsWindow" class="navigation-item no-margin">
+                    <span>?</span>
+                </button>
             </div>
-        <!-- </div> -->
+        </div>
+        <div v-if="bets.length > 0" ref="betsContainer" class="bets">
+            <ReusableGameBet 
+                v-for="(bet, index) in bets"
+                :key="bet.id"
+                :index="index"
+                :id="bet.id"
+                :bet-amount="bet.betAmountEth"
+                :start-time="bet.startTime"
+                :end-time="bet.endTime"
+                :nickname="betsUsers[index].nickname"
+                :avatar="betsUsers[index].avatar"
+                :rank="betsUsers[index].rank"
+                :achievements="betsUsers[index].achievements"
+            />
+        </div>
     </div>
 </template>
 
@@ -74,7 +72,6 @@ const myUserId = inject<Ref<string>>('myUserId');
     border-radius: 4rem;
     box-shadow: .75rem .75rem 1.75rem rgba(#7E7CA0, 0.2);
     padding: 4.75rem 2rem 5rem 3.25rem;
-    // padding: 0 2rem 0 3.25rem;
     height: 45rem;
     position: relative;
 
@@ -88,34 +85,6 @@ const myUserId = inject<Ref<string>>('myUserId');
     .inner-container {
         height: 100%;
     }
-
-    // .inner-container {
-    //     overflow-y: scroll;
-    //     height: 100%;
-    //     position: relative;
-        // padding: 4.75rem 0 5rem;
-
-        // &::-webkit-scrollbar {
-        //     height: 6px;
-        //     width: 6px;
-        // }
-
-        // &::-webkit-scrollbar-thumb {
-        //     border-radius: 17px;
-        //     background-color: white;
-        // }
-
-        // &::-webkit-scrollbar-track {
-        //     background-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(white, .7) 30%, rgba(white, .7) 70%, transparent 70%, transparent 100%);
-        //     width: 2px;
-        //     margin: 4rem 0;
-        // }
-        
-    //     @media only screen and (max-width: 850px) {
-    //         height: auto;
-    //         overflow: visible;
-    //     }
-    // }
 
     .bets {
         position: relative;
@@ -145,7 +114,6 @@ const myUserId = inject<Ref<string>>('myUserId');
             background-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(white, .7) 30%, rgba(white, .7) 70%, transparent 70%, transparent 100%);
             width: 2px;
             margin-bottom: 2rem;
-            // margin: 4rem 0;
         }
     }
 

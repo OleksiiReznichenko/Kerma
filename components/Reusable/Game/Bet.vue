@@ -36,7 +36,8 @@ let hours = ref<string | number>('00');
 let minutes = ref<string | number>('00');
 let seconds = ref<string | number>('00');
 
-const fullGameDuration = computed(() => {
+// BET DURATION
+const betDuration = computed(() => {
     if (props.index === 0) return;
     const gameDuration = props.endTime - props.startTime;
     calcInitialTime(gameDuration);
@@ -44,6 +45,7 @@ const fullGameDuration = computed(() => {
     return `${hours.value}:${minutes.value}:${seconds.value}`;
 });
 
+// GET INITIAL TIME
 const calcInitialTime = (gameDuration: number): void => {
     seconds.value = Math.floor((gameDuration / 1000) % 60);
     minutes.value = Math.floor((gameDuration / (1000 * 60)) % 60);
@@ -99,6 +101,7 @@ const stopwatchInit = (): void => {
 };
 
 onMounted(() => {
+    // INIT STOPWATCH ON HIGHEST BET
     if (props.index === 0) {
         const gameDuration = new Date().getTime() - props.startTime;
         calcInitialTime(gameDuration);
@@ -148,7 +151,7 @@ onUnmounted(() => {
                     <span>{{minutes}}</span> : 
                     <span>{{seconds}}</span>
                 </strong>
-                <strong v-else class="info-line">{{fullGameDuration}}</strong>
+                <strong v-else class="info-line">{{betDuration}}</strong>
                 <span class="subtitle">Bet duration</span>
             </div>
             <div class="column third-column">
@@ -289,13 +292,11 @@ onUnmounted(() => {
 
                 .dots {
                     width: 1rem;
-                    // margin: 0 .75rem 0 1.25rem;
                 }
             }
 
             .subtitle {
                 font-size: 1.2rem;
-                // padding-top: .125rem;
         
                 @media only screen and (max-width: 850px) {
                     font-size: 1.6rem;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import Game from '~~/composables/interfaces/game';
+import Game from '@/composables/interfaces/game';
 
 // OPEN WINDOW INDICATOR
 const baseStore = useBaseStore();
@@ -23,6 +23,7 @@ const closeWindowOnWrapper = (event: Event): void => {
     closeWindow();
 };
 
+// IF ACTIVE GAME ID CHANGES - FIND ACTIVE GAME
 watch(activeGameDetailsWindowId, () => {
     if (!activeGameDetailsWindowId.value || games.value.length < 1 ) return;
         activeGame.value = games.value.find(game => {

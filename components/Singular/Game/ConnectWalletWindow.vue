@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import User from '@/composables/interfaces/user';
 
-// OPEN WINDOW INDICATOR
+// OPEN WINDOW INDICATOR MY USER
 const baseStore = useBaseStore();
 const { connectWindowOpenIndicator, myUser } = storeToRefs(baseStore);
 
@@ -19,7 +19,7 @@ const closeWindowOnWrapper = (event: Event): void => {
     closeWindow();
 };
 
-// CLOSE WINDOW AND  OPEN STEPS WINDOW
+// CLOSE WINDOW AND OPEN STEPS WINDOW
 const toggleWindows = (): void => {
     closeWindow();
     openStepsWindow()
@@ -113,9 +113,7 @@ const login = (): void => {
     
     .connect-wallet-window {
         width: 55rem;
-        // height: 55rem;
         border-radius: 4rem;
-        // background-image: linear-gradient(45deg, #D1CEF3, rgba(#CEBAED, .75));
         background: radial-gradient(103.61% 103.61% at 17.68% -3.61%, rgba(0, 0, 0, 0.022) 0%, rgba(0, 0, 0, 0.05) 100%), radial-gradient(123.14% 123.14% at 13.09% -3.08%, rgba(230, 219, 255, 0.95) 0%, rgba(215, 197, 255, 0.9) 100%);
         box-shadow: 1.5rem 2rem 4.5rem rgba(0, 0, 0, 0.1);
         padding: 7.25rem 6.75rem 5.5rem;

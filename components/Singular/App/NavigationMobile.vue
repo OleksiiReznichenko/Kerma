@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 const baseStore = useBaseStore();
 const { myUser } = storeToRefs(baseStore);
 
+// ROUTER
 const router = useRouter();
 
 // IF NOT LOGGED IN - CLOSE NAVIGATION, GO TO GAME PAGE, OPEN CONNECT WINDOW

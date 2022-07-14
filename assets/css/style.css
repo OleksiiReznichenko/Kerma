@@ -61,7 +61,6 @@
 }
 
 ::selection {
-  /* color: #6d6b8d; */
   color: #fff;
   background-color: #6d6b8d;
 }
@@ -152,7 +151,6 @@ svg {
 }
 
 html {
-  /* font-size: 62.5%; */
   font-size: 10px;
   overflow-y: hidden;
 }
