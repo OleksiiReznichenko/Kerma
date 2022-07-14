@@ -205,6 +205,14 @@ const kermaModelScailing = (): void => {
         }
     }
 
+    if (window.outerWidth < 1300 && window.outerHeight > 900 && window.outerWidth > 1000) {
+        kermaModel.scale.set(.8, .8, .8);
+    
+        if (props.page === 'game') {
+            kermaModel.scale.set(.6, .6, .6);
+        }
+    }
+
     if (window.outerWidth < 1000 && window.outerHeight < 600 && window.outerWidth > 600) {
         kermaModel.scale.set(1.35, 1.35, 1.35);
     
@@ -372,7 +380,7 @@ const onMouseMove = (event: MouseEvent): void => {
 // RESIZE 3D MODEL
 const onWindowResize = (): void => {
     setTimeout(() => {
-        if (!camera || prevWidth === window.outerWidth) return;
+        // if (!camera || prevWidth === window.outerWidth) return;
         kermaModelScailing();
 
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -398,6 +406,8 @@ onMounted(() => {
 
     // INIT 3D MODEL AND ANIMATION
     initAnimation();
+
+    prevWidth = window.outerWidth;
 
     // RESIZE
     window.addEventListener('resize', onWindowResize);

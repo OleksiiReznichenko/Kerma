@@ -64,12 +64,25 @@ const paragraph: string = "This user doesn't exist";
 
 <style lang="scss" scoped>
 .page {
+    
+    @media only screen and (max-width: 1300px) and (min-height: 1000px) and (min-width: 850px) {
+        @include flex-center;
+        flex-direction: column;
+    }
+
     @media only screen and (max-width: 850px) {
         margin-top: 0 !important;
     }
     
     @media only screen and (max-width: 600px) {
         width: 100%;
+    }
+
+    main {
+    
+        @media only screen and (max-width: 1300px) and (min-height: 1000px) and (min-width: 850px) {
+            margin-top: -20vh;
+        }
     }
 }
 </style>
