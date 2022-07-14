@@ -46,8 +46,8 @@ let html = ref<HTMLElement | null>(null);
 const baseStore = useBaseStore();
 const { navOpenIndicator } = storeToRefs(baseStore);
 
-// PREVIOUS WINDOW HEIGHT FOR RESIZE
-let prevHeight: number = 0;
+// PREVIOUS WINDOW WIDTH FOR RESIZE
+let prevWidth: number = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INIT 3D MODEL AND ANIMATION
@@ -260,173 +260,129 @@ const animate = (): void => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MOVE CAMERA ON MOUSEMOVE
 const onMouseMove = (event: MouseEvent): void => {
-    // setTimeout(()    => {
-        if (props.page === 'main') {
-            let maxPositionX = 8.5;
-            let minPositionX = 5.5;
+    if (props.page === 'main') {
+        let maxPositionX = 8.5;
+        let minPositionX = 5.5;
 
-            // let maxPositionY = 2.5;
-            // let minPositionY = 2.4;
-            
-            let maxRotationX = -0.08;
-            let minRotationX = -0.2;
+        // let maxPositionY = 2.5;
+        // let minPositionY = 2.4;
+        
+        let maxRotationX = -0.08;
+        let minRotationX = -0.2;
 
-            // let maxRotationY = 0.475;
-            // let minRotationY = 0.4;
+        // let maxRotationY = 0.475;
+        // let minRotationY = 0.4;
 
-            if (camera.position.x < minPositionX) {
-                camera.position.x = minPositionX;
-            } else if (camera.position.x > maxPositionX) {
-                camera.position.x = maxPositionX;
-            }
-
-            if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
-                camera.position.x -= -event.movementX / 3500;
-            }
-
-            // if (camera.position.y < minPositionY) {
-            //     camera.position.y = minPositionY;
-            // } else if (camera.position.y > maxPositionY) {
-            //     camera.position.y = maxPositionY;
-            // }
-
-            // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
-            //     camera.position.y -= -event.movementY / 3050;
-            // }
-
-            if (camera.rotation.x < minRotationX) {
-                camera.rotation.x = minRotationX;
-            } else if (camera.rotation.x > maxRotationX) {
-                camera.rotation.x = maxRotationX;
-            }
-
-            if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-                camera.rotation.x -= event.movementY / 23000;
-            }
-
-            // if (camera.rotation.y < minRotationY) {
-            //     camera.rotation.y = minRotationY;
-            // } else if (camera.rotation.y > maxRotationY) {
-            //     camera.rotation.y = maxRotationY;
-            // }
-            
-            // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
-            //     camera.rotation.y -= event.movementX / 59000;
-            // }
-        } else if (props.page === 'faq') {
-            let maxPositionX = -6.5;
-            let minPositionX = -9.5;
-
-            // let maxPositionY = 2.5;
-            // let minPositionY = 2.4;
-            
-            let maxRotationX = -0.08;
-            let minRotationX = -0.2;
-
-            // let maxRotationY = -0.4;
-            // let minRotationY = -0.475;
-
-            if (camera.position.x < minPositionX) {
-                camera.position.x = minPositionX;
-            } else if (camera.position.x > maxPositionX) {
-                camera.position.x = maxPositionX;
-            }
-
-            if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
-                camera.position.x -= -event.movementX / 3500;
-            }
-
-            // if (camera.position.y < minPositionY) {
-            //     camera.position.y = minPositionY;
-            // } else if (camera.position.y > maxPositionY) {
-            //     camera.position.y = maxPositionY;
-            // }
-
-            // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
-            //     camera.position.y -= event.movementY / 3050;
-            // }
-
-
-            if (camera.rotation.x < minRotationX) {
-                camera.rotation.x = minRotationX;
-            } else if (camera.rotation.x > maxRotationX) {
-                camera.rotation.x = maxRotationX;
-            }
-
-            if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-                camera.rotation.x -= event.movementY / 23000;
-            }
-
-            // if (camera.rotation.y < minRotationY) {
-            //     camera.rotation.y = minRotationY;
-            // } else if (camera.rotation.y > maxRotationY) {
-            //     camera.rotation.y = maxRotationY;
-            // }
-            
-            // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
-            //     camera.rotation.y += event.movementX / 59000;
-            // }
+        if (camera.position.x < minPositionX) {
+            camera.position.x = minPositionX;
+        } else if (camera.position.x > maxPositionX) {
+            camera.position.x = maxPositionX;
         }
-        //  else if (props.page === 'game') {
-        //     let maxPositionX = -7.75;
-        //     let minPositionX = -9;
 
-        //     // let maxPositionY = 2.5;
-        //     // let minPositionY = 2.4;
+        if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
+            camera.position.x -= -event.movementX / 3500;
+        }
 
-        //     let maxRotationX = -0.1;
-        //     let minRotationX = -0.15;
-
-        //     // let maxRotationY = -0.4;
-        //     // let minRotationY = -0.475;
-
-        //     if (camera.position.x < minPositionX) {
-        //         camera.position.x = minPositionX;
-        //     } else if (camera.position.x > maxPositionX) {
-        //         camera.position.x = maxPositionX;
-        //     }
-
-        //     if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
-        //         camera.position.x -= -event.movementX / 3050;
-        //     }
-
-        //     // if (camera.position.y < minPositionY) {
-        //     //     camera.position.y = minPositionY;
-        //     // } else if (camera.position.y > maxPositionY) {
-        //     //     camera.position.y = maxPositionY;
-        //     // }
-
-        //     // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
-        //     //     camera.position.y -= event.movementY / 3050;
-        //     // }
-
-
-        //     if (camera.rotation.x < minRotationX) {
-        //         camera.rotation.x = minRotationX;
-        //     } else if (camera.rotation.x > maxRotationX) {
-        //         camera.rotation.x = maxRotationX;
-        //     }
-
-        //     if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-        //         camera.rotation.x -= event.movementY / 13000;
-        //     }
+        // if (camera.position.y < minPositionY) {
+        //     camera.position.y = minPositionY;
+        // } else if (camera.position.y > maxPositionY) {
+        //     camera.position.y = maxPositionY;
         // }
-    // }, 100); 
+
+        // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
+        //     camera.position.y -= -event.movementY / 3050;
+        // }
+
+        if (camera.rotation.x < minRotationX) {
+            camera.rotation.x = minRotationX;
+        } else if (camera.rotation.x > maxRotationX) {
+            camera.rotation.x = maxRotationX;
+        }
+
+        if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
+            camera.rotation.x -= event.movementY / 23000;
+        }
+
+        // if (camera.rotation.y < minRotationY) {
+        //     camera.rotation.y = minRotationY;
+        // } else if (camera.rotation.y > maxRotationY) {
+        //     camera.rotation.y = maxRotationY;
+        // }
+        
+        // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
+        //     camera.rotation.y -= event.movementX / 59000;
+        // }
+    } else if (props.page === 'faq') {
+        let maxPositionX = -6.5;
+        let minPositionX = -9.5;
+
+        // let maxPositionY = 2.5;
+        // let minPositionY = 2.4;
+        
+        let maxRotationX = -0.08;
+        let minRotationX = -0.2;
+
+        // let maxRotationY = -0.4;
+        // let minRotationY = -0.475;
+
+        if (camera.position.x < minPositionX) {
+            camera.position.x = minPositionX;
+        } else if (camera.position.x > maxPositionX) {
+            camera.position.x = maxPositionX;
+        }
+
+        if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
+            camera.position.x -= -event.movementX / 3500;
+        }
+
+        // if (camera.position.y < minPositionY) {
+        //     camera.position.y = minPositionY;
+        // } else if (camera.position.y > maxPositionY) {
+        //     camera.position.y = maxPositionY;
+        // }
+
+        // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
+        //     camera.position.y -= event.movementY / 3050;
+        // }
+
+
+        if (camera.rotation.x < minRotationX) {
+            camera.rotation.x = minRotationX;
+        } else if (camera.rotation.x > maxRotationX) {
+            camera.rotation.x = maxRotationX;
+        }
+
+        if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
+            camera.rotation.x -= event.movementY / 23000;
+        }
+
+        // if (camera.rotation.y < minRotationY) {
+        //     camera.rotation.y = minRotationY;
+        // } else if (camera.rotation.y > maxRotationY) {
+        //     camera.rotation.y = maxRotationY;
+        // }
+        
+        // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
+        //     camera.rotation.y += event.movementX / 59000;
+        // }
+    }
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RESIZE 3D MODEL
 const onWindowResize = (): void => {
-    if (!camera) return;
-    kermaModelScailing();
+    setTimeout(() => {
+        if (!camera || prevWidth === window.outerWidth) return;
+        kermaModelScailing();
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+        camera.aspect = window.innerWidth / window.innerHeight;
 
-    camera.updateProjectionMatrix();
+        camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-    prevHeight = window.outerHeight;
+        prevWidth = window.outerWidth;
+    }, 100);
 };
 
 // RESTORE 3D ANIMATION ON NAVIGATION CLOSE
