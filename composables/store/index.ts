@@ -19,6 +19,8 @@ interface State {
     isChatOpenIndicator: boolean;
     gameDetailsWindowOpenIndicator: boolean;
     activeGameDetailsWindowId: string;
+    isMobile: boolean;
+    isFullscreenChat: boolean;
     nextGameDate: NextGameDate;
     previousGameInfo: GameInfo;
     myUser: User;
@@ -29,26 +31,39 @@ export const useBaseStore = defineStore({
     
     state: (): State => ({
         baseUrl: import.meta.env.BASE_URL,
+
         navOpenIndicator: false,
+
         connectWindowOpenIndicator: false,
+
         isStepsOpenIndicator: false,
+
         isChatOpenIndicator: false,
+
         gameDetailsWindowOpenIndicator: false,
+        
         activeGameDetailsWindowId: '',
+
+        isMobile: false,
+
+        isFullscreenChat: false,
+
         nextGameDate: {
             year: 2022,
             month: 7,
-            day: 13,
-            hour: 21,
+            day: 14,
+            hour: 12,
             minute: 30,
             second: 0,
         },
+
         previousGameInfo: {
             id: 'kj1k4k325jk235kp141k2lk',
             winnerNickname: 'Doly Menners',
             winAmountEth: 500,
             gameDate: '12.05.2022',
         },
+
         myUser: {
             id: '',
             nickname: '',
@@ -86,6 +101,22 @@ export const useBaseStore = defineStore({
 
         updatePrevGameInfo(previousGameInfo: GameInfo) {
             this.previousGameInfo = previousGameInfo;
+        },
+
+        isMobileToFalse() {
+            this.isMobile = false;
+        },
+        
+        isMobileToTrue() {
+            this.isMobile = true;
+        },
+
+        isFullscreenChatToFalse() {
+            this.isFullscreenChat = false;
+        },
+        
+        isFullscreenChatToTrue() {
+            this.isFullscreenChat = true;
         },
 
         navOpenIndicatorToFalse() {

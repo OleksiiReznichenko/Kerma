@@ -20,7 +20,7 @@ const gamesStore = useGamesStore();
 
 // USERS ARRAY
 const baseStore = useBaseStore();
-const { myUser, nextGameDate } = storeToRefs(baseStore);
+const { myUser, nextGameDate, isFullscreenChat } = storeToRefs(baseStore);
 
 // MY USER'S BALANCE
 let myUserBalance = computed<number>(() => {
@@ -79,7 +79,7 @@ let betsUsers = computed<User[] | undefined[]>(() => {
 });
 
 // GET DATE FOR THE END OF EVERY GAME
-const getDate = (): string => {
+const getDate = (dateType: 'short' | 'full'): string => {
     const date = new Date();
     const year = date.getFullYear();
     let month: number | string = date.getMonth() + 1;
@@ -103,7 +103,11 @@ const getDate = (): string => {
         minutes = '0' + minutes;
     }
 
-    return `${day}.${month}.${year} || ${hours}:${minutes}`;
+    if (dateType === 'short') {
+        return `${day}.${month}, ${hours}:${minutes}`;
+    } else if (dateType === 'full') {
+        return `${day}.${month}.${year} || ${hours}:${minutes}`;
+    }
 };
 
 // END PREVIOUS GAME AND BEGIN NEW GAME ON NEXT GAME DATE CHANGE
@@ -119,14 +123,14 @@ watch(nextGameDate.value, () => {
             winnerId: highestBet.value.userId,
             winnerBetId: highestBet.value.id,
             winAmountEth: currentGame.value.prizeFund,
-            gameDate: getDate(),
+            gameDate: getDate('full'),
             bets: currentGame.value.bets,
         };
         const gameInfoObject: GameInfo = {
             id: currentGame.value.id,
             winnerNickname: highestBetUser.value.nickname,
             winAmountEth: currentGame.value.prizeFund,
-            gameDate: getDate(),
+            gameDate: getDate('short'),
         };
         gamesStore.addGameToHistory(gameObject);
         baseStore.updatePrevGameInfo(gameInfoObject);
@@ -171,7 +175,7 @@ provide<Ref<string>>('myUserId', myUserId);
             <SingularGameMainContent />
             <Reusable3DModel page="game" />
         </div>
-        <SingularGameChat />
+        <SingularGameChat v-if="!isFullscreenChat" />
         <ReusableGameChatButton class="mobile" />
     </div>
 </template>

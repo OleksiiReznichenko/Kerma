@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import ChatMessage from '@/composables/interfaces/message';
-import { Ref } from 'vue';
+import { storeToRefs } from 'pinia';
 
-// MY USER'S ID
-const myUserId = inject<Ref<string>>('myUserId');
+// MY USER ID
+const baseStore = useBaseStore();
+const { myUser } = storeToRefs(baseStore);
 
 // MESSAGES CONTAINER DOM
 const scrollToBottom = inject<Function>('scrollToBottom');
@@ -48,11 +49,11 @@ const sendMessage = (event: Event): void => {
 
     removeWhiteSpaces();
 
-    if (!newMessageNoWhiteSpace.value || !myUserId.value) return;
+    if (!newMessageNoWhiteSpace.value || !myUser.value.id) return;
 
     const newMessageObject: ChatMessage = {
         id: (Math.random() * Date.now()).toString(),
-        userId: myUserId.value,
+        userId: myUser.value.id,
         text: newMessage.value
     };
 
@@ -65,7 +66,7 @@ const sendMessage = (event: Event): void => {
 </script>
 
 <template>
-    <div :class="{'inactive': !myUserId}" class="input-container">
+    <div :class="{'inactive': !myUser.id}" class="input-container">
         <!-- <SingularGameChatEmojiPicker /> -->
         <textarea @keypress.enter="sendMessage" @input="autoGrow" v-model="newMessage" :maxlength="maxMessageLength" name="message" id="messageInput" cols="30" rows="1" wrap="soft" placeholder="Message"></textarea>
         <button @click="sendMessage" class="send-button">

@@ -165,6 +165,7 @@ const login = (): void => {
                 border: 2px solid #eee;
                 border-right: none;
                 border-bottom: none;
+                position: relative;
 
                 @media only screen and (max-width: 850px) and (min-height: 600px),
                 only screen and (max-width: 600px) {
@@ -187,11 +188,11 @@ const login = (): void => {
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
+                    z-index: 1000;
                 }
             }
 
             .method-1 {
-                backface-visibility: hidden;
                 background: rgba(236, 227, 255, 0.3);
                 box-shadow: .75rem .75rem 1.35rem rgba(0, 0, 0, 0.08);
                 transition: all .3s;

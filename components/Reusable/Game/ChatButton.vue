@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 
 const baseStore = useBaseStore();
-const { isChatOpenIndicator } = storeToRefs(baseStore);
+const { isChatOpenIndicator, isFullscreenChat } = storeToRefs(baseStore);
 
 // OPEN CHAT
 const openChat = baseStore.isChatOpenIndicatorToTrue;
@@ -21,10 +21,14 @@ const toggleChat = (): void => {
 </script>
 
 <template>
-    <button @click="toggleChat" class="chat-button">
+    <button v-if="!isFullscreenChat" @click="toggleChat" class="chat-button">
         <img src="@/assets/img/cloudForChat.png" alt="Cloud" class="cloud">
         <img src="@/assets/svg/chat.svg" alt="Chat icon" class="icon">
     </button>
+    <NuxtLink v-else to="/chat" class="chat-button">
+        <img src="@/assets/img/cloudForChat.png" alt="Cloud" class="cloud">
+        <img src="@/assets/svg/chat.svg" alt="Chat icon" class="icon">
+    </NuxtLink>
 </template>
 
 <style lang="scss" scoped>

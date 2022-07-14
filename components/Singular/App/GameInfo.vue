@@ -241,7 +241,7 @@ onUnmounted(() => {
                 </div>
                 <div class="info">
                     <span class="subtitle">Game date:</span>
-                    <strong class="info-line">{{previousGameInfo.gameDate}}</strong>
+                    <strong class="info-line date-info-line">{{previousGameInfo.gameDate}}</strong>
                 </div>
             </div>
         </div>
@@ -512,6 +512,10 @@ onUnmounted(() => {
                         font-size: 2.2rem;
                         max-width: 13rem;
                     }
+                }
+
+                .date-info-line {
+                    overflow: visible;
                 }
 
                 .amount-win-line {

@@ -52,8 +52,10 @@
         font-weight: 600;
         display: flex;
         align-items: center;
-        backface-visibility: hidden;
+        // backface-visibility: hidden;
         transition: none;
+        position: relative;
+        z-index: 3000;
 
         span {
             display: inline-block;
@@ -78,6 +80,8 @@
             @include flex-center;
             box-shadow: 1rem 1.5rem 2.25rem rgba(0, 0, 0, 0.05);
             transition: all .3s;
+            position: relative;
+            z-index: 3000;
 
             &:hover {
                 background: lighten(#c9c9f4, 1%);
@@ -93,11 +97,13 @@
             }
 
             .icon {
+                @include abs-center;
                 width: 50%;
-                transform: rotate(90deg);
+                transform: translate(-50%, -50%) rotate(90deg);
+                z-index: 4000;
 
                 @media only screen and (max-width: 1000px) {
-                    transform: rotate(0);
+                    transform: translate(-50%, -50%) rotate(0);
                 }
             }
         }
@@ -126,10 +132,10 @@
         }
 
         .icon {
-            transform: rotate(-90deg);
+            transform: translate(-50%, -50%) rotate(-90deg);
 
             @media only screen and (max-width: 1000px) {
-                transform: rotate(0);
+                transform: translate(-50%, -50%) rotate(0);
             }
         }
 
@@ -151,10 +157,10 @@
     .social-link:last-of-type {
 
         .icon {
-            transform: rotate(90deg);
+            transform: translate(-50%, -50%) rotate(90deg);
 
             @media only screen and (max-width: 1000px) {
-                transform: rotate(0);
+                transform: translate(-50%, -50%) rotate(0);
             }
         }
 

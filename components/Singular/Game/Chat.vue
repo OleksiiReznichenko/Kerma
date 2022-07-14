@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { Ref } from 'vue';
-import ChatMessage from '@/composables/interfaces/message';
-import User from '@/composables/interfaces/user';
 
 // IS CHAT OPEN INDICATOR
 const baseStore = useBaseStore();
-const { isChatOpenIndicator } = storeToRefs(baseStore);
+const { isChatOpenIndicator, myUser, isFullscreenChat } = storeToRefs(baseStore);
 
 // CLOSE CHAT FUNCTION
 const closeChat = baseStore.isChatOpenIndicatorToFalse;
@@ -29,13 +26,7 @@ const messagesUsers = computed(() => {
     })
 });
 
-let messagesDom = ref<HTMLElement | null>(null);
-
-// PROVIDE CURRENT CHAT MESSAGES TO MESSAGES.VUE
-provide<Ref<ChatMessage[] | undefined[]>>('messages', messages);
-
-// PROVIDE CURRENT CHAT MESSAGES USERS TO MESSAGES.VUE
-provide<Ref<User[] | undefined[]>>('messagesUsers', messagesUsers);
+const messagesDom = ref<HTMLElement | null>(null);
 
 // SCROLL TO THE BOTTOM OF MESSAGES
 const scrollToBottom = (): void => {
@@ -44,19 +35,18 @@ const scrollToBottom = (): void => {
     }
 };
 
-watch(messagesDom, () => {
-    scrollToBottom();
-});
-
-watch(isChatOpenIndicator, () => {
-    setTimeout(() => {
+watch(isChatOpenIndicator, (newValue) => {
+    if (newValue) {
         scrollToBottom();
-    }, 150);
+    } else {
+        setTimeout(() => {
+            scrollToBottom();
+        }, 300);
+    }
 });
 
 // PROVIDE SCROLL TO BOTTOM FUNCTION TO INPUTFIELD.VUE
 provide<Function>('scrollToBottom', scrollToBottom);
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CODE FOR DRAGGABLE CHAT
@@ -154,8 +144,8 @@ const setTranslate = (xPos: number, yPos: number, el: HTMLElement): void => {
 };
 
 onMounted(() => {
-    messagesDom.value = document.querySelector('.messages');
     container.value = document.body;
+    scrollToBottom();
 
     // ADD EVENT LISTENERS FOR BODY
     container.value.addEventListener("touchstart", dragStartTouch);
@@ -176,15 +166,20 @@ onUnmounted(() => {
     container.value.removeEventListener("mousedown", dragStartMouse);
     container.value.removeEventListener("mouseup", dragEnd);
     container.value.removeEventListener("mousemove", dragMouse);
+
+    baseStore.isChatOpenIndicatorToFalse();
 });
 
 </script>
 
 <template>
     <div ref="dragItem" :class="{'opened': isChatOpenIndicator}" class="chat">
-        <button @click="closeChat" class="close-button">
+        <button v-if="!isFullscreenChat" @click="closeChat" class="close-button">
             <img src="@/assets/svg/crossPink.svg" alt="Close icon" class="close-icon">
         </button>
+        <NuxtLink v-else to="/game" class="close-button">
+            <img src="@/assets/svg/crossPink.svg" alt="Close icon" class="close-icon">
+        </NuxtLink>
         <div ref="chatInfo" class="chat-info">
             <h2 class="title">Chat</h2>
             <div class="users-online-container">
@@ -196,7 +191,18 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <SingularGameChatMessages />
+        <div ref="messagesDom" class="messages">
+            <ReusableChatMessage 
+                v-for="(message, i) in messages"
+                :key="message.id"
+                :isMe='message.userId === myUser.id'
+                :text='message.text'
+                :user-id='message.userId'
+                :nickname="messagesUsers[i].nickname"
+                :avatar="messagesUsers[i].avatar"
+            />
+        </div>
+
         <SingularGameChatInputField />
     </div>
 </template>
@@ -211,7 +217,7 @@ onUnmounted(() => {
     position: fixed;
     right: 0;
     bottom: 0;
-    z-index: 30000;
+    z-index: 50000;
     background: linear-gradient(0deg, rgba(244, 175, 255, 0.2), rgba(244, 175, 255, 0.2)), linear-gradient(0deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), #D1C1F2;
     border-radius: 4rem;
     width: 38rem;
@@ -219,7 +225,7 @@ onUnmounted(() => {
     max-height: 68rem;
     padding: 2.5rem 1rem 3.5rem 2.5rem;
     box-shadow: 0 .25rem 5rem rgba(0, 0, 0, 0.1);
-    transition: opacity .3s;
+    transition: opacity .4s, visibility .4s;
     cursor: move;
     user-select: none;
     
@@ -313,6 +319,34 @@ onUnmounted(() => {
                     font-size: 1.2rem;
                 }
             }
+        }
+    }
+
+    .messages {
+        display: flex;
+        flex-direction: column;
+        max-height: 80%;
+        overflow-y: scroll;
+        padding-bottom: 4rem;
+        padding-right: 1.5rem;
+
+        @media only screen and (max-width: 500px) {
+            max-height: 85%;
+        }
+
+        &::-webkit-scrollbar {
+            height: 5px;
+            width: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 17px;
+            background-color: white;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(white, .7) 30%, rgba(white, .7) 70%, transparent 70%, transparent 100%);
+            margin-bottom: 8rem;
         }
     }
 }

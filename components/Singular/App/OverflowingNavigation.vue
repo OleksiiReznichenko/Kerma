@@ -126,6 +126,7 @@ onUnmounted(() => {
 .opened {
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: all !important;
 }
 
 .navigation-wrapper {
@@ -138,9 +139,10 @@ onUnmounted(() => {
     top: 0;
     left: 0;
     z-index: 100000;
-    transition: all .5s;
+    transition: opacity .5s, visibility .5s;
     visibility: hidden;
     opacity: 0;
+    pointer-events: none;
 
     .navigation {
         position: relative;

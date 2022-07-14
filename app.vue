@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const baseStore = useBaseStore();
+
 // IF TOUCHPAD DEVICE'S HEIGHT CHANGES - CHANGE BASE 100VH HEIGHT
 const appHeight = (): void => {
     const doc = document.documentElement;
@@ -9,14 +11,42 @@ const appHeight = (): void => {
     }
 };
 
+// ON WINDOW RESIZE
+const checkTypeOfDevice = (): void => {
+  if (window.outerWidth <= 850) {
+    baseStore.isMobileToTrue();
+  } else {
+    baseStore.isMobileToFalse();
+  }
+};
+
+// ON WINDOW RESIZE
+const checkChatType = (): void => {
+  if (window.outerWidth <= 500) {
+      baseStore.isFullscreenChatToTrue();
+  } else {
+      baseStore.isFullscreenChatToFalse();
+  }
+};
+
+// ON WINDOW RESIZE
+const onResize = (): void => {
+  appHeight();
+  checkTypeOfDevice();
+  checkChatType();
+};
+
 onMounted(() => {
+  checkTypeOfDevice();
+  checkChatType();
+
   // ADD WINDOW EVENT LISTENER
-  window.addEventListener('resize', appHeight);
+  window.addEventListener('resize', onResize);
 })
 
 onUnmounted(() => {
   // REMOVE WINDOW EVENT LISTENER
-  window.removeEventListener('resize', appHeight);
+  window.removeEventListener('resize', onResize);
 })
 </script>
 
@@ -104,17 +134,9 @@ onUnmounted(() => {
 }
 
 .iziToast-close {
-  // border-radius: 100% !important;
-  // border: 3px solid white !important;
-  // width: 2rem !important;
-  // height: 2rem !important;
   padding: 3rem 3rem 2rem !important;
   top: 0;
   right: 0;
-  // position: static !important;
-  // top: 50% !important;
-  // right: 1.5rem !important;
-  // transform: translateY(-50%) !important;
   background-image: url(@/assets/svg/crossWithCircle.svg) !important;
   background-size: 20px !important;
   opacity: 1 !important;
