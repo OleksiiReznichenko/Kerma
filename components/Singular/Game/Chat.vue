@@ -249,6 +249,7 @@ onUnmounted(() => {
         right: 0 !important;
         bottom: 0 !important;
         transform: none !important;
+        min-height: var(--app-height);
     }
     
 
