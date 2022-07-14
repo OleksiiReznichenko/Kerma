@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Ref } from 'vue';
+import {v4 as uuid} from 'uuid';
 import Bet from '@/composables/interfaces/bet';
 
 const { $notifyError, $notifySuccess } = useNuxtApp();
@@ -61,7 +62,7 @@ const bet = (): void => {
         }
 
         const newBetObject: Bet = {
-            id: (Math.random() * Date.now()).toString(),
+            id: uuid(),
             userId: myUserId.value,
             startTime: new Date().getTime(),
             endTime: null,

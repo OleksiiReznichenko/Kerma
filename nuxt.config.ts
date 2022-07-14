@@ -56,6 +56,12 @@ export default defineNuxtConfig({
         },
     },
 
+    nitro: {
+        externals: {
+            inline: ['uuid']
+        }
+    },
+
     build: {
         transpile: ['three']
     }

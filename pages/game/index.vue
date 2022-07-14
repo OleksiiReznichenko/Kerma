@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { Ref } from 'vue';
+import {v4 as uuid} from 'uuid';
 import Bet from '@/composables/interfaces/bet';
 import User from '@/composables/interfaces/user';
-import Game from '~~/composables/interfaces/game';
-import GameInfo from '~~/composables/interfaces/gameInfo';
+import Game from '@/composables/interfaces/game';
+import GameInfo from '@/composables/interfaces/gameInfo';
 
 const { $notifySuccess } = useNuxtApp();
 
@@ -114,7 +115,7 @@ const getDate = (dateType: 'short' | 'full'): string => {
 watch(nextGameDate.value, () => {
     if (bets.value.length > 0) {
         $notifySuccess(`${highestBetUser.value.nickname} won ${prizeFund.value.toFixed(5)} ETH`);
-        
+
         usersStore.updateBalance(highestBet.value.userId, 'add', currentGame.value.prizeFund);
         usersStore.updateWins(highestBet.value.userId);
         usersStore.updateGamesPlayed(highestBet.value.userId, currentGame.value.id);
@@ -145,7 +146,7 @@ watch(nextGameDate.value, () => {
         };
         baseStore.updatePrevGameInfo(gameInfoObject);
 
-        currentGame.value.id = (Math.random() * Date.now()).toString();
+        currentGame.value.id = uuid();
         currentGame.value.prizeFund = 0.00000;
         currentGame.value.gameDate = '';
         currentGame.value.bets = [];
