@@ -52,7 +52,7 @@ let prevHeight: number = 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INIT 3D MODEL AND ANIMATION
 const initAnimation = (): void => {
-    if (canvas.value !== null) return;
+    // if (canvas.value !== null) return;
     
     // SCENE
     scene = new THREE.Scene();
@@ -451,9 +451,9 @@ onMounted(() => {
 });
 
 // CLEAN CANVAS
-onBeforeUnmount(() => {
-    sceneContainer.value.innerHTML = '';
-});
+// onBeforeUnmount(() => {
+//     sceneContainer.value.innerHTML = '';
+// });
 
 // CLEAN THREE JS DATA
 onUnmounted(() => {
