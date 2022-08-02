@@ -56,25 +56,6 @@ onUnmounted(() => {
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-
-    <div class="iziToast-wrapper iziToast-wrapper-bottomRight">
-      <div class="iziToast-capsule" style="height: 0px; transition-delay: 0.2s;">
-        <div data-izitoast-ref="1657528331481" class="iziToast error iziToast-theme-dark iziToast-color-red iziToast-animateInside iziToast-opened iziToast-closing fadeOut" id="WW91ciUyMGJldCUyMG11c3QlMjBiZSUyMGJpZ2dlciUyMHRoYW4lMjBjdXJyZW50JTIwaGlnaGVzdCUyMGJldHJlZA" style="pointer-events: none;">
-          <div class="iziToast-body" style="padding-left: 33px;">
-            <i class="iziToast-icon ico-error revealIn"></i>
-            <div class="iziToast-texts">
-              <p class="iziToast-message slideIn">Your bet must be bigger than current highest bet</p>
-            </div>
-            <div></div>
-          </div>
-          <button type="button" class="iziToast-close"></button>
-          <div class="iziToast-progressbar">
-            <div style="transition: width 4834ms linear 0s; width: 0%;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 

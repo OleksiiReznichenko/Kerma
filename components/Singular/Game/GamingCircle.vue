@@ -32,9 +32,8 @@ const avatarPath = computed<string>(() => {
 const highestBetAmount = computed(() => {
     if (props.highestBetAmount) {
         return props.highestBetAmount;
-    } else {
-        return 0;
     }
+    return 0;
 })
 
 // STOP GAMING CIRCLE ANIMATION ON NAVIGATION OPEN

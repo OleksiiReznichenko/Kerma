@@ -47,7 +47,7 @@ const onWindowResize = (): void => {
 // CLOSE NAVIGATION ON ROUTE CHANGE
 watch(route, () => {
     baseStore.navOpenIndicatorToFalse();
-})
+});
 
 onMounted(() => {
     // ADD WINDOW EVENT LISTENER

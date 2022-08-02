@@ -63,6 +63,6 @@ export default defineNuxtConfig({
     },
 
     build: {
-        transpile: ['three']
+        transpile: ['three', 'gsap']
     }
 })
