@@ -280,18 +280,24 @@ const onMouseMove = (event: MouseEvent): void => {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RESIZE 3D MODEL
-const onWindowResize = (): void => {
-    // if (!camera || prevWidth === window.outerWidth) return;
-    if (!camera) return;
-    kermaModelScailing();
+const onWindowResize = (eventType: 'resize' | 'orientationchange'): void => {
+    if (!camera || eventType === 'resize' && Math.abs(window.outerWidth - prevWidth) < 100) return;
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    let timeoutTime = 0;
+    if (eventType === 'orientationchange') {
+        timeoutTime = 150;
+    }
+    setTimeout(() => {
+        kermaModelScailing();
 
-    camera.updateProjectionMatrix();
+        camera.aspect = window.innerWidth / window.innerHeight;
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.updateProjectionMatrix();
 
-    prevWidth = window.outerWidth;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        prevWidth = window.outerWidth;
+    }, timeoutTime);
 };
 
 // RESTORE 3D ANIMATION ON NAVIGATION CLOSE
@@ -311,7 +317,8 @@ onMounted(() => {
     prevWidth = window.outerWidth;
 
     // RESIZE
-    // window.addEventListener('resize', onWindowResize);
+    window.addEventListener('resize', () => onWindowResize('resize'));
+    window.addEventListener('orientationchange', () => onWindowResize('orientationchange'));
 
     html.value = document.querySelector('html');
     html.value.addEventListener('mousemove', onMouseMove);
@@ -330,7 +337,8 @@ onUnmounted(() => {
     clips = [];
     clock = null;
 
-    // window.removeEventListener('resize', onWindowResize);
+    window.removeEventListener('resize', () => onWindowResize('resize'));
+    window.removeEventListener('orientationchange', () => onWindowResize('orientationchange'));
     html.value.removeEventListener('mousemove', onMouseMove);
 });
 
