@@ -72,6 +72,7 @@ const initAnimation = (): void => {
     } else if (props.page === 'faq') {
         camera.position.set(-8, 2, 15.5);
     } else if (props.page === 'game') {
+        // camera.position.set(-8, 2, 15.5);
         camera.position.set(-8, 2, 15.5);
     }
     camera.lookAt(scene.position);
@@ -79,8 +80,12 @@ const initAnimation = (): void => {
 
     // RENDERER SETUP
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+    if (props.page === 'game') {
+        renderer.setSize(window.innerWidth * 1.2, window.innerHeight * 1.2);
+    } else {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
     // renderer.outputEncoding = THREE.sRGBEncoding;
     sceneContainer.value.appendChild(renderer.domElement);
 
@@ -143,30 +148,54 @@ const initAnimation = (): void => {
 
     loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
-    loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
-        kermaModel = gltf.scene;
-        scene.add(kermaModel);
-        // kermaModel.traverse(n => {
-        //     if (n.isMesh) {
-        //         n.castShadow = true;
-        //         n.receiveShadow = true;
 
-        //         if (n?.material?.map) n.material.map.anisotropy = 16;
-        //     }
-        // })
-        
-        kermaModelScailing();
+    if (props.page === 'game') {
+        loader.load(baseUrl + 'kermaModelGame.glb', (gltf) => {
+            kermaModel = gltf.scene;
+            scene.add(kermaModel);
 
-        clips = gltf.animations;
-        
-        mixer = new THREE.AnimationMixer(kermaModel);
-        clips.forEach(clip => {
-            mixer.clipAction(clip).play();
-        })
+            kermaModel.position.y = -2;
+            kermaModel.position.x = -1;
+            
+            kermaModelScailing();
 
-        // renderer.render( scene, camera );
-        animate();
-    });
+            clips = gltf.animations;
+            
+            mixer = new THREE.AnimationMixer(kermaModel);
+            clips.forEach(clip => {
+                mixer.clipAction(clip).play();
+            });
+
+            console.log(gltf);
+
+            animate();
+        });
+    } else {
+        loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
+            kermaModel = gltf.scene;
+            scene.add(kermaModel);
+            // kermaModel.traverse(n => {
+            //     if (n.isMesh) {
+            //         n.castShadow = true;
+            //         n.receiveShadow = true;
+
+            //         if (n?.material?.map) n.material.map.anisotropy = 16;
+            //     }
+            // })
+            
+            kermaModelScailing();
+
+            clips = gltf.animations;
+            
+            mixer = new THREE.AnimationMixer(kermaModel);
+            clips.forEach(clip => {
+                mixer.clipAction(clip).play();
+            });
+
+            // renderer.render( scene, camera );
+            animate();
+        });
+    }
 
 
     // ANIMATION
@@ -180,14 +209,14 @@ const kermaModelScailing = (): void => {
     kermaModel.scale.set(1.4, 1.4, 1.4);
     
     if (props.page === 'game') {
-        kermaModel.scale.set(1, 1, 1);
+        kermaModel.scale.set(.85, .85, .85);
     }
 
     if (window.outerWidth < 1500 && window.outerHeight > 700 && window.outerWidth > 1300) {
         kermaModel.scale.set(1.3, 1.3, 1.3);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.9, .9, .9);
+            kermaModel.scale.set(.75, .75, .75);
         }
     }
 
@@ -195,7 +224,7 @@ const kermaModelScailing = (): void => {
         kermaModel.scale.set(1.2, 1.2, 1.2);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.8, .8, .8);
+            kermaModel.scale.set(.65, .65, .65);
         }
     }
 
@@ -203,7 +232,7 @@ const kermaModelScailing = (): void => {
         kermaModel.scale.set(1, 1, 1);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.8, .8, .8);
+            kermaModel.scale.set(.65, .65, .65);
         }
     }
 
@@ -211,7 +240,7 @@ const kermaModelScailing = (): void => {
         kermaModel.scale.set(.8, .8, .8);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.6, .6, .6);
+            kermaModel.scale.set(.45, .45, .45);
         }
     }
 
@@ -219,19 +248,19 @@ const kermaModelScailing = (): void => {
         kermaModel.scale.set(1.35, 1.35, 1.35);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.95, .95, .95);
+            kermaModel.scale.set(.8, .8, .8);
         }
     }
 
     if (window.outerWidth < 850 && window.outerHeight > 600 && window.outerWidth > 600 && props.page === 'game') {
-        kermaModel.scale.set(.7, .7, .7);
+        kermaModel.scale.set(.55, .55, .55);
     }
     
     if (window.outerWidth < 700 && window.outerHeight > 600 && window.outerWidth > 600) {
         kermaModel.scale.set(1.1, 1.1, 1.1);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.7, .7, .7);
+            kermaModel.scale.set(.55, .55, .55);
         }
     }
     
@@ -239,7 +268,7 @@ const kermaModelScailing = (): void => {
         kermaModel.scale.set(.9, .9, .9);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.7, .7, .7);
+            kermaModel.scale.set(.55, .55, .55);
         }
     }
 
@@ -247,9 +276,11 @@ const kermaModelScailing = (): void => {
         kermaModel.scale.set(.9, .9, .9);
     
         if (props.page === 'game') {
-            kermaModel.scale.set(.7, .7, .7);
+            kermaModel.scale.set(.55, .55, .55);
         }
     }
+
+    console.log(kermaModel.scale, window.outerWidth, window.outerHeight)
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,7 +325,11 @@ const onWindowResize = (eventType: 'resize' | 'orientationchange'): void => {
 
         camera.updateProjectionMatrix();
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
+       if (props.page === 'game') {
+            renderer.setSize(window.innerWidth * 1.2, window.innerHeight * 1.2);
+        } else {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
 
         prevWidth = window.outerWidth;
     }, timeoutTime);
@@ -416,45 +451,48 @@ onUnmounted(() => {
 }
 
 .game {
-    top: 18%;
-    left: -40%;
+    // top: 18%;
+    top: -12%;
+    // left: -40%;
+    left: -45%;
     z-index: 500;
 
     @media only screen and (max-width: 850px) {
         position: absolute;
+        transform: translateX(50%);
     }
 
     @media only screen and (max-width: 850px) and (min-height: 600px) {
-        top: -3%;
-        left: -110%;
-    }
-
-    @media only screen and (max-width: 850px) and (max-height: 750px) {
-        top: -1%;
-    }
-
-    @media only screen and (max-width: 850px) and (max-height: 600px) {
-        top: 5%;
-        left: -80%;
-        right: auto;
-        transform: translateX(50%); 
+        top: -33%;
+        left: -100%;
     }
 
     @media only screen and (max-width: 850px) and (min-height: 1000px) {
-        top: -22rem;
+        top: calc(-22rem + -32%);
+        left: -100%;
+    }
+
+    @media only screen and (max-width: 850px) and (max-height: 600px) {
+        top: -11%;
+        left: -85%;
+        right: auto;
     }
 
     @media only screen and (max-width: 600px) and (min-height: 600px) {
-        top: -3%;
-        left: -90%;
+        top: -22%;
+        left: -80%;
     }
 
-    @media only screen and (max-width: 600px) and (max-height: 750px) {
-        top: -1%;
+    @media only screen and (max-width: 600px) and (min-height: 700px) {
+        top: -27%;
+    }
+
+    @media only screen and (max-width: 600px) and (min-height: 800px) {
+        top: -31%;
     }
 
     @media only screen and (max-width: 600px) and (max-height: 600px) {
-        top: 2%;
+        top: -14%;
     }
 }
 </style>

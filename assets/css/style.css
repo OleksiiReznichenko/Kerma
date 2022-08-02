@@ -152,7 +152,7 @@ svg {
 
 html {
   font-size: 10px;
-  /* overflow-y: hidden; */
+  overflow-y: hidden;
 }
 
 @media only screen and (max-width: 1300px) {
