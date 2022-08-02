@@ -270,145 +270,28 @@ const animate = (): void => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MOVE CAMERA ON MOUSEMOVE
 const onMouseMove = (event: MouseEvent): void => {
-    if (props.page === 'main') {
-        // let maxPositionX = 8.5;
-        // let minPositionX = 5.5;
+    if (props.page !== 'main' && props.page !== 'faq') return;
+    const valueX = -(event.clientX / window.innerWidth) * .8 - -0.3;
+    const valueY = (event.clientY / window.innerHeight) * .8 + -0.4;
 
-        // // let maxPositionY = 2.5;
-        // // let minPositionY = 2.4;
-        
-        // let maxRotationX = -0.08;
-        // let minRotationX = -0.2;
-
-        // // let maxRotationY = 0.475;
-        // // let minRotationY = 0.4;
-
-        // if (camera.position.x < minPositionX) {
-        //     camera.position.x = minPositionX;
-        // } else if (camera.position.x > maxPositionX) {
-        //     camera.position.x = maxPositionX;
-        // }
-
-        // if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
-        //     camera.position.x -= -event.movementX / 3500;
-        // }
-
-        // // if (camera.position.y < minPositionY) {
-        // //     camera.position.y = minPositionY;
-        // // } else if (camera.position.y > maxPositionY) {
-        // //     camera.position.y = maxPositionY;
-        // // }
-
-        // // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
-        // //     camera.position.y -= -event.movementY / 3050;
-        // // }
-
-        // if (camera.rotation.x < minRotationX) {
-        //     camera.rotation.x = minRotationX;
-        // } else if (camera.rotation.x > maxRotationX) {
-        //     camera.rotation.x = maxRotationX;
-        // }
-
-        // if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-        //     camera.rotation.x -= event.movementY / 23000;
-        // }
-
-        // // if (camera.rotation.y < minRotationY) {
-        // //     camera.rotation.y = minRotationY;
-        // // } else if (camera.rotation.y > maxRotationY) {
-        // //     camera.rotation.y = maxRotationY;
-        // // }
-        
-        // // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
-        // //     camera.rotation.y -= event.movementX / 59000;
-        // }
-
-        const valueX = -(event.clientX / window.innerWidth) * .8 - -0.3;
-        const valueY = (event.clientY / window.innerHeight) * .8 + -0.4;
-
-        // Lerp movement
-        kermaModel.position.x = $gsap.utils.interpolate(kermaModel.position.x, valueX, 0.03);
-        kermaModel.position.y = $gsap.utils.interpolate(kermaModel.position.y, valueY, 0.03);
-
-    } else if (props.page === 'faq') {
-        // let maxPositionX = -6.5;
-        // let minPositionX = -9.5;
-
-        // // let maxPositionY = 2.5;
-        // // let minPositionY = 2.4;
-        
-        // let maxRotationX = -0.08;
-        // let minRotationX = -0.2;
-
-        // // let maxRotationY = -0.4;
-        // // let minRotationY = -0.475;
-
-        // if (camera.position.x < minPositionX) {
-        //     camera.position.x = minPositionX;
-        // } else if (camera.position.x > maxPositionX) {
-        //     camera.position.x = maxPositionX;
-        // }
-
-        // if (camera.position.x >= minPositionX && camera.position.x <= maxPositionX) {
-        //     camera.position.x -= -event.movementX / 3500;
-        // }
-
-        // // if (camera.position.y < minPositionY) {
-        // //     camera.position.y = minPositionY;
-        // // } else if (camera.position.y > maxPositionY) {
-        // //     camera.position.y = maxPositionY;
-        // // }
-
-        // // if (camera.position.y >= minPositionY && camera.position.y <= maxPositionY) {
-        // //     camera.position.y -= event.movementY / 3050;
-        // // }
-
-
-        // if (camera.rotation.x < minRotationX) {
-        //     camera.rotation.x = minRotationX;
-        // } else if (camera.rotation.x > maxRotationX) {
-        //     camera.rotation.x = maxRotationX;
-        // }
-
-        // if (camera.rotation.x >= minRotationX && camera.rotation.x <= maxRotationX) {
-        //     camera.rotation.x -= event.movementY / 23000;
-        // }
-
-        // // if (camera.rotation.y < minRotationY) {
-        // //     camera.rotation.y = minRotationY;
-        // // } else if (camera.rotation.y > maxRotationY) {
-        // //     camera.rotation.y = maxRotationY;
-        // // }
-        
-        // // if (camera.rotation.y >= minRotationY && camera.rotation.y <= maxRotationY){
-        // //     camera.rotation.y += event.movementX / 59000;
-        // // }
-
-        const valueX = -(event.clientX / window.innerWidth) * .8 - -0.3;
-        const valueY = (event.clientY / window.innerHeight) * .8 + -0.4;
-
-        // Lerp movement
-        kermaModel.position.x = $gsap.utils.interpolate(kermaModel.position.x, valueX, 0.03);
-        kermaModel.position.y = $gsap.utils.interpolate(kermaModel.position.y, valueY, 0.03);
-    }
+    kermaModel.position.x = $gsap.utils.interpolate(kermaModel.position.x, valueX, 0.03);
+    kermaModel.position.y = $gsap.utils.interpolate(kermaModel.position.y, valueY, 0.03);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RESIZE 3D MODEL
 const onWindowResize = (): void => {
-    // setTimeout(() => {
-        // if (!camera || prevWidth === window.outerWidth) return;
-        if (!camera) return;
-        kermaModelScailing();
+    // if (!camera || prevWidth === window.outerWidth) return;
+    if (!camera) return;
+    kermaModelScailing();
 
-        camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = window.innerWidth / window.innerHeight;
 
-        camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-        prevWidth = window.outerWidth;
-    // }, 100);
+    prevWidth = window.outerWidth;
 };
 
 // RESTORE 3D ANIMATION ON NAVIGATION CLOSE
