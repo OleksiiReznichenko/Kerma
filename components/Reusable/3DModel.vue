@@ -311,7 +311,7 @@ onMounted(() => {
     prevWidth = window.outerWidth;
 
     // RESIZE
-    window.addEventListener('resize', onWindowResize);
+    // window.addEventListener('resize', onWindowResize);
 
     html.value = document.querySelector('html');
     html.value.addEventListener('mousemove', onMouseMove);
@@ -330,7 +330,7 @@ onUnmounted(() => {
     clips = [];
     clock = null;
 
-    window.removeEventListener('resize', onWindowResize);
+    // window.removeEventListener('resize', onWindowResize);
     html.value.removeEventListener('mousemove', onMouseMove);
 });
 
