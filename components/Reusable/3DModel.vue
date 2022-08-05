@@ -27,9 +27,12 @@ let dracoLoader: any = null;
 
 // ANIMATION
 let mixer: any = null;
-let clips: any[] = [];
 let clock: any = null;
 let delta: number = 0;
+let clipsBase: any[] = [];
+let clipsProgressState: any[] = [];
+let actionsBase: any[] = [];
+let actionsProgressState: any[] = [];
 
 // CAMERA SETTINGS
 let fov = ref<number>(35);
@@ -46,10 +49,78 @@ let html = ref<HTMLElement | null>(null);
 
 // NAV OPEN INDICATOR
 const baseStore = useBaseStore();
-const { navOpenIndicator } = storeToRefs(baseStore);
+const { navOpenIndicator, isNewBetPlaced, gameState } = storeToRefs(baseStore);
 
 // PREVIOUS WINDOW WIDTH FOR RESIZE
 let prevWidth: number = 0;
+
+let isModelLoaded = ref<boolean>(false);
+let isProgressStateModelLoaded = ref<boolean>(false);
+let greetAnimationFinished = ref<boolean>(false);
+
+
+watchEffect(() => {
+    if (!greetAnimationFinished.value && !isNewBetPlaced.value) return;
+    if (isNewBetPlaced.value) {
+        actionsBase.forEach((action, i) => {
+            if (i === 0) return;
+            action.stop();
+        });
+        actionsBase[0].play();
+        
+        setTimeout(() => {
+            baseStore.isNewBetPlacedToFalse();
+        //     actionsBase.forEach((action, i) => {
+        //         if (i < 2) {
+        //             action.stop();
+        //         } else {
+        //             action.play();
+        //         }
+        //     });
+        }, actionsBase[0]._clip.duration * 1000);
+        return;
+    }
+
+    // if (gameState.value === 'started') {
+    //     actionsBase.forEach((action, i) => {
+    //         if (i === 0) return;
+    //         action.stop();
+    //     });
+    //     actionsBase[0].play();
+    //     return;
+    // }
+
+    // if (gameState.value === 'progress') {
+        // actionsBase.forEach((action, i) => {
+        //     if (i < 2) {
+        //         action.stop();
+        //     } else {
+        //         action.play();
+        //     }
+        // });
+        setTimeout(() => {
+            actionsBase.forEach((action, i) => {
+                action.stop();
+            });
+        }, 680);
+        actionsProgressState.forEach((action, i) => {
+            action.play();
+        });
+        console.log('FIRED')
+    // }
+});
+
+watchEffect(() => {
+    if (isModelLoaded.value && isProgressStateModelLoaded.value) {
+        console.log('VALUE CHANGED')
+        actionsProgressState = clipsProgressState.map(clip => {
+            return mixer.clipAction(clip);
+        });
+        actionsProgressState.forEach((action, i) => {
+            action.play();
+        });
+    }
+})
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INIT 3D MODEL AND ANIMATION
@@ -150,7 +221,7 @@ const initAnimation = (): void => {
     loader.setDRACOLoader(dracoLoader);
 
     if (props.page === 'game') {
-        loader.load(baseUrl + 'kermaModelGame.glb', (gltf) => {
+        loader.load(baseUrl + 'kermaModelGame2.glb', (gltf) => {
             kermaModel = gltf.scene;
             scene.add(kermaModel);
 
@@ -159,16 +230,53 @@ const initAnimation = (): void => {
             
             kermaModelScailing();
 
-            clips = gltf.animations;
+            clipsBase = gltf.animations;
             
             mixer = new THREE.AnimationMixer(kermaModel);
-            clips.forEach(clip => {
-                mixer.clipAction(clip).play();
-            });
 
-            console.log(gltf);
+            actionsBase = clipsBase.map(clip => {
+                return mixer.clipAction(clip);
+            });
+            
+            isModelLoaded.value = true;
+
+            // actionsBase.forEach((action, i) => {
+            //     // if (i < 1) return;
+            //     action.setLoop(THREE.LoopOnce);
+            //     action.play();
+            // });
+
+            actionsBase[0].setLoop(THREE.LoopOnce);
+            actionsBase[0].play();
+            // setTimeout(() => {
+            //     actionsProgressState?.forEach((action, i) => {
+            //         action.play();
+            //     });
+            // }, 2000);
+            // actionsBase[0].play();
+
+            setTimeout(() => {
+                greetAnimationFinished.value = true;
+            }, actionsBase[0]._clip.duration * 1000 - 9900);
+            // actionsBase[0].stop();
+
+            // clips.forEach(clip => {
+            //     const action = mixer.clipAction(clip);
+            //     action.play();
+            // });
+
+            // console.log(gltf);
 
             animate();
+        });
+
+        loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
+            clipsProgressState = gltf.animations;
+            isProgressStateModelLoaded.value = true;
+
+            // actionsProgressState = clips.map(clip => {
+            //     return mixer.clipAction(clip);
+            // });
         });
     } else {
         loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
@@ -182,14 +290,15 @@ const initAnimation = (): void => {
             //         if (n?.material?.map) n.material.map.anisotropy = 16;
             //     }
             // })
-            
+
             kermaModelScailing();
 
-            clips = gltf.animations;
+            clipsBase = gltf.animations;
             
             mixer = new THREE.AnimationMixer(kermaModel);
-            clips.forEach(clip => {
-                mixer.clipAction(clip).play();
+            clipsBase.forEach(clip => {
+                const action = mixer.clipAction(clip);
+                action.play();
             });
 
             // renderer.render( scene, camera );
@@ -279,8 +388,6 @@ const kermaModelScailing = (): void => {
             kermaModel.scale.set(.55, .55, .55);
         }
     }
-
-    console.log(kermaModel.scale, window.outerWidth, window.outerHeight)
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -302,8 +409,8 @@ const animate = (): void => {
 // MOVE CAMERA ON MOUSEMOVE
 const onMouseMove = (event: MouseEvent): void => {
     if (props.page !== 'main' && props.page !== 'faq') return;
-    const valueX = -(event.clientX / window.innerWidth) * .8 - -0.3;
-    const valueY = (event.clientY / window.innerHeight) * .8 + -0.4;
+    const valueX = -(event.clientX / window.innerWidth) * .7 - -0.3;
+    const valueY = (event.clientY / window.innerHeight) * .7 + -0.4;
 
     kermaModel.position.x = $gsap.utils.interpolate(kermaModel.position.x, valueX, 0.03);
     kermaModel.position.y = $gsap.utils.interpolate(kermaModel.position.y, valueY, 0.03);
@@ -369,7 +476,6 @@ onUnmounted(() => {
     kermaModel = null;
 
     mixer = null;
-    clips = [];
     clock = null;
 
     window.removeEventListener('resize', () => onWindowResize('resize'));

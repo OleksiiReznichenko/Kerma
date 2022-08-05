@@ -73,6 +73,7 @@ const bet = (): void => {
         baseStore.updateBalance('subtract', inputValue.value);
         $notifySuccess(`Your ${inputValue.value.toFixed(5)} ETH bet approved`);
         inputValue.value = 0.00001;
+        baseStore.isNewBetPlacedToTrue();
     } else {
         // OPEN WINDOW TO CONNECT WALLET
         baseStore.connectWindowOpenIndicatorToTrue();

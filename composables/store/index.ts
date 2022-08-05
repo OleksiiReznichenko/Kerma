@@ -21,6 +21,8 @@ interface State {
     activeGameDetailsWindowId: string;
     isMobile: boolean;
     isFullscreenChat: boolean;
+    isNewBetPlaced: boolean;
+    gameState: 'started' | 'progress' | 'ended';
     nextGameDate: NextGameDate;
     previousGameInfo: GameInfo;
     myUser: User;
@@ -48,12 +50,16 @@ export const useBaseStore = defineStore({
 
         isFullscreenChat: false,
 
+        isNewBetPlaced: false,
+
+        gameState: 'started',
+
         nextGameDate: {
             year: 2022,
             month: 8,
-            day: 2,
-            hour: 17,
-            minute: 1,
+            day: 5,
+            hour: 12,
+            minute: 6,
             second: 0,
         },
 
@@ -169,6 +175,14 @@ export const useBaseStore = defineStore({
         
         gameDetailsWindowOpenIndicatorToTrue() {
             this.gameDetailsWindowOpenIndicator = true;
+        },
+        
+        isNewBetPlacedToFalse() {
+            this.isNewBetPlaced = false;
+        },
+        
+        isNewBetPlacedToTrue() {
+            this.isNewBetPlaced = true;
         },
     }
 })

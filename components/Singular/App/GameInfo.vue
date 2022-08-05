@@ -9,7 +9,7 @@ const route = useRoute();
 
 // PREV GAME INFO AND NEXT GAME DATE
 const baseStore = useBaseStore();
-const { previousGameInfo, nextGameDate } = storeToRefs(baseStore);
+const { previousGameInfo, nextGameDate, gameState } = storeToRefs(baseStore);
 
 // DOM
 const gameInfo = ref<HTMLElement | null>(null);
@@ -18,6 +18,10 @@ const opener = ref<HTMLElement | null>(null);
 // INDICATORS FOR CLASSES
 let isOpen = ref<boolean>(false);
 let addTransitionClass = ref<boolean>(false);
+
+let gameEndIndicator = ref<boolean>(false);
+
+const timeBetweenGamesMs = ref<number>(10000);
 
 // TIMER DATA
 let dateInterval: ReturnType<typeof setInterval> | null = null;
@@ -81,32 +85,62 @@ const timerInit = (): void => {
     const timeLeft: number = timeToCount - now;
 
     if (timeLeft <= 0) {
-        if (nextGameDate.value.minute + 3 >= 60) {
-            nextGameDate.value.minute = nextGameDate.value.minute + 3 - 60;
+        if (nextGameDate.value.second + timeBetweenGamesMs.value / 1000 >= 60)  {
+            nextGameDate.value.second = 0;
+            
+            if (nextGameDate.value.minute + 1 >= 60) {
+                nextGameDate.value.minute = nextGameDate.value.minute + 1 - 60;
 
-            if (nextGameDate.value.hour + 1 >= 24) {
-                nextGameDate.value.hour = 0;
+                if (nextGameDate.value.hour + 1 >= 24) {
+                    nextGameDate.value.hour = 0;
 
-                if (nextGameDate.value.day + 1 > 31) {
-                    nextGameDate.value.day = 1;
+                    if (nextGameDate.value.day + 1 > 31) {
+                        nextGameDate.value.day = 1;
 
-                    if (nextGameDate.value.month + 1 > 12) {
-                        nextGameDate.value.month = 1;
-                        nextGameDate.value.year += 1;
+                        if (nextGameDate.value.month + 1 > 12) {
+                            nextGameDate.value.month = 1;
+                            nextGameDate.value.year += 1;
+                        } else {
+                            nextGameDate.value.month += 1;
+                        }
                     } else {
-                        nextGameDate.value.month += 1;
+                        nextGameDate.value.day += 1;
                     }
                 } else {
-                    nextGameDate.value.day += 1;
+                    nextGameDate.value.hour += 1;
                 }
-            } else {
-                nextGameDate.value.hour += 1;
-            }
 
+            } else {
+                // nextGameDate.value.minute += 3;
+                nextGameDate.value.minute += 1;
+            }
         } else {
-            nextGameDate.value.minute += 3;
+            nextGameDate.value.second += timeBetweenGamesMs.value / 1000;
+            nextGameDate.value.minute += 1;
         }
+
+        // const timeToCount: number = new Date(dateToCount.value).getTime();
+        // const now: number = new Date().getTime();
+        // const timeLeft: number = timeToCount - now;
+        
+        // gameEndIndicator.value = true;
+
+        // gameState.value = 'ended';
+
         requestAnimationFrame(timerInit);
+
+        // if (timeLeft > 0) {
+        //     setTimeout(() => {
+        //         gameEndIndicator.value = false;
+        //         gameState.value = 'started';
+        //     }, timeBetweenGamesMs.value);
+
+        //     setTimeout(() => {
+        //         gameState.value = 'progress';
+        //     }, 31000);
+
+        //     console.log('LOL');
+        // }
     }
 
     days.value = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -128,6 +162,12 @@ const timerInit = (): void => {
 
     if (+seconds.value < 10) {
         seconds.value = '0' + seconds.value;
+    }
+
+    if (gameEndIndicator.value) {
+        days.value = '00';
+        hours.value = '00';
+        minutes.value = '00';
     }
 };
 
