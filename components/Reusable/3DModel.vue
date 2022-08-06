@@ -49,7 +49,7 @@ let html = ref<HTMLElement | null>(null);
 
 // NAV OPEN INDICATOR
 const baseStore = useBaseStore();
-const { navOpenIndicator, isNewBetPlaced, gameState } = storeToRefs(baseStore);
+const { navOpenIndicator, isNewBetPlaced, gameState, timeBetweenGamesMs, triggerAnimation, triggerAnimationIndicator } = storeToRefs(baseStore);
 
 // PREVIOUS WINDOW WIDTH FOR RESIZE
 let prevWidth: number = 0;
@@ -66,43 +66,151 @@ watchEffect(() => {
             if (i === 0) return;
             action.stop();
         });
+        actionsBase[0].setLoop(THREE.LoopOnce);
         actionsBase[0].play();
-        
-        setTimeout(() => {
-            baseStore.isNewBetPlacedToFalse();
-        //     actionsBase.forEach((action, i) => {
-        //         if (i < 2) {
-        //             action.stop();
-        //         } else {
-        //             action.play();
-        //         }
-        //     });
-        }, actionsBase[0]._clip.duration * 1000);
+
+        const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
+
+        const timeout = () => {
+            if (new Date() < dueTo) {
+                window.setTimeout(timeout, 30);
+            } else {
+                baseStore.isNewBetPlacedToFalse();
+                greetAnimationFinished.value = true;
+            }
+        };
+        timeout();
+
+        // setTimeout(() => {
+        //     baseStore.isNewBetPlacedToFalse();
+        //     greetAnimationFinished.value = true;
+        // }, actionsBase[0]._clip.duration * 1000 - 9900);
         return;
     }
 
-    // if (gameState.value === 'started') {
-    //     actionsBase.forEach((action, i) => {
-    //         if (i === 0) return;
-    //         action.stop();
-    //     });
-    //     actionsBase[0].play();
-    //     return;
-    // }
+    if (gameState.value === 'ended') {
+        actionsBase.forEach((action, i) => {
+            if (i === 0) return;
+            action.stop();
+        });
+        actionsBase[0].setLoop(THREE.LoopOnce);
+        actionsBase[0].play();
 
-    // if (gameState.value === 'progress') {
+        const dueTo = new Date(+new Date()+timeBetweenGamesMs.value);
+
+        const timeout = () => {
+            if (new Date() < dueTo) {
+                window.setTimeout(timeout, 30);
+            } else {
+                gameState.value = 'started';
+            }
+        };
+        timeout();
+
+        // setTimeout(() => {
+        //     gameState.value = 'started';
+        // }, timeBetweenGamesMs.value);
+
+        const dueTo2 = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9220);
+
+        const timeout2 = () => {
+            if (new Date() < dueTo2) {
+                window.setTimeout(timeout2, 30);
+            } else {
+                actionsBase[0].stop();
+            }
+        };
+        timeout2();
+
+        // setTimeout(() => {
+        //     actionsBase[0].stop();
+        // }, actionsBase[0]._clip.duration * 1000 - 9220);
+        return;
+    }
+
+    if (gameState.value === 'started') {
         // actionsBase.forEach((action, i) => {
-        //     if (i < 2) {
-        //         action.stop();
-        //     } else {
-        //         action.play();
-        //     }
+        //     if (i === 0) return;
+        //     action.stop();
         // });
-        setTimeout(() => {
-            actionsBase.forEach((action, i) => {
+        // actionsBase[0].setLoop(THREE.LoopOnce);
+        // actionsBase[0].play();
+
+        const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
+
+        const timeout = () => {
+            if (new Date() < dueTo) {
+                window.setTimeout(timeout, 30);
+            } else {
+                gameState.value = 'progress';
+            }
+        };
+        timeout();
+
+        // setTimeout(() => {
+        //     gameState.value = 'progress';
+        // }, actionsBase[0]._clip.duration * 1000 - 9900);
+        return;
+    }
+
+    if (gameState.value === 'progress' && triggerAnimationIndicator.value) {
+        triggerAnimationIndicator.value = false;
+        actionsBase.forEach((action, i) => {
+            if (i === 1) return;
+            action.stop();
+        });
+
+        if (triggerAnimation.value === 'position') {
+            actionsBase[1].setLoop(THREE.LoopOnce);
+            actionsBase[1].play();
+
+            const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
+
+            const timeout = () => {
+                if (new Date() < dueTo) {
+                    window.setTimeout(timeout, 30);
+                } else {
+                    actionsBase[1].stop();
+                }
+            };
+            timeout();
+        } else if (triggerAnimation.value === 'rotation') {
+            actionsBase[1].setLoop(THREE.LoopOnce);
+            actionsBase[1].play();
+
+            const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
+
+            const timeout = () => {
+                if (new Date() < dueTo) {
+                    window.setTimeout(timeout, 30);
+                } else {
+                    actionsBase[1].stop();
+                }
+            };
+            timeout();
+        }
+
+        return;
+    }
+
+        const dueTo = new Date(+new Date()+680);
+
+        const timeout = () => {
+            if (new Date() < dueTo) {
+                window.setTimeout(timeout, 30);
+            } else {
+                actionsBase.forEach((action, i) => {
                 action.stop();
             });
-        }, 680);
+            }
+        };
+        timeout();
+
+        // setTimeout(() => {
+        //     actionsBase.forEach((action, i) => {
+        //         action.stop();
+        //     });
+        // }, 680);
         actionsProgressState.forEach((action, i) => {
             action.play();
         });
@@ -112,7 +220,7 @@ watchEffect(() => {
 
 watchEffect(() => {
     if (isModelLoaded.value && isProgressStateModelLoaded.value) {
-        console.log('VALUE CHANGED')
+        console.log('VALUE CHANGED');
         actionsProgressState = clipsProgressState.map(clip => {
             return mixer.clipAction(clip);
         });
@@ -189,7 +297,7 @@ const initAnimation = (): void => {
     scene.add(spotLight);
 
     const spotLight2 = new THREE.SpotLight(0xE17ECF, 5.5);
-
+    
     if (props.page === 'main') {
         spotLight2.position.set(28, 12, 5);
     } else if (props.page === 'faq') {
@@ -248,24 +356,22 @@ const initAnimation = (): void => {
 
             actionsBase[0].setLoop(THREE.LoopOnce);
             actionsBase[0].play();
+
+            const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
+
+            const timeout = () => {
+                if (new Date() < dueTo) {
+                    window.setTimeout(timeout, 30);
+                } else {
+                    greetAnimationFinished.value = true;
+                }
+            };
+            timeout();
+
             // setTimeout(() => {
-            //     actionsProgressState?.forEach((action, i) => {
-            //         action.play();
-            //     });
-            // }, 2000);
-            // actionsBase[0].play();
-
-            setTimeout(() => {
-                greetAnimationFinished.value = true;
-            }, actionsBase[0]._clip.duration * 1000 - 9900);
+            //     greetAnimationFinished.value = true;
+            // }, actionsBase[0]._clip.duration * 1000 - 9900);
             // actionsBase[0].stop();
-
-            // clips.forEach(clip => {
-            //     const action = mixer.clipAction(clip);
-            //     action.play();
-            // });
-
-            // console.log(gltf);
 
             animate();
         });

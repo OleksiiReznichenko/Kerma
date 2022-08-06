@@ -93,8 +93,13 @@ onUnmounted(() => {
   border-radius: 4rem;
   overflow: hidden;
   align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
+  justify-content: flex-end !important;
+  text-align: right !important;
+
+  @media only screen and (max-width: 850px) {
+    justify-content: center !important;
+    text-align: center !important;
+  }
 }
 
 .iziToast-capsule {

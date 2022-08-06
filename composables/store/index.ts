@@ -23,6 +23,9 @@ interface State {
     isFullscreenChat: boolean;
     isNewBetPlaced: boolean;
     gameState: 'started' | 'progress' | 'ended';
+    timeBetweenGamesMs: number;
+    triggerAnimation: null | 'rotation' | 'position';
+    triggerAnimationIndicator: boolean;
     nextGameDate: NextGameDate;
     previousGameInfo: GameInfo;
     myUser: User;
@@ -52,14 +55,20 @@ export const useBaseStore = defineStore({
 
         isNewBetPlaced: false,
 
-        gameState: 'started',
+        gameState: 'progress',
+
+        timeBetweenGamesMs: 10000,
+
+        triggerAnimation: 'position',
+
+        triggerAnimationIndicator: false,
 
         nextGameDate: {
             year: 2022,
             month: 8,
-            day: 5,
-            hour: 12,
-            minute: 6,
+            day: 6,
+            hour: 20,
+            minute: 15,
             second: 0,
         },
 

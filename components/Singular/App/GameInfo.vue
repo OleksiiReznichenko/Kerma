@@ -9,7 +9,7 @@ const route = useRoute();
 
 // PREV GAME INFO AND NEXT GAME DATE
 const baseStore = useBaseStore();
-const { previousGameInfo, nextGameDate, gameState } = storeToRefs(baseStore);
+const { previousGameInfo, nextGameDate, gameState, timeBetweenGamesMs, triggerAnimation, triggerAnimationIndicator } = storeToRefs(baseStore);
 
 // DOM
 const gameInfo = ref<HTMLElement | null>(null);
@@ -20,8 +20,12 @@ let isOpen = ref<boolean>(false);
 let addTransitionClass = ref<boolean>(false);
 
 let gameEndIndicator = ref<boolean>(false);
+let correctTimeIndicator = ref<boolean>(false);
 
-const timeBetweenGamesMs = ref<number>(10000);
+let descriptionText = ref<string>('Game ends');
+
+let amountOfMinutesBeforeAnimation = ref<number>(1);
+let secondsTimer = ref<number>(0);
 
 // TIMER DATA
 let dateInterval: ReturnType<typeof setInterval> | null = null;
@@ -87,60 +91,95 @@ const timerInit = (): void => {
     if (timeLeft <= 0) {
         if (nextGameDate.value.second + timeBetweenGamesMs.value / 1000 >= 60)  {
             nextGameDate.value.second = 0;
-            
-            if (nextGameDate.value.minute + 1 >= 60) {
-                nextGameDate.value.minute = nextGameDate.value.minute + 1 - 60;
-
-                if (nextGameDate.value.hour + 1 >= 24) {
-                    nextGameDate.value.hour = 0;
-
-                    if (nextGameDate.value.day + 1 > 31) {
-                        nextGameDate.value.day = 1;
-
-                        if (nextGameDate.value.month + 1 > 12) {
-                            nextGameDate.value.month = 1;
-                            nextGameDate.value.year += 1;
-                        } else {
-                            nextGameDate.value.month += 1;
-                        }
-                    } else {
-                        nextGameDate.value.day += 1;
-                    }
-                } else {
-                    nextGameDate.value.hour += 1;
-                }
-
-            } else {
-                // nextGameDate.value.minute += 3;
-                nextGameDate.value.minute += 1;
-            }
         } else {
             nextGameDate.value.second += timeBetweenGamesMs.value / 1000;
-            nextGameDate.value.minute += 1;
         }
 
-        // const timeToCount: number = new Date(dateToCount.value).getTime();
-        // const now: number = new Date().getTime();
-        // const timeLeft: number = timeToCount - now;
-        
-        // gameEndIndicator.value = true;
+        if (nextGameDate.value.minute + 3 >= 60) {
+            nextGameDate.value.minute = nextGameDate.value.minute + 3 - 60;
 
+            if (nextGameDate.value.hour + 1 >= 24) {
+                nextGameDate.value.hour = 0;
+
+                if (nextGameDate.value.day + 1 > 31) {
+                    nextGameDate.value.day = 1;
+
+                    if (nextGameDate.value.month + 1 > 12) {
+                        nextGameDate.value.month = 1;
+                        nextGameDate.value.year += 1;
+                    } else {
+                        nextGameDate.value.month += 1;
+                    }
+                } else {
+                    nextGameDate.value.day += 1;
+                }
+            } else {
+                nextGameDate.value.hour += 1;
+            }
+
+        } else {
+            nextGameDate.value.minute += 3;
+            // nextGameDate.value.minute += 1;
+        }
         // gameState.value = 'ended';
 
         requestAnimationFrame(timerInit);
 
-        // if (timeLeft > 0) {
-        //     setTimeout(() => {
-        //         gameEndIndicator.value = false;
-        //         gameState.value = 'started';
-        //     }, timeBetweenGamesMs.value);
+        if (correctTimeIndicator.value) {
+            gameState.value = 'ended';
+            gameEndIndicator.value = true;
+            descriptionText.value = 'Next game';
 
-        //     setTimeout(() => {
-        //         gameState.value = 'progress';
-        //     }, 31000);
+            const timeToCount: number = new Date(dateToCount.value).getTime();
+            const now: number = new Date().getTime();
+            const timeLeft: number = timeToCount - now;
+            minutes.value = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
 
-        //     console.log('LOL');
-        // }
+            if (minutes.value > 10) {
+                amountOfMinutesBeforeAnimation.value = 2;
+            } else {
+                amountOfMinutesBeforeAnimation.value = 1;
+            }
+
+            const dueTo = new Date(+new Date()+timeBetweenGamesMs.value);
+
+            const timeout = () => {
+                if (new Date() < dueTo) {
+                    window.setTimeout(timeout, 30);
+                } else {
+                    gameState.value = 'started';
+                    gameEndIndicator.value = false;
+                    descriptionText.value = 'Game ends';
+                }
+            };
+            timeout();
+
+            // setTimeout(() => {
+            //     gameState.value = 'started';
+            //     gameEndIndicator.value = false;
+            //     descriptionText.value = 'Game ends';
+            // }, timeBetweenGamesMs.value);
+        }
+    }
+
+    if (timeLeft > 0 && !correctTimeIndicator.value) {
+        correctTimeIndicator.value = true;
+    }
+
+    if (correctTimeIndicator.value && !gameEndIndicator.value) {
+            console.log((secondsTimer.value + 2) / 60, amountOfMinutesBeforeAnimation.value);
+        if ((secondsTimer.value + 2) / 60 < amountOfMinutesBeforeAnimation.value) {
+            secondsTimer.value += 2;
+        } else {
+            if (triggerAnimation.value === 'position' || triggerAnimation.value === null) {
+                triggerAnimation.value = 'rotation';
+            } else if (triggerAnimation.value === 'rotation') {
+                triggerAnimation.value = 'position';
+            }
+
+            secondsTimer.value = 0;
+            triggerAnimationIndicator.value = true;
+        }
     }
 
     days.value = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -260,7 +299,7 @@ onUnmounted(() => {
             </div>
 
             <div class="timer-container desktop">
-                <strong class="subtitle">Next game in:</strong>
+                <strong class="subtitle">{{descriptionText}} in:</strong>
                 <div class="timer">
                     <span class="span-time">{{days}}</span> <span class="span-dots">:</span> <span class="span-time">{{hours}}</span> <span class="span-dots">:</span> <span class="span-time">{{minutes}}</span> <span class="span-dots">:</span> <span class="span-time">{{seconds}}</span>
                 </div>
@@ -287,7 +326,7 @@ onUnmounted(() => {
         </div>
         <div class="opener-container mobile">
             <div class="timer-container">
-                <h1 class="subtitle-big">Next game in:</h1>
+                <h1 class="subtitle-big">{{descriptionText}} in:</h1>
                 <div class="timer-opener-container">
                     <div class="timer">
                         <span class="span-time">{{days}}</span> <span class="span-dots">:</span> <span class="span-time">{{hours}}</span> <span class="span-dots">:</span> <span class="span-time">{{minutes}}</span> <span class="span-dots">:</span> <span class="span-time">{{seconds}}</span>
