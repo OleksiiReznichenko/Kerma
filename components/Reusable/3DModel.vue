@@ -31,8 +31,14 @@ let clock: any = null;
 let delta: number = 0;
 let clipsBase: any[] = [];
 let clipsProgressState: any[] = [];
+let clipsHello: any[] = [];
+let clipsCircle: any[] = [];
+let clipsHandsMovement: any[] = [];
 let actionsBase: any[] = [];
 let actionsProgressState: any[] = [];
+let actionsHello: any[] = [];
+let actionsCircle: any[] = [];
+let actionsHandsMovement: any[] = [];
 
 // CAMERA SETTINGS
 let fov = ref<number>(35);
@@ -56,6 +62,9 @@ let prevWidth: number = 0;
 
 let isModelLoaded = ref<boolean>(false);
 let isProgressStateModelLoaded = ref<boolean>(false);
+let isHelloModelLoaded = ref<boolean>(false);
+let isCircleModelLoaded = ref<boolean>(false);
+let isHandsMovementModelLoaded = ref<boolean>(false);
 let greetAnimationFinished = ref<boolean>(false);
 
 
@@ -220,7 +229,6 @@ watchEffect(() => {
 
 watchEffect(() => {
     if (isModelLoaded.value && isProgressStateModelLoaded.value) {
-        console.log('VALUE CHANGED');
         actionsProgressState = clipsProgressState.map(clip => {
             return mixer.clipAction(clip);
         });
@@ -228,7 +236,41 @@ watchEffect(() => {
             action.play();
         });
     }
-})
+});
+
+watchEffect(() => {
+    if (isModelLoaded.value && isHelloModelLoaded.value) {
+        actionsHello = clipsHello.map(clip => {
+            return mixer.clipAction(clip);
+        });
+        actionsHello.forEach((action, i) => {
+            action.setLoop(THREE.LoopOnce);
+            action.play();
+        });
+    }
+});
+
+watchEffect(() => {
+    if (isModelLoaded.value && isCircleModelLoaded.value) {
+        actionsCircle = clipsCircle.map(clip => {
+            return mixer.clipAction(clip);
+        });
+        // actionsCircle.forEach((action, i) => {
+        //     action.play();
+        // });
+    }
+});
+
+watchEffect(() => {
+    if (isModelLoaded.value && isHandsMovementModelLoaded.value) {
+        actionsHandsMovement = clipsHandsMovement.map(clip => {
+            return mixer.clipAction(clip);
+        });
+        // actionsHandsMovement.forEach((action, i) => {
+        //     action.play();
+        // });
+    }
+});
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INIT 3D MODEL AND ANIMATION
@@ -379,6 +421,33 @@ const initAnimation = (): void => {
         loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
             clipsProgressState = gltf.animations;
             isProgressStateModelLoaded.value = true;
+
+            // actionsProgressState = clips.map(clip => {
+            //     return mixer.clipAction(clip);
+            // });
+        });
+
+        loader.load(baseUrl + 'hello.glb', (gltf) => {
+            clipsHello = gltf.animations;
+            isHelloModelLoaded.value = true;
+
+            // actionsProgressState = clips.map(clip => {
+            //     return mixer.clipAction(clip);
+            // });
+        });
+
+        loader.load(baseUrl + 'krug.glb', (gltf) => {
+            clipsCircle = gltf.animations;
+            isCircleModelLoaded.value = true;
+
+            // actionsProgressState = clips.map(clip => {
+            //     return mixer.clipAction(clip);
+            // });
+        });
+
+        loader.load(baseUrl + 'tudaSuda.glb', (gltf) => {
+            clipsHandsMovement = gltf.animations;
+            isHandsMovementModelLoaded.value = true;
 
             // actionsProgressState = clips.map(clip => {
             //     return mixer.clipAction(clip);

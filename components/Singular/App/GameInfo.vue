@@ -167,7 +167,7 @@ const timerInit = (): void => {
     }
 
     if (correctTimeIndicator.value && !gameEndIndicator.value) {
-            console.log((secondsTimer.value + 2) / 60, amountOfMinutesBeforeAnimation.value);
+            // console.log((secondsTimer.value + 2) / 60, amountOfMinutesBeforeAnimation.value);
         if ((secondsTimer.value + 2) / 60 < amountOfMinutesBeforeAnimation.value) {
             secondsTimer.value += 2;
         } else {
