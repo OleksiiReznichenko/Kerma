@@ -71,14 +71,28 @@ let greetAnimationFinished = ref<boolean>(false);
 watchEffect(() => {
     if (!greetAnimationFinished.value && !isNewBetPlaced.value) return;
     if (isNewBetPlaced.value) {
-        actionsBase.forEach((action, i) => {
-            if (i === 0) return;
-            action.stop();
-        });
-        actionsBase[0].setLoop(THREE.LoopOnce);
-        actionsBase[0].play();
+        // actionsBase.forEach((action, i) => {
+        //     action.stop();
+        // });
 
-        const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
+        // actionsHello.forEach((action, i) => {
+        //     action.stop();
+        // });
+
+        // actionsCircle.forEach((action, i) => {
+        //     action.stop();
+        // });
+
+        // actionsProgressState.forEach((action, i) => {
+        //     action.stop();
+        // });
+
+        actionsHandsMovement.forEach((action, i) => {
+            action.setLoop(THREE.LoopOnce);
+            action.play();
+        });
+
+        const dueTo = new Date(+new Date()+actionsHandsMovement[1]._clip.duration * 1000);
 
         const timeout = () => {
             if (new Date() < dueTo) {
@@ -86,6 +100,11 @@ watchEffect(() => {
             } else {
                 baseStore.isNewBetPlacedToFalse();
                 greetAnimationFinished.value = true;
+
+                actionsBase[1].stop();
+                actionsHandsMovement.forEach((action, i) => {
+                    action.stop();
+                });
             }
         };
         timeout();
@@ -138,14 +157,7 @@ watchEffect(() => {
     }
 
     if (gameState.value === 'started') {
-        // actionsBase.forEach((action, i) => {
-        //     if (i === 0) return;
-        //     action.stop();
-        // });
-        // actionsBase[0].setLoop(THREE.LoopOnce);
-        // actionsBase[0].play();
-
-        const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
+        const dueTo = new Date(+new Date()+5000);
 
         const timeout = () => {
             if (new Date() < dueTo) {
@@ -164,66 +176,80 @@ watchEffect(() => {
 
     if (gameState.value === 'progress' && triggerAnimationIndicator.value) {
         triggerAnimationIndicator.value = false;
-        actionsBase.forEach((action, i) => {
-            if (i === 1) return;
-            action.stop();
+        
+        actionsCircle.forEach((action, i) => {
+            action.setLoop(THREE.LoopOnce);
+            action.play();
         });
 
-        if (triggerAnimation.value === 'position') {
-            actionsBase[1].setLoop(THREE.LoopOnce);
-            actionsBase[1].play();
-
-            const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
-
-            const timeout = () => {
-                if (new Date() < dueTo) {
-                    window.setTimeout(timeout, 30);
-                } else {
-                    actionsBase[1].stop();
-                }
-            };
-            timeout();
-        } else if (triggerAnimation.value === 'rotation') {
-            actionsBase[1].setLoop(THREE.LoopOnce);
-            actionsBase[1].play();
-
-            const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
-
-            const timeout = () => {
-                if (new Date() < dueTo) {
-                    window.setTimeout(timeout, 30);
-                } else {
-                    actionsBase[1].stop();
-                }
-            };
-            timeout();
-        }
-
-        return;
-    }
-
-        const dueTo = new Date(+new Date()+680);
+        const dueTo = new Date(+new Date()+actionsCircle[1]._clip.duration * 1000);
 
         const timeout = () => {
             if (new Date() < dueTo) {
                 window.setTimeout(timeout, 30);
             } else {
-                actionsBase.forEach((action, i) => {
-                action.stop();
-            });
+                actionsCircle.forEach((action, i) => {
+                    action.stop();
+                });
+
             }
         };
         timeout();
 
-        // setTimeout(() => {
-        //     actionsBase.forEach((action, i) => {
-        //         action.stop();
-        //     });
-        // }, 680);
-        actionsProgressState.forEach((action, i) => {
-            action.play();
+        // if (triggerAnimation.value === 'position') {
+        //     actionsBase[1].setLoop(THREE.LoopOnce);
+        //     actionsBase[1].play();
+
+        //     const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
+
+        //     const timeout = () => {
+        //         if (new Date() < dueTo) {
+        //             window.setTimeout(timeout, 30);
+        //         } else {
+        //             actionsBase[1].stop();
+        //         }
+        //     };
+        //     timeout();
+        // } else if (triggerAnimation.value === 'rotation') {
+        //     actionsBase[1].setLoop(THREE.LoopOnce);
+        //     actionsBase[1].play();
+
+        //     const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
+
+        //     const timeout = () => {
+        //         if (new Date() < dueTo) {
+        //             window.setTimeout(timeout, 30);
+        //         } else {
+        //             actionsBase[1].stop();
+        //         }
+        //     };
+        //     timeout();
+        // }
+
+        return;
+    }
+
+    const dueTo = new Date(+new Date()+680);
+
+    const timeout = () => {
+        if (new Date() < dueTo) {
+            window.setTimeout(timeout, 30);
+        } else {
+            actionsBase.forEach((action, i) => {
+            action.stop();
         });
-        console.log('FIRED')
+        }
+    };
+    timeout();
+
+    // setTimeout(() => {
+    //     actionsBase.forEach((action, i) => {
+    //         action.stop();
+    //     });
+    // }, 680);
+    actionsProgressState.forEach((action, i) => {
+        action.play();
+    });
     // }
 });
 
@@ -247,6 +273,17 @@ watchEffect(() => {
             action.setLoop(THREE.LoopOnce);
             action.play();
         });
+
+        const dueTo = new Date(+new Date()+actionsHello[0]._clip.duration * 1000);
+
+        const timeout = () => {
+            if (new Date() < dueTo) {
+                window.setTimeout(timeout, 30);
+            } else {
+                greetAnimationFinished.value = true;
+            }
+        };
+        timeout();
     }
 });
 
@@ -371,7 +408,7 @@ const initAnimation = (): void => {
     loader.setDRACOLoader(dracoLoader);
 
     if (props.page === 'game') {
-        loader.load(baseUrl + 'kermaModelGame2.glb', (gltf) => {
+        loader.load(baseUrl + 'kermaModelGame.glb', (gltf) => {
             kermaModel = gltf.scene;
             scene.add(kermaModel);
 
@@ -396,19 +433,19 @@ const initAnimation = (): void => {
             //     action.play();
             // });
 
-            actionsBase[0].setLoop(THREE.LoopOnce);
-            actionsBase[0].play();
+            // actionsBase[0].setLoop(THREE.LoopOnce);
+            // actionsBase[0].play();
 
-            const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
+            // const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
 
-            const timeout = () => {
-                if (new Date() < dueTo) {
-                    window.setTimeout(timeout, 30);
-                } else {
-                    greetAnimationFinished.value = true;
-                }
-            };
-            timeout();
+            // const timeout = () => {
+            //     if (new Date() < dueTo) {
+            //         window.setTimeout(timeout, 30);
+            //     } else {
+            //         greetAnimationFinished.value = true;
+            //     }
+            // };
+            // timeout();
 
             // setTimeout(() => {
             //     greetAnimationFinished.value = true;

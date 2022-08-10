@@ -167,15 +167,14 @@ const timerInit = (): void => {
     }
 
     if (correctTimeIndicator.value && !gameEndIndicator.value) {
-            // console.log((secondsTimer.value + 2) / 60, amountOfMinutesBeforeAnimation.value);
-        if ((secondsTimer.value + 2) / 60 < amountOfMinutesBeforeAnimation.value) {
-            secondsTimer.value += 2;
+        if ((secondsTimer.value + 1) / 60 < amountOfMinutesBeforeAnimation.value) {
+            secondsTimer.value += 1;
         } else {
-            if (triggerAnimation.value === 'position' || triggerAnimation.value === null) {
-                triggerAnimation.value = 'rotation';
-            } else if (triggerAnimation.value === 'rotation') {
-                triggerAnimation.value = 'position';
-            }
+            // if (triggerAnimation.value === 'position' || triggerAnimation.value === null) {
+            //     triggerAnimation.value = 'rotation';
+            // } else if (triggerAnimation.value === 'rotation') {
+            //     triggerAnimation.value = 'position';
+            // }
 
             secondsTimer.value = 0;
             triggerAnimationIndicator.value = true;
