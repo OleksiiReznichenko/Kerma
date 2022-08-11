@@ -60,12 +60,17 @@ const { navOpenIndicator, isNewBetPlaced, gameState, timeBetweenGamesMs, trigger
 // PREVIOUS WINDOW WIDTH FOR RESIZE
 let prevWidth: number = 0;
 
+// LOAD INDICATORS
 let isModelLoaded = ref<boolean>(false);
 let isProgressStateModelLoaded = ref<boolean>(false);
 let isHelloModelLoaded = ref<boolean>(false);
 let isCircleModelLoaded = ref<boolean>(false);
 let isHandsMovementModelLoaded = ref<boolean>(false);
 let greetAnimationFinished = ref<boolean>(false);
+
+// MODEL CLICK
+let modelClickCount = ref<number>(0);
+let clickAnimationIndicator = ref<boolean>(false);
 
 
 watchEffect(() => {
@@ -171,6 +176,42 @@ watchEffect(() => {
         // setTimeout(() => {
         //     gameState.value = 'progress';
         // }, actionsBase[0]._clip.duration * 1000 - 9900);
+        return;
+    }
+
+    if (clickAnimationIndicator.value) {
+        actionsBase.forEach((action, i) => {
+            action.stop();
+        });
+
+        actionsHello.forEach((action, i) => {
+            action.stop();
+        });
+
+        actionsHandsMovement.forEach((action, i) => {
+            action.stop();
+        });
+        
+        actionsCircle.forEach((action, i) => {
+            action.setLoop(THREE.LoopOnce);
+            action.play();
+        });
+
+        const dueTo = new Date(+new Date()+actionsCircle[1]._clip.duration * 1000);
+
+        const timeout = () => {
+            if (new Date() < dueTo) {
+                window.setTimeout(timeout, 30);
+            } else {
+                actionsCircle.forEach((action, i) => {
+                    action.stop();
+                });
+                clickAnimationIndicator.value = false;
+                modelClickCount.value = 0
+            }
+        };
+        timeout();
+
         return;
     }
 
@@ -330,7 +371,6 @@ const initAnimation = (): void => {
     } else if (props.page === 'faq') {
         camera.position.set(-8, 2, 15.5);
     } else if (props.page === 'game') {
-        // camera.position.set(-8, 2, 15.5);
         camera.position.set(-8, 2, 15.5);
     }
     camera.lookAt(scene.position);
@@ -426,69 +466,27 @@ const initAnimation = (): void => {
             });
             
             isModelLoaded.value = true;
-
-            // actionsBase.forEach((action, i) => {
-            //     // if (i < 1) return;
-            //     action.setLoop(THREE.LoopOnce);
-            //     action.play();
-            // });
-
-            // actionsBase[0].setLoop(THREE.LoopOnce);
-            // actionsBase[0].play();
-
-            // const dueTo = new Date(+new Date()+actionsBase[0]._clip.duration * 1000 - 9900);
-
-            // const timeout = () => {
-            //     if (new Date() < dueTo) {
-            //         window.setTimeout(timeout, 30);
-            //     } else {
-            //         greetAnimationFinished.value = true;
-            //     }
-            // };
-            // timeout();
-
-            // setTimeout(() => {
-            //     greetAnimationFinished.value = true;
-            // }, actionsBase[0]._clip.duration * 1000 - 9900);
-            // actionsBase[0].stop();
-
             animate();
         });
 
         loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
             clipsProgressState = gltf.animations;
             isProgressStateModelLoaded.value = true;
-
-            // actionsProgressState = clips.map(clip => {
-            //     return mixer.clipAction(clip);
-            // });
         });
 
         loader.load(baseUrl + 'hello.glb', (gltf) => {
             clipsHello = gltf.animations;
             isHelloModelLoaded.value = true;
-
-            // actionsProgressState = clips.map(clip => {
-            //     return mixer.clipAction(clip);
-            // });
         });
 
         loader.load(baseUrl + 'krug.glb', (gltf) => {
             clipsCircle = gltf.animations;
             isCircleModelLoaded.value = true;
-
-            // actionsProgressState = clips.map(clip => {
-            //     return mixer.clipAction(clip);
-            // });
         });
 
         loader.load(baseUrl + 'tudaSuda.glb', (gltf) => {
             clipsHandsMovement = gltf.animations;
             isHandsMovementModelLoaded.value = true;
-
-            // actionsProgressState = clips.map(clip => {
-            //     return mixer.clipAction(clip);
-            // });
         });
     } else {
         loader.load(baseUrl + 'kermaModel.glb', (gltf) => {
@@ -654,6 +652,24 @@ const onWindowResize = (eventType: 'resize' | 'orientationchange'): void => {
     }, timeoutTime);
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MODEL CLICK EVENT
+const modelClickEvent = (): void => {  
+    if (modelClickCount.value >= 2 || isNewBetPlaced.value) return;
+    modelClickCount.value++;
+
+    if (modelClickCount.value === 2) {
+        clickAnimationIndicator.value = true;
+    }
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CHECK IF DEVICE IS MOBILE OR TABLET
+const isTouchDevice = (): boolean => {  
+    return ('ontouchstart' in window) ||  
+      (navigator.maxTouchPoints > 0);
+};
+
 // RESTORE 3D ANIMATION ON NAVIGATION CLOSE
 watch(navOpenIndicator, (newValue) => {
     if (!newValue) {
@@ -662,6 +678,7 @@ watch(navOpenIndicator, (newValue) => {
 });
 
 onMounted(() => {
+    if (isTouchDevice()) return;
     // DOM
     canvas.value = document.querySelector('.model-scene canvas');
 
@@ -698,7 +715,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div ref="sceneContainer" :class="page" class="model-scene"></div>
+    <div @click="modelClickEvent" ref="sceneContainer" :class="page" class="model-scene"></div>
 </template>
 
 <style lang="scss" scoped>
