@@ -4,6 +4,8 @@ let hideIndicator = ref<boolean>(false);
 let html = ref<HTMLElement | null>(null);
 const preloaderWrapper = ref<HTMLElement | null>(null);
 
+const baseStore = useBaseStore();
+
 // ADD PRELOADER PERCENT
 const addToPercent = (): void => {
     if (html.value === null || preloaderWrapper.value === null) return;
@@ -12,6 +14,7 @@ const addToPercent = (): void => {
     if (percent.value >= 100) {
         html.value.style.overflowY = 'visible';
         hideIndicator.value = true;
+        baseStore.isPreloaderClosedToTrue();
 
         return;
     }

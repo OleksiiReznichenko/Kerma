@@ -26,6 +26,7 @@ interface State {
     timeBetweenGamesMs: number;
     triggerAnimation: null | 'rotation' | 'position';
     triggerAnimationIndicator: boolean;
+    isPreloaderClosed: boolean;
     nextGameDate: NextGameDate;
     previousGameInfo: GameInfo;
     myUser: User;
@@ -62,6 +63,8 @@ export const useBaseStore = defineStore({
         triggerAnimation: 'position',
 
         triggerAnimationIndicator: false,
+
+        isPreloaderClosed: false,
 
         nextGameDate: {
             year: 2022,
@@ -192,6 +195,14 @@ export const useBaseStore = defineStore({
         
         isNewBetPlacedToTrue() {
             this.isNewBetPlaced = true;
+        },
+        
+        isPreloaderClosedToFalse() {
+            this.isPreloaderClosed = false;
+        },
+        
+        isPreloaderClosedToTrue() {
+            this.isPreloaderClosed = true;
         },
     }
 })

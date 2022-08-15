@@ -55,7 +55,7 @@ let html = ref<HTMLElement | null>(null);
 
 // NAV OPEN INDICATOR
 const baseStore = useBaseStore();
-const { navOpenIndicator, isNewBetPlaced, gameState, timeBetweenGamesMs, triggerAnimation, triggerAnimationIndicator } = storeToRefs(baseStore);
+const { navOpenIndicator, isNewBetPlaced, gameState, timeBetweenGamesMs, isPreloaderClosed, triggerAnimationIndicator } = storeToRefs(baseStore);
 
 // PREVIOUS WINDOW WIDTH FOR RESIZE
 let prevWidth: number = 0;
@@ -79,20 +79,6 @@ watchEffect(() => {
         actionsBase.forEach((action, i) => {
             action.stop();
         });
-
-        // actionsHello.forEach((action, i) => {
-        //     action.stop();
-        // });
-
-        // actionsCircle.forEach((action, i) => {
-        //     action.stop();
-        // });
-
-        // actionsProgressState.forEach((action, i) => {
-        //     action.stop();
-        // });
-
-        console.log(actionsHandsMovement)
 
         actionsHandsMovement.forEach((action, i) => {
             // action.setLoop(THREE.LoopOnce);
@@ -183,9 +169,9 @@ watchEffect(() => {
     }
 
     if (clickAnimationIndicator.value) {
-        actionsBase.forEach((action, i) => {
-            action.stop();
-        });
+        // actionsBase.forEach((action, i) => {
+        //     action.stop();
+        // });
 
         actionsHello.forEach((action, i) => {
             action.stop();
@@ -196,6 +182,7 @@ watchEffect(() => {
         });
         
         actionsCircle.forEach((action, i) => {
+            if (i > 1) return;
             action.setLoop(THREE.LoopOnce);
             action.play();
         });
@@ -210,7 +197,7 @@ watchEffect(() => {
                     action.stop();
                 });
                 clickAnimationIndicator.value = false;
-                modelClickCount.value = 0
+                modelClickCount.value = 0;
             }
         };
         timeout();
@@ -222,6 +209,7 @@ watchEffect(() => {
         triggerAnimationIndicator.value = false;
 
         actionsCircle.forEach((action, i) => {
+            if (i > 3) return;
             action.setLoop(THREE.LoopOnce);
             action.play();
         });
@@ -239,36 +227,6 @@ watchEffect(() => {
             }
         };
         timeout();
-
-        // if (triggerAnimation.value === 'position') {
-        //     actionsBase[1].setLoop(THREE.LoopOnce);
-        //     actionsBase[1].play();
-
-        //     const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
-
-        //     const timeout = () => {
-        //         if (new Date() < dueTo) {
-        //             window.setTimeout(timeout, 30);
-        //         } else {
-        //             actionsBase[1].stop();
-        //         }
-        //     };
-        //     timeout();
-        // } else if (triggerAnimation.value === 'rotation') {
-        //     actionsBase[1].setLoop(THREE.LoopOnce);
-        //     actionsBase[1].play();
-
-        //     const dueTo = new Date(+new Date()+actionsBase[1]._clip.duration * 1000);
-
-        //     const timeout = () => {
-        //         if (new Date() < dueTo) {
-        //             window.setTimeout(timeout, 30);
-        //         } else {
-        //             actionsBase[1].stop();
-        //         }
-        //     };
-        //     timeout();
-        // }
 
         return;
     }
@@ -298,7 +256,7 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-    if (isModelLoaded.value && isProgressStateModelLoaded.value) {
+    if (isModelLoaded.value && isProgressStateModelLoaded.value && isPreloaderClosed.value) {
         actionsProgressState = clipsProgressState.map(clip => {
             return mixer.clipAction(clip);
         });
@@ -309,11 +267,12 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-    if (isModelLoaded.value && isHelloModelLoaded.value) {
+    if (isModelLoaded.value && isHelloModelLoaded.value && isPreloaderClosed.value) {
         actionsHello = clipsHello.map(clip => {
             return mixer.clipAction(clip);
         });
         actionsHello.forEach((action, i) => {
+            if (i > 2) return;
             action.setLoop(THREE.LoopOnce);
             action.play();
         });
