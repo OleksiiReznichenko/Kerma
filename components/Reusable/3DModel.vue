@@ -76,9 +76,9 @@ let clickAnimationIndicator = ref<boolean>(false);
 watchEffect(() => {
     if (!greetAnimationFinished.value && !isNewBetPlaced.value) return;
     if (isNewBetPlaced.value) {
-        // actionsBase.forEach((action, i) => {
-        //     action.stop();
-        // });
+        actionsBase.forEach((action, i) => {
+            action.stop();
+        });
 
         // actionsHello.forEach((action, i) => {
         //     action.stop();
@@ -92,12 +92,15 @@ watchEffect(() => {
         //     action.stop();
         // });
 
+        console.log(actionsHandsMovement)
+
         actionsHandsMovement.forEach((action, i) => {
-            action.setLoop(THREE.LoopOnce);
+            // action.setLoop(THREE.LoopOnce);
+            if (i > 1) return;
             action.play();
         });
 
-        const dueTo = new Date(+new Date()+actionsHandsMovement[1]._clip.duration * 1000);
+        const dueTo = new Date(+new Date()+actionsHandsMovement[1]._clip.duration * 1000 - 50);
 
         const timeout = () => {
             if (new Date() < dueTo) {
@@ -217,7 +220,7 @@ watchEffect(() => {
 
     if (gameState.value === 'progress' && triggerAnimationIndicator.value) {
         triggerAnimationIndicator.value = false;
-        
+
         actionsCircle.forEach((action, i) => {
             action.setLoop(THREE.LoopOnce);
             action.play();
