@@ -68,8 +68,8 @@ export const useBaseStore = defineStore({
 
         nextGameDate: {
             year: 2022,
-            month: 8,
-            day: 15,
+            month: 9,
+            day: 25,
             hour: 17,
             minute: 35,
             second: 0,
