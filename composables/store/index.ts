@@ -101,6 +101,17 @@ export const useBaseStore = defineStore({
     }),
 
     actions: {
+        lockOverflow(indicator: boolean) {
+            const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px';
+            if (indicator) {
+                document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+                document.body.style.paddingRight = lockPaddingValue;
+            } else {
+                document.getElementsByTagName('html')[0].style.overflow = 'auto';
+                document.body.style.paddingRight = '0';
+            }
+        },
+
         addMyUser(myUser: User) {
             this.myUser = myUser;
         },
@@ -177,10 +188,12 @@ export const useBaseStore = defineStore({
         
         connectWindowOpenIndicatorToFalse() {
             this.connectWindowOpenIndicator = false;
+            this.lockOverflow(false);
         },
         
         connectWindowOpenIndicatorToTrue() {
             this.connectWindowOpenIndicator = true;
+            this.lockOverflow(true);
         },
         
         isStepsOpenIndicatorToFalse() {
@@ -193,18 +206,22 @@ export const useBaseStore = defineStore({
         
         isChatOpenIndicatorToFalse() {
             this.isChatOpenIndicator = false;
+            this.lockOverflow(false);
         },
         
         isChatOpenIndicatorToTrue() {
             this.isChatOpenIndicator = true;
+            this.lockOverflow(true);
         },
         
         gameDetailsWindowOpenIndicatorToFalse() {
             this.gameDetailsWindowOpenIndicator = false;
+            this.lockOverflow(false);
         },
         
         gameDetailsWindowOpenIndicatorToTrue() {
             this.gameDetailsWindowOpenIndicator = true;
+            this.lockOverflow(true);
         },
         
         isNewBetPlacedToFalse() {

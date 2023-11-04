@@ -9,6 +9,8 @@ const { navOpenIndicator, myUser } = storeToRefs(baseStore);
 const route = useRoute();
 const router = useRouter();
 
+const isMounted = ref<boolean>(false);
+
 // PAGE NAME
 const pageName = computed<string>(() => {
     if (myUser.value.id === route.params.id) {
@@ -49,7 +51,19 @@ watch(route, () => {
     baseStore.navOpenIndicatorToFalse();
 });
 
+// CLOSE NAVIGATION ON ROUTE CHANGE
+watch(route, () => {
+    baseStore.navOpenIndicatorToFalse();
+});
+
+watch(navOpenIndicator, () => {
+    if (!isMounted.value) return;
+    baseStore.lockOverflow(navOpenIndicator.value);
+});
+
 onMounted(() => {
+    isMounted.value = true;
+
     // ADD WINDOW EVENT LISTENER
     window.addEventListener('resize', onWindowResize);
 });
