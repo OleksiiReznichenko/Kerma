@@ -84,6 +84,7 @@ const dateToCount = computed<string>(() => {
 
 // TIMER FUNCTIONALITY
 const timerInit = (): void => {
+    // const timeToCount: number = new Date().getTime() + 300000;
     const timeToCount: number = new Date(dateToCount.value).getTime();
     const now: number = new Date().getTime();
     const timeLeft: number = timeToCount - now;
@@ -251,8 +252,10 @@ watch(route, () => {
 
 onMounted(() => {
     // TIMER INTERVAL
+    baseStore.updateNextGameDate();
     timerInit();
     dateInterval = setInterval(timerInit, 1000);
+
 
     // ADD WINDOW EVENT LISTENERS
     window.addEventListener('resize', onWindowResize);

@@ -67,9 +67,9 @@ export const useBaseStore = defineStore({
         isPreloaderClosed: false,
 
         nextGameDate: {
-            year: 2022,
-            month: 9,
-            day: 25,
+            year: 2024, 
+            month: 8,
+            day: 15,
             hour: 17,
             minute: 35,
             second: 0,
@@ -103,6 +103,24 @@ export const useBaseStore = defineStore({
     actions: {
         addMyUser(myUser: User) {
             this.myUser = myUser;
+        },
+
+        updateNextGameDate() {
+            const date = new Date();
+            const year = date.getUTCFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const hour = date.getHours();
+            const minute = date.getMinutes();
+            console.log(year, month, day, minute);
+            this.nextGameDate = {
+                year,
+                month,
+                day,
+                hour,
+                minute,
+                second: 0,
+            };
         },
 
         updateBalance(action: 'add' | 'subtract', amount: number) {

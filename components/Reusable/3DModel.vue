@@ -580,7 +580,7 @@ const animate = (): void => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MOVE CAMERA ON MOUSEMOVE
 const onMouseMove = (event: MouseEvent): void => {
-    if (props.page !== 'main' && props.page !== 'faq' || !kermaModel) return;
+    if (props.page !== 'main' && props.page !== 'faq') return;
     const valueX = -(event.clientX / window.innerWidth) * .7 - -0.3;
     const valueY = (event.clientY / window.innerHeight) * .7 + -0.4;
 

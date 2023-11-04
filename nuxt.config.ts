@@ -35,7 +35,7 @@ export default defineNuxtConfig({
             ]
         },
         
-        // baseURL: '/kerma/'
+        // baseURL: '/projects/Kerma/'
     },
 
     css: [
